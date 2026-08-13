@@ -18,14 +18,18 @@ export const AdminLogin: React.FC<AdminLoginProps> = ({ onLoginSuccess, onCancel
     setErrorMessage('');
     setIsAuthenticating(true);
 
+    const envCallsign = (import.meta.env.VITE_ADMIN_CALLSIGN || 'admin').toLowerCase();
+    const envPasscode = import.meta.env.VITE_ADMIN_PASSCODE || 'admin123';
+    const envPin = import.meta.env.VITE_ADMIN_PIN || '8842';
+
     setTimeout(() => {
-      // Valid credentials check:
-      // Accepts username: "admin" or "RACE_CONTROL_01"
-      // Accepts passcode: "admin123" or "FIA_MONZA_2026"
-      // Accepts PIN: "8842" or any 4 digit PIN
-      const isValidUser = username.trim().toLowerCase() === 'admin' || username.trim().toUpperCase() === 'RACE_CONTROL_01';
-      const isValidPass = password.trim() === 'admin123' || password.trim() === 'FIA_MONZA_2026';
-      const isValidPin = securityPin.trim() === '8842' || securityPin.trim().length === 4;
+      const inputUser = username.trim().toLowerCase();
+      const inputPass = password.trim();
+      const inputPin = securityPin.trim();
+
+      const isValidUser = inputUser === envCallsign;
+      const isValidPass = inputPass === envPasscode;
+      const isValidPin = inputPin === envPin;
 
       if (isValidUser && isValidPass && isValidPin) {
         onLoginSuccess();

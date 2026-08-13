@@ -763,7 +763,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   <CreditCard className="w-4 h-4 text-[#00D2BE]" />
                   <span>ENTER 12-DIGIT UTR DEPOSIT NUMBER *</span>
                 </span>
-                <span className="text-xs text-[#00D2BE] font-mono font-bold">UPI: formula-ai@upi</span>
+                <span className="text-xs text-[#00D2BE] font-mono font-bold">
+                  UPI: {import.meta.env.VITE_UPI_ID || 'formula-ai@upi'}
+                </span>
               </div>
 
               <div>

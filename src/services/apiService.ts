@@ -1,7 +1,7 @@
 import { DriverRegistration } from '../types';
 
-// Replace this URL with your Google Apps Script Web App URL after deploying!
-export const GOOGLE_APPS_SCRIPT_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwhP3AZZCjL9iskYV7AZ8hju7QIn7NtaXvnFWuLEj23PJtIhF-gkIRCr9A6_46DVfXQrg/exec";
+// Read Google Apps Script Web App URL from Environment Variables
+export const GOOGLE_APPS_SCRIPT_WEB_APP_URL = import.meta.env.VITE_GOOGLE_APPS_SCRIPT_URL || '';
 
 export const submitRegistrationToGoogleSheet = async (registration: DriverRegistration): Promise<boolean> => {
   try {
