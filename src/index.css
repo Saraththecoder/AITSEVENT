@@ -1,824 +1,207 @@
-/* Royal Indian Wedding Aesthetic Design System with Custom Section Effects */
-:root {
-  --bg-parchment: #FAF4E8;
-  --bg-card: #FFFDF9;
-  --maroon-deep: #7B1113;
-  --maroon-rich: #8B1E1E;
-  --maroon-dark: #580B0D;
-  --gold-primary: #D4AF37;
-  --gold-metallic: #C5A059;
-  --gold-soft: #F4E8C1;
-  --gold-dark: #997A15;
-  --text-primary: #2B1B17;
-  --text-muted: #7A6455;
-  --font-serif-hero: 'Cinzel Decorative', 'Cinzel', serif;
-  --font-heading: 'Cinzel', serif;
-  --font-script: 'Great Vibes', cursive;
-  --font-body: 'Cormorant Garamond', serif;
-  --font-sans: 'Montserrat', sans-serif;
-  --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.2);
-  --shadow-card: 0 12px 36px rgba(123, 17, 19, 0.08);
+@import "tailwindcss";
+
+@theme {
+  --color-carbon-black: #08080A;
+  --color-charcoal-panel: #111115;
+  --color-racing-red: #E10600;
+  --color-pit-teal: #00D2BE;
+  --color-paddock-amber: #F5A623;
+  --color-off-white: #F5F5F7;
+  --color-signal-grey: #8A8A93;
+
+  --font-display: 'Chakra Petch', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-data: 'IBM Plex Mono', monospace;
 }
 
-* {
-  box-sizing: border-box;
+:root {
+  --color-carbon-black: #08080A;
+  --color-charcoal-panel: #111115;
+  --color-racing-red: #E10600;
+  --color-pit-teal: #00D2BE;
+  --color-paddock-amber: #F5A623;
+  --color-off-white: #F5F5F7;
+  --color-signal-grey: #8A8A93;
+
+  --font-display: 'Chakra Petch', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-data: 'IBM Plex Mono', monospace;
+}
+
+body {
+  background-color: #08080A;
+  color: #F5F5F7;
+  font-family: var(--font-body);
   margin: 0;
   padding: 0;
-}
-
-html, body {
-  width: 100%;
-  min-height: 100vh;
-  background-color: var(--bg-parchment);
-  color: var(--text-primary);
-  font-family: var(--font-body);
   overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
 }
 
-/* Custom Scrollbar */
+/* Authentic F1 Telemetry Technical Grid Lines */
+.telemetry-grid-bg {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.telemetry-dark-pattern {
+  background-color: #0d0d11;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* Typography Utility Classes */
+.font-display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.font-data {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* F1 LED Status Indicator Dots */
+.led-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+}
+.led-green {
+  background-color: #00D2BE;
+  box-shadow: 0 0 8px #00D2BE;
+}
+.led-red {
+  background-color: #E10600;
+  box-shadow: 0 0 8px #E10600;
+}
+.led-amber {
+  background-color: #F5A623;
+  box-shadow: 0 0 8px #F5A623;
+}
+
+/* Holographic Security Foil Seal for Paddock E-Pass */
+.holographic-seal {
+  background: linear-gradient(135deg, #00D2BE 0%, #E10600 45%, #F5A623 70%, #00D2BE 100%);
+  background-size: 200% 200%;
+  animation: holoShift 4s ease infinite;
+}
+
+@keyframes holoShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 3D Rotating F1 Asset Animation */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@keyframes spin3d {
+  0% {
+    transform: rotateY(0deg) rotateX(4deg) scale(1);
+  }
+  50% {
+    transform: rotateY(180deg) rotateX(-3deg) scale(1.05);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(4deg) scale(1);
+  }
+}
+
+.animate-spin-3d {
+  animation: spin3d 16s infinite linear;
+  transform-style: preserve-3d;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+/* Smooth Hero Section Zoom-In Entrance Effect */
+@keyframes heroZoomIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-hero-zoom {
+  animation: heroZoomIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* F1 Car Smooth Floating & Speed Pulse Effect */
+@keyframes carFloat {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.02);
+  }
+}
+
+.animate-car-float {
+  animation: carFloat 3.5s ease-in-out infinite;
+}
+
+/* Kinetic Text Shimmer Animation */
+@keyframes textShine {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-text-shine {
+  background-size: 200% auto;
+  animation: textShine 4s linear infinite;
+}
+
+
+
+
+
+/* Custom Sleek Scrollbar */
 ::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-parchment);
+  background: #08080A;
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--maroon-deep);
-  border-radius: 4px;
+  background: #22222a;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E10600;
 }
 
-/* Top Mango Leaf (Maavilai) Garland Navbar */
-.garland-container {
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  pointer-events: none;
-  overflow: hidden;
-  height: clamp(80px, 12vw, 125px);
-  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.garland-container.garland-hidden {
-  opacity: 0;
-  transform: translateY(-100%);
-}
-
-.mango-garland-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
-}
-
-.mango-garland-svg {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-/* Watermark Corners with Gentle Rotating Animation */
-.mandala-corner {
-  position: fixed;
-  width: min(320px, 42vw);
-  height: min(320px, 42vw);
-  background-image: url('/assets/mandala.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  opacity: 0.14;
-  pointer-events: none;
-  z-index: 1;
-  animation: gentleRotate 60s linear infinite;
-}
-.mandala-top-left { top: 0; left: 0; }
-.mandala-top-right { top: 0; right: 0; transform: scaleX(-1); }
-.mandala-bottom-left { bottom: 0; left: 0; transform: scaleY(-1); }
-.mandala-bottom-right { bottom: 0; right: 0; transform: scale(-1); }
-
-@keyframes gentleRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* COVER / LANDING SCREEN */
-.cover-screen {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  background-color: var(--bg-parchment);
-  padding: 2rem 1rem;
-}
-
-/* Luxury Pill Button with Pulse Glow & Shimmer */
-.open-invitation-btn, .pill-action-btn {
-  background: linear-gradient(135deg, var(--maroon-rich) 0%, var(--maroon-deep) 100%);
-  color: #FFFFFF;
-  font-family: var(--font-sans);
-  font-size: clamp(0.78rem, 1.8vw, 0.9rem);
-  font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: clamp(0.8rem, 2.2vw, 1rem) clamp(2.2rem, 4.5vw, 3.2rem);
-  border-radius: 9999px;
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  cursor: pointer;
-  box-shadow: 0 8px 24px rgba(123, 17, 19, 0.35);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  text-decoration: none;
-  animation: buttonPulse 3s infinite alternate;
-}
-
-@keyframes buttonPulse {
-  0% { box-shadow: 0 8px 24px rgba(123, 17, 19, 0.35); }
-  100% { box-shadow: 0 12px 32px rgba(123, 17, 19, 0.5), 0 0 20px rgba(212, 175, 55, 0.4); }
-}
-
-.open-invitation-btn:hover, .pill-action-btn:hover {
-  background: linear-gradient(135deg, var(--maroon-deep) 0%, var(--maroon-dark) 100%);
-  transform: translateY(-3px) scale(1.04);
-  box-shadow: 0 14px 35px rgba(123, 17, 19, 0.55), 0 0 25px rgba(212, 175, 55, 0.5);
-  border-color: var(--gold-primary);
-}
-
-.open-invitation-btn::after, .pill-action-btn::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(
-    60deg,
-    transparent 30%,
-    rgba(255, 255, 255, 0.3) 50%,
-    transparent 70%
+/* F1 Sector timing bar effect */
+.f1-sector-bar {
+  background: repeating-linear-gradient(
+    -45deg,
+    #E10600,
+    #E10600 8px,
+    #111115 8px,
+    #111115 16px
   );
-  transform: rotate(30deg);
-  animation: shimmer 3.5s infinite;
-}
-
-@keyframes shimmer {
-  0% { transform: translateX(-100%) rotate(30deg); }
-  100% { transform: translateX(100%) rotate(30deg); }
-}
-
-/* MAIN WEDDING PAGE WRAPPER */
-.main-invitation-wrapper {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-  pointer-events: none;
-}
-.main-invitation-wrapper.visible {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.wedding-page-container {
-  width: 100%;
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  background: var(--bg-parchment);
-  min-height: 100vh;
-  position: relative;
-  z-index: 10;
-}
-
-/* ========================================================
-   SECTION 1 EFFECT: HERO TEMPLE LANDSCAPE PARALLAX & GLOW
-   ======================================================== */
-.hero-temple-parallax-container {
-  position: relative;
-  width: 100%;
-  min-height: clamp(450px, 60vh, 580px);
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  padding: calc(clamp(80px, 12vw, 125px) + 1.5rem) 1.5rem 2.5rem 1.5rem;
-}
-
-.hero-temple-bg-layer {
-  position: absolute;
-  top: -15%;
-  left: 0;
-  right: 0;
-  bottom: -25%;
-  background-size: cover;
-  background-position: center 30%;
-  background-repeat: no-repeat;
-  will-change: transform;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hero-temple-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(250, 244, 232, 0) 0%,
-    rgba(250, 244, 232, 0.2) 45%,
-    rgba(250, 244, 232, 0.85) 85%,
-    rgba(250, 244, 232, 1) 100%
-  );
-  pointer-events: none;
-  z-index: 2;
-}
-
-.hero-title-container {
-  position: relative;
-  z-index: 5;
-  margin-top: 1rem;
-  will-change: transform, opacity;
-}
-
-.couple-hero-name {
-  font-family: var(--font-serif-hero);
-  font-size: clamp(3.2rem, 8vw, 5.5rem);
-  font-weight: 700;
-  color: var(--maroon-deep);
-  letter-spacing: 0.04em;
-  line-height: 1.1;
-  text-shadow: 2px 2px 6px rgba(255, 255, 255, 0.95), 0 0 15px rgba(244, 232, 193, 0.8);
-}
-
-.weds-hero-tag {
-  font-family: var(--font-script);
-  font-size: clamp(2.8rem, 6vw, 4.2rem);
-  color: var(--gold-dark);
-  margin: -0.2rem 0;
-  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.9);
-  animation: floatWeds 3s ease-in-out infinite alternate;
-}
-
-@keyframes floatWeds {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-5px) scale(1.03); }
-}
-
-/* ========================================================
-   SECTION 2 EFFECT: SHLOKA AURA & FLOATING WREATH ROTATION
-   ======================================================== */
-.shloka-parallax-container {
-  position: relative;
-  z-index: 10;
-  will-change: transform;
-}
-
-.shloka-container {
-  text-align: center;
-  padding: 3rem 1.5rem 1.5rem 1.5rem;
-  position: relative;
-  z-index: 5;
-}
-
-.mantra-icon {
-  width: 95px;
-  height: auto;
-  margin: 0 auto 1rem auto;
-  filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.3));
-  animation: mantraPulse 4s ease-in-out infinite alternate;
-}
-
-@keyframes mantraPulse {
-  0% { transform: scale(1); filter: drop-shadow(0 4px 8px rgba(212, 175, 55, 0.3)); }
-  100% { transform: scale(1.08); filter: drop-shadow(0 6px 16px rgba(212, 175, 55, 0.6)); }
-}
-
-.shloka-quote-text {
-  font-family: var(--font-body);
-  font-size: clamp(1.2rem, 2.6vw, 1.45rem);
-  font-style: italic;
-  font-weight: 500;
-  color: var(--text-muted);
-  max-width: 620px;
-  margin: 0 auto 2rem auto;
-  line-height: 1.6;
-}
-
-.section-title-script {
-  font-family: var(--font-script);
-  font-size: clamp(3rem, 6.5vw, 4.5rem);
-  color: var(--maroon-deep);
-  line-height: 1.1;
-}
-
-.section-title-serif {
-  font-family: var(--font-heading);
-  font-size: clamp(1.3rem, 3.2vw, 1.9rem);
-  font-weight: 700;
-  color: var(--maroon-deep);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.section-divider-line {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.8rem;
-  margin: 1rem auto 2.2rem auto;
-  max-width: 220px;
-}
-.section-divider-line::before,
-.section-divider-line::after {
-  content: '';
-  height: 1px;
-  flex: 1;
-  background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
-}
-.section-divider-line span {
-  color: var(--gold-dark);
-  font-size: 0.9rem;
-}
-
-.couple-wreaths-grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1.5rem, 5vw, 4rem);
-  flex-wrap: wrap;
-  padding: 1.5rem 1.5rem 3rem 1.5rem;
-}
-
-.wreath-card {
-  text-align: center;
-  max-width: 300px;
-  animation: floatWreath 5s ease-in-out infinite alternate;
-}
-
-.bride-wreath-parallax {
-  animation-delay: 2.5s;
-}
-
-@keyframes floatWreath {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-8px); }
-}
-
-.wreath-img-wrapper {
-  width: clamp(190px, 28vw, 240px);
-  height: clamp(190px, 28vw, 240px);
-  margin: 0 auto 1.2rem auto;
-  position: relative;
-  border-radius: 50%;
-  box-shadow: 0 12px 32px rgba(123, 17, 19, 0.15);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.wreath-img-wrapper:hover {
-  transform: scale(1.06) rotate(3deg);
-  box-shadow: 0 18px 42px rgba(123, 17, 19, 0.28), 0 0 25px rgba(212, 175, 55, 0.4);
-}
-
-.wreath-img-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-  display: block;
-}
-
-.person-name {
-  font-family: var(--font-heading);
-  font-size: clamp(1.35rem, 3vw, 1.7rem);
-  font-weight: 700;
-  color: var(--maroon-deep);
-  letter-spacing: 0.02em;
-}
-
-.person-parents {
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: clamp(1.1rem, 2.2vw, 1.25rem);
-  color: var(--text-muted);
-  margin-top: 0.4rem;
-  line-height: 1.4;
-}
-
-.weds-center-symbol {
-  font-family: var(--font-script);
-  font-size: clamp(3.2rem, 6.5vw, 4.8rem);
-  color: var(--gold-dark);
-  margin: 0 0.5rem;
-}
-
-/* ========================================================
-   SECTION 3 EFFECT: ROYAL ELEPHANT BANNER SWAY
-   ======================================================== */
-.elephant-banner-section {
-  text-align: center;
-  padding: 3.5rem 2rem;
-  background: rgba(250, 244, 232, 0.6);
-  border-top: 1px dashed rgba(212, 175, 55, 0.4);
-  border-bottom: 1px dashed rgba(212, 175, 55, 0.4);
-  margin: 2.5rem 0;
-  position: relative;
-  overflow: hidden;
-}
-
-.elephants-img {
-  max-width: min(320px, 75vw);
-  height: auto;
-  margin: 0 auto 1.5rem auto;
-  display: block;
-  transition: transform 0.5s ease;
-  animation: elephantSway 6s ease-in-out infinite alternate;
-}
-
-@keyframes elephantSway {
-  0% { transform: translateY(0) scale(1); }
-  100% { transform: translateY(-6px) scale(1.03); }
-}
-
-.invitation-body-text {
-  font-family: var(--font-body);
-  font-size: clamp(1.25rem, 2.8vw, 1.5rem);
-  line-height: 1.7;
-  color: var(--text-primary);
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-/* ========================================================
-   SECTION 4 EFFECT: WEDDING EVENTS STAGGERED LIFT & GOLD SHIMMER
-   ======================================================== */
-.events-section {
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-}
-
-.events-grid-2col {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.8rem;
-  margin-top: 2rem;
-  text-align: left;
-}
-
-.mini-event-card {
-  background: var(--bg-card);
-  border: 1.5px solid rgba(212, 175, 55, 0.4);
-  border-radius: 16px;
-  padding: 2rem 1.6rem;
-  box-shadow: var(--shadow-card);
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.mini-event-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: var(--gold-primary);
-  box-shadow: 0 20px 45px rgba(123, 17, 19, 0.15), 0 0 25px rgba(212, 175, 55, 0.3);
-}
-
-.mini-event-name {
-  font-family: var(--font-heading);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--maroon-deep);
-  margin-bottom: 0.6rem;
-}
-
-.mini-event-date {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: var(--gold-dark);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.4rem;
-}
-
-.mini-event-time {
-  font-family: var(--font-body);
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-
-.mini-event-venue {
-  font-family: var(--font-body);
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-bottom: 1.2rem;
-  line-height: 1.4;
-}
-
-.directions-link {
-  color: var(--maroon-deep);
-  font-family: var(--font-sans);
-  font-size: 0.82rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  text-decoration: none;
-  cursor: pointer;
-  margin-top: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  transition: all 0.25s ease;
-}
-
-.directions-link:hover {
-  color: var(--maroon-dark);
-  text-decoration: underline;
-  transform: translateX(6px);
-}
-
-/* ========================================================
-   SECTION 5 EFFECT: COUNTDOWN TIMER PULSING NUMERIC GLOW
-   ======================================================== */
-.countdown-section {
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-  background: rgba(244, 232, 193, 0.35);
-  margin: 3rem 0;
-  border-top: 1px solid rgba(212, 175, 55, 0.3);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-}
-
-.timer-row {
-  display: flex;
-  justify-content: center;
-  gap: 1.2rem;
-  margin-top: 2rem;
-}
-
-.timer-pill {
-  background: var(--bg-card);
-  border: 1.5px solid var(--gold-primary);
-  border-radius: 14px;
-  padding: 1rem 1.4rem;
-  min-width: 90px;
-  box-shadow: 0 6px 16px rgba(123, 17, 19, 0.06);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: countdownGlow 4s infinite alternate ease-in-out;
-}
-
-@keyframes countdownGlow {
-  0% { border-color: rgba(212, 175, 55, 0.4); box-shadow: 0 6px 16px rgba(123, 17, 19, 0.06); }
-  100% { border-color: var(--gold-primary); box-shadow: 0 10px 24px rgba(123, 17, 19, 0.15), 0 0 18px rgba(212, 175, 55, 0.35); }
-}
-
-.timer-pill:hover {
-  transform: translateY(-5px) scale(1.05);
-}
-
-.timer-val {
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--maroon-deep);
-  line-height: 1;
-}
-
-.timer-tag {
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-top: 0.4rem;
-}
-
-/* ========================================================
-   SECTION 6 EFFECT: PHOTO GALLERY TILT & SPARKLE FRAME
-   ======================================================== */
-.gallery-section {
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-}
-
-.gallery-masonry-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-  margin-top: 2rem;
-}
-
-.gallery-item {
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  border: 3.5px solid #FFFFFF;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-}
-
-.gallery-item:hover {
-  transform: scale(1.05) rotate(1deg);
-  border-color: var(--gold-primary);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), 0 0 20px rgba(212, 175, 55, 0.3);
-}
-
-.gallery-item img {
-  width: 100%;
-  height: 240px;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.6s ease;
-}
-
-.gallery-item:hover img {
-  transform: scale(1.06);
-}
-
-.gallery-item.large-item {
-  grid-column: span 2;
-}
-
-/* ========================================================
-   SECTION 7 EFFECT: CINEMATIC PLAY RIPPLE FOR VIDEO TEASER
-   ======================================================== */
-.video-section {
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-}
-
-.video-card-container {
-  max-width: 680px;
-  margin: 2rem auto 0 auto;
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.18);
-  border: 3px solid var(--gold-primary);
-  cursor: pointer;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.video-card-container:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.25), 0 0 30px rgba(212, 175, 55, 0.4);
-}
-
-.video-card-container img {
-  width: 100%;
-  height: 350px;
-  object-fit: cover;
-  display: block;
-}
-
-.video-play-overlay {
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(43, 27, 23, 0.45);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #FFF;
-  transition: background 0.3s ease;
-}
-
-.play-btn-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: var(--maroon-deep);
-  color: #FFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
-  transition: transform 0.3s ease;
-  animation: playRipple 2.5s infinite;
-}
-
-@keyframes playRipple {
-  0% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-  70% { box-shadow: 0 0 0 20px rgba(212, 175, 55, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
-}
-
-.video-card-container:hover .play-btn-circle {
-  transform: scale(1.15);
-}
-
-/* ========================================================
-   SECTION 8 & 9 EFFECT: VENUE & RSVP GOLD CARDS
-   ======================================================== */
-.action-box-section {
-  padding: 3.5rem 1.5rem;
-  text-align: center;
-}
-
-/* ========================================================
-   SECTION 10 EFFECT: BOTTOM TEMPLE GOPURAM FOOTER SWAY
-   ======================================================== */
-.bottom-temple-footer {
-  width: 100%;
-  position: relative;
-  background: var(--bg-parchment);
-  text-align: center;
-  padding-top: 4rem;
-  margin-top: 2rem;
-}
-
-.footer-gopuram-banner {
-  width: 100%;
-  height: clamp(160px, 24vw, 260px);
-  background-image: url('/assets/temple_bottom.png');
-  background-size: cover;
-  background-position: center bottom;
-  background-repeat: no-repeat;
-  margin-top: 3rem;
-  animation: footerSway 8s ease-in-out infinite alternate;
-}
-
-@keyframes footerSway {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-4px); }
-}
-
-/* STICKY FLOATING CONTROLS */
-.music-toggle-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: var(--maroon-deep);
-  color: var(--gold-soft);
-  border: 2px solid var(--gold-primary);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  z-index: 100;
-  transition: transform 0.3s ease;
-}
-.music-toggle-btn:hover {
-  transform: scale(1.1);
-}
-
-.close-invitation-floating-btn {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  background: rgba(250, 244, 232, 0.95);
-  color: var(--maroon-deep);
-  border: 1.5px solid var(--gold-primary);
-  padding: 0.6rem 1.2rem;
-  border-radius: 999px;
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: 700;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  z-index: 100;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-/* RESPONSIVE BREAKPOINTS */
-@media (max-width: 680px) {
-  .events-grid-2col {
-    grid-template-columns: 1fr;
-  }
-  .gallery-masonry-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .gallery-item.large-item {
-    grid-column: span 2;
-  }
-  .timer-row {
-    gap: 0.6rem;
-  }
-  .timer-pill {
-    min-width: 70px;
-    padding: 0.7rem 0.8rem;
-  }
-  .timer-val {
-    font-size: 1.5rem;
-  }
 }
