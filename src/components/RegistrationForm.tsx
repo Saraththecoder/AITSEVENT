@@ -63,12 +63,21 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     agreedTerms: false
   });
 
+  const isSoloEvent = formData.category === 'PIT STRATEGY CHALLENGE (Prompt Engineering)' || formData.category === 'TELEMETRY TEST (Typing Competition)';
+
+  useEffect(() => {
+    if (isSoloEvent) {
+      if (teamSizeCount !== 1) setTeamSizeCount(1);
+    } else {
+      if (teamSizeCount === 1) setTeamSizeCount(2);
+    }
+  }, [formData.category, isSoloEvent]);
+
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const isNameValid = validateFullName(formData.fullName);
   const isEmailValid = validateEmail(formData.email);
   const isPhoneValid = validatePhone(formData.phone);
-  const isOrgValid = validateFullName(formData.organization);
   const isUtrValid = validateUtr(formData.utrNumber);
 
   // Additional Drivers Validation based on Team Size (2 to 4 Limit)
@@ -80,17 +89,16 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     isNameValid,
     isEmailValid,
     isPhoneValid,
-    isOrgValid,
     isDriver2Valid,
     isUtrValid,
     formData.agreedTerms
   ].filter(Boolean).length;
 
-  const progressPercent = Math.round((validFieldsCount / 7) * 100);
+  const progressPercent = Math.round((validFieldsCount / 6) * 100);
 
   // Live Tachometer RPM and Speed calculations
-  const rpmValue = Math.min(15000, Math.round((validFieldsCount / 7) * 15000));
-  const currentSpeed = Math.round((validFieldsCount / 7) * 352.4);
+  const rpmValue = Math.min(15000, Math.round((validFieldsCount / 6) * 15000));
+  const currentSpeed = Math.round((validFieldsCount / 6) * 352.4);
   const baseFeePerDriver = 
     formData.championship === 'ENGINEERING CHAMPIONSHIP' ? 80 :
     formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? 150 :
@@ -106,7 +114,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     setTimeout(() => setCopiedUpi(false), 2000);
   };
 
-  const isFormComplete = isNameValid && isEmailValid && isPhoneValid && isOrgValid && isDriver2Valid && isDriver3Valid && isDriver4Valid && isUtrValid && formData.agreedTerms;
+  const isFormComplete = isNameValid && isEmailValid && isPhoneValid && isDriver2Valid && isDriver3Valid && isDriver4Valid && isUtrValid && formData.agreedTerms;
 
   const handleChampionshipChange = (champ: ChampionshipType) => {
     if (champ === 'ENGINEERING CHAMPIONSHIP') {
@@ -436,39 +444,51 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
           
           <form onSubmit={handleSubmit} className="space-y-5 font-data text-xs">
             
-            {/* TEAM SIZE SELECTOR (2 TO 4 DRIVERS LIMIT) */}
-            <div className="space-y-3 bg-[#14141a] p-5 border-2 border-[#00D2BE] rounded-2xl shadow-[0_0_20px_rgba(0,210,190,0.2)]">
+            {/* TEAM SIZE ROSTER SELECTOR */}
+            <div className="space-y-3 bg-[#14141a] p-4 sm:p-5 border-2 border-[#00D2BE] rounded-2xl shadow-[0_0_20px_rgba(0,210,190,0.2)]">
               <div className="flex items-center justify-between">
                 <label className="font-display text-xs text-[#00D2BE] font-bold tracking-wider flex items-center space-x-2">
                   <Users className="w-4 h-4 text-[#00D2BE]" />
-                  <span>SELECT TEAM DRIVERS COUNT (2 TO 4 LIMIT) *</span>
+                  <span>{isSoloEvent ? 'INDIVIDUAL DRIVER ROSTER *' : 'SELECT TEAM DRIVERS COUNT (2 TO 4 LIMIT) *'}</span>
                 </label>
                 <span className="text-[10px] font-mono bg-[#00D2BE]/20 text-[#00D2BE] px-2 py-0.5 rounded font-bold">
-                  2–4 DRIVERS
+                  {isSoloEvent ? '1 SOLO DRIVER' : '2–4 DRIVERS'}
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
-                {[
-                  { count: 2, label: '2 DRIVERS TEAM', sub: 'Driver 1 & Driver 2' },
-                  { count: 3, label: '3 DRIVERS TEAM', sub: 'Driver 1, 2 & 3' },
-                  { count: 4, label: '4 DRIVERS SQUAD', sub: 'Full 4-Driver Roster' }
-                ].map((t) => (
-                  <button
-                    key={t.count}
-                    type="button"
-                    onClick={() => setTeamSizeCount(t.count)}
-                    className={`py-3 px-2 border-2 text-center rounded-xl transition-all ${
-                      teamSizeCount === t.count
-                        ? 'bg-[#08080A] border-[#00D2BE] text-white shadow-[0_0_15px_rgba(0,210,190,0.4)] scale-105 font-bold'
-                        : 'bg-[#08080A]/60 border-[#22222a] text-[#8A8A93] hover:border-white'
-                    }`}
-                  >
-                    <span className="block text-xs font-display">{t.label}</span>
-                    <span className="block text-[9px] font-mono text-[#00D2BE] mt-0.5">{t.sub}</span>
-                  </button>
-                ))}
-              </div>
+              {isSoloEvent ? (
+                <div className="bg-[#08080A] p-3.5 border-2 border-[#00D2BE] rounded-xl flex items-center justify-between font-mono text-xs text-white">
+                  <div className="flex items-center space-x-2">
+                    <User className="w-4 h-4 text-[#00D2BE]" />
+                    <span>INDIVIDUAL DRIVER ENTRY (1 Driver Solo)</span>
+                  </div>
+                  <span className="text-[10px] bg-[#00D2BE] text-[#08080A] font-bold px-2.5 py-1 rounded">
+                    SOLO ENTRY ONLY
+                  </span>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
+                  {[
+                    { count: 2, label: '2 DRIVERS TEAM', sub: 'Driver 1 & Driver 2' },
+                    { count: 3, label: '3 DRIVERS TEAM', sub: 'Driver 1, 2 & 3' },
+                    { count: 4, label: '4 DRIVERS SQUAD', sub: 'Full 4-Driver Roster' }
+                  ].map((t) => (
+                    <button
+                      key={t.count}
+                      type="button"
+                      onClick={() => setTeamSizeCount(t.count)}
+                      className={`py-3 px-2 border-2 text-center rounded-xl transition-all ${
+                        teamSizeCount === t.count
+                          ? 'bg-[#08080A] border-[#00D2BE] text-white shadow-[0_0_15px_rgba(0,210,190,0.4)] scale-105 font-bold'
+                          : 'bg-[#08080A]/60 border-[#22222a] text-[#8A8A93] hover:border-white'
+                      }`}
+                    >
+                      <span className="block text-xs font-display">{t.label}</span>
+                      <span className="block text-[9px] font-mono text-[#00D2BE] mt-0.5">{t.sub}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* TEAM NAME */}
@@ -869,9 +889,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 ) : formData.championship === 'ENGINEERING CHAMPIONSHIP' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {[
-                      { name: 'POLE POSITION CHALLENGE (Coding)', short: '1. Coding Challenge', icon: '💻' },
-                      { name: 'PIT STRATEGY CHALLENGE (Prompt Engineering)', short: '2. Prompt Engineering', icon: '🧠' },
-                      { name: 'CONSTRUCTORS GARAGE (Hackathon)', short: '3. Hackathon Prototype', icon: '🛠️' }
+                      { name: 'POLE POSITION CHALLENGE (Coding)', short: '1. POLE POSITION CHALLENGE (Coding Competition)', icon: '💻' },
+                      { name: 'PIT STRATEGY CHALLENGE (Prompt Engineering)', short: '2. PIT STRATEGY CHALLENGE (Prompt Engineering)', icon: '🧠' },
+                      { name: 'CONSTRUCTORS GARAGE (Hackathon)', short: '3. CONSTRUCTORS GARAGE (Hackathon Prototype)', icon: '🛠️' }
                     ].map(ev => (
                       <button
                         key={ev.name}
@@ -894,11 +914,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 ) : (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {[
-                      { name: 'RADIO COMMUNICATION (Dumb Charades)', short: '1. Dumb Charades', icon: '📻' },
-                      { name: 'LIGHTS OUT! (Guess Movie in 1 Sec)', short: '2. Lights Out Movie', icon: '🎬' },
-                      { name: 'PIT STOP CHALLENGE (Minute to Win It)', short: '3. Pit Stop Task', icon: '⏱️' },
-                      { name: 'TYRE CHANGE CHALLENGE (Bottle Challenge)', short: '4. Tyre Bottle Task', icon: '🍾' },
-                      { name: 'TELEMETRY TEST (Typing Competition)', short: '5. Telemetry Typing', icon: '⌨️' }
+                      { name: 'RADIO COMMUNICATION (Dumb Charades)', short: '1. Radio Communication (Charades)', icon: '📻' },
+                      { name: 'LIGHTS OUT! (Guess Movie in 1 Sec)', short: '2. Lights Out! (Movie Guess)', icon: '🎬' },
+                      { name: 'PIT STOP CHALLENGE (Minute to Win It)', short: '3. Pit Stop Challenge (Minute to Win)', icon: '⏱️' },
+                      { name: 'TYRE CHANGE CHALLENGE (Bottle Challenge)', short: '4. Tyre Change (Bottle Challenge)', icon: '🍾' },
+                      { name: 'TELEMETRY TEST (Typing Competition)', short: '5. Telemetry Test (Typing Test)', icon: '⌨️' }
                     ].map(ev => (
                       <button
                         key={ev.name}
