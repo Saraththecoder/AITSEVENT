@@ -14,9 +14,11 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { EmailTemplates } from './components/EmailTemplates';
 import { F1AudioPlayer } from './components/F1AudioPlayer';
 import { EventsPage } from './components/EventsPage';
+import { SplashScreen } from './components/SplashScreen';
 import { submitRegistrationToGoogleSheet } from './services/apiService';
 
 export const App: React.FC = () => {
+  const [showSplash, setShowSplash] = useState<boolean>(true);
   const [registrations, setRegistrations] = useState<DriverRegistration[]>(() => {
     const saved = localStorage.getItem('formula_ai_registrations_2026');
     if (saved) {
@@ -124,6 +126,9 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#08080A] text-[#F5F5F7] font-body flex flex-col selection:bg-[#E10600] selection:text-white w-full max-w-full overflow-x-hidden">
+      {showSplash && (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      )}
       
       {/* Main Public Navbar (Hides Admin references unless authenticated) */}
       <Navbar

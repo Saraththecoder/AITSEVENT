@@ -48,9 +48,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
             className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group flex-shrink"
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#14141a] border-2 border-[#E10600] group-hover:border-[#00D2BE] flex items-center justify-center font-display font-black text-xs sm:text-lg text-[#E10600] group-hover:text-[#00D2BE] transition-all shadow-[0_0_15px_rgba(225,6,0,0.4)] rounded-xl flex-shrink-0">
-              F1
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="FORMULA-AI 2026 Logo" 
+              className="h-8 sm:h-11 w-auto max-w-[140px] sm:max-w-[200px] object-contain drop-shadow-[0_0_15px_rgba(225,6,0,0.7)] group-hover:scale-105 transition-all flex-shrink-0" 
+            />
             <div className="min-w-0">
               <div className="font-display text-xs sm:text-base font-black tracking-wider text-white flex items-center space-x-1 sm:space-x-2">
                 <span className="truncate">FORMULA-AI</span>

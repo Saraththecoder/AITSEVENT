@@ -104,9 +104,12 @@ export const EPass: React.FC<EPassProps> = ({ registration, onGoToVerification }
 
           {/* Top Brand & Holographic Security Foil Badge */}
           <div className="pl-3 border-b border-[#22222a] pb-3 flex items-center justify-between relative z-20">
-            <div>
-              <div className="font-display text-base font-extrabold tracking-wider text-white">FORMULA AI 2026</div>
-              <div className="text-[9px] font-data text-[#8A8A93] tracking-widest uppercase">OFFICIAL DRIVER PADDOCK PASS</div>
+            <div className="flex items-center space-x-2">
+              <img src="/logo.png" alt="Formula AI Logo" className="h-9 w-auto max-w-[140px] object-contain drop-shadow-[0_0_10px_rgba(225,6,0,0.6)]" />
+              <div>
+                <div className="font-display text-base font-extrabold tracking-wider text-white">FORMULA AI 2026</div>
+                <div className="text-[9px] font-data text-[#8A8A93] tracking-widest uppercase">OFFICIAL DRIVER PADDOCK PASS</div>
+              </div>
             </div>
 
             {/* Metallic Holographic Foil Seal */}
