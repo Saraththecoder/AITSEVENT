@@ -17,6 +17,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const scrollToEvents = () => {
+    setMobileMenuOpen(false);
+    if (currentView !== 'LANDING') {
+      setCurrentView('LANDING');
+      setTimeout(() => {
+        const el = document.getElementById('events');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    } else {
+      const el = document.getElementById('events');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <nav className="sticky top-0 z-50 w-full font-data">
       
@@ -66,16 +80,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>HOME</span>
             </button>
 
-            <a
-              href="#events"
-              onClick={() => {
-                if (currentView !== 'LANDING') setCurrentView('LANDING');
-              }}
-              className="px-4 py-2 text-[#8A8A93] hover:text-white hover:bg-[#1f1f28] transition-all flex items-center space-x-1.5 font-bold rounded-xl text-xs uppercase"
+            <button
+              onClick={scrollToEvents}
+              className="px-4 py-2 text-[#8A8A93] hover:text-white hover:bg-[#1f1f28] transition-all flex items-center space-x-1.5 font-bold rounded-xl text-xs uppercase cursor-pointer"
             >
               <Trophy className="w-3.5 h-3.5 text-[#F5A623]" />
               <span>8 COMPETITIONS</span>
-            </a>
+            </button>
 
             <button
               onClick={() => setCurrentView('STATUS_PAGE')}
@@ -153,6 +164,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Flag className="w-4 h-4" />
             <span>HOME</span>
+          </button>
+
+          <button
+            onClick={scrollToEvents}
+            className="w-full p-3 text-left font-bold flex items-center space-x-3 rounded-xl text-[#F5A623] bg-[#14141a] hover:bg-[#1f1f28]"
+          >
+            <Trophy className="w-4 h-4 text-[#F5A623]" />
+            <span>8 COMPETITIONS &amp; RULES</span>
           </button>
 
           <button
