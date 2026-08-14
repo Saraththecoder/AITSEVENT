@@ -53,6 +53,11 @@ export const App: React.FC = () => {
     sessionStorage.setItem('formula_ai_admin_auth', isAdminAuthenticated ? 'true' : 'false');
   }, [isAdminAuthenticated]);
 
+  // Always scroll to top of page whenever switching views (e.g. going to Registration Form)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [currentView]);
+
   // Real-time synchronization with Google Apps Script
   const handleSyncRealtimeData = async () => {
     setIsRefreshingData(true);
@@ -151,11 +156,13 @@ export const App: React.FC = () => {
     setPreSelectedChampionship(championship);
     setPreSelectedCategory(category);
     setCurrentView('REGISTRATION_FORM');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   const handleAdminLogout = () => {
     setIsAdminAuthenticated(false);
     setCurrentView('LANDING');
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   const handleViewChange = (view: AppView) => {
@@ -164,6 +171,7 @@ export const App: React.FC = () => {
     } else {
       setCurrentView(view);
     }
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   };
 
   return (
