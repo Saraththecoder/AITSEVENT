@@ -206,6 +206,59 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
   }, [isCameraActive]);
 
+  // Live Frame Auto Barcode/QR Scanner Engine
+  useEffect(() => {
+    let animationFrameId: number;
+    let isCancelled = false;
+
+    const detectBarcodeFrame = async () => {
+      if (!isCameraActive || !videoRef.current || isCancelled) return;
+
+      const video = videoRef.current;
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        if ('BarcodeDetector' in window) {
+          try {
+            const barcodeDetector = new (window as any).BarcodeDetector({
+              formats: ['qr_code', 'code_128', 'code_39', 'ean_13', 'pdf417']
+            });
+            const barcodes = await barcodeDetector.detect(video);
+            if (barcodes && barcodes.length > 0) {
+              const detectedValue = barcodes[0].rawValue;
+              if (detectedValue && detectedValue.trim()) {
+                setQrScanInput(detectedValue);
+                const cleaned = detectedValue.trim().toLowerCase();
+                const found = registrations.find(
+                  r => r.id.toLowerCase() === cleaned ||
+                       cleaned.includes(r.id.toLowerCase()) ||
+                       r.email.toLowerCase() === cleaned ||
+                       (r.utrNumber && r.utrNumber.toLowerCase() === cleaned)
+                );
+                setScannedRegistration(found || null);
+                setHasScanned(true);
+                if (navigator.vibrate) navigator.vibrate(150);
+              }
+            }
+          } catch (e) {
+            // Native detector fallback
+          }
+        }
+      }
+
+      if (!isCancelled) {
+        animationFrameId = requestAnimationFrame(detectBarcodeFrame);
+      }
+    };
+
+    if (isCameraActive) {
+      animationFrameId = requestAnimationFrame(detectBarcodeFrame);
+    }
+
+    return () => {
+      isCancelled = true;
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    };
+  }, [isCameraActive, registrations]);
+
   useEffect(() => {
     return () => {
       stopCamera();
@@ -233,35 +286,35 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6 font-data text-xs">
+    <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-4 sm:space-y-6 font-data text-xs">
       
       {/* Top Console Title Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#111115] p-5 border border-[#22222a] shadow-xl rounded-2xl">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-[#111115] p-4 sm:p-5 border border-[#22222a] shadow-xl rounded-2xl">
         <div className="space-y-1">
           <div className="flex items-center space-x-2 text-[#E10600] text-xs font-mono font-bold">
             <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
             <span>FIA RACE CONTROL OPERATIONAL CONSOLE</span>
           </div>
-          <h2 className="font-display text-2xl sm:text-3xl font-bold text-white uppercase tracking-wider">
+          <h2 className="font-display text-xl sm:text-3xl font-bold text-white uppercase tracking-wider">
             RACE CONTROL DASHBOARD
           </h2>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center flex-wrap sm:flex-nowrap gap-2 w-full md:w-auto">
           {onRefreshData && (
             <button
               onClick={onRefreshData}
               disabled={isRefreshing}
-              className="px-3.5 py-2.5 bg-[#14141a] hover:bg-[#1f1f28] border border-[#00D2BE]/50 text-[#00D2BE] font-mono text-xs font-bold flex items-center space-x-2 transition-all rounded-xl shadow-lg cursor-pointer"
+              className="flex-1 sm:flex-initial px-3.5 py-2.5 bg-[#14141a] hover:bg-[#1f1f28] border border-[#00D2BE]/50 text-[#00D2BE] font-mono text-xs font-bold flex items-center justify-center space-x-2 transition-all rounded-xl shadow-lg cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 text-[#00D2BE] ${isRefreshing ? 'animate-spin' : ''}`} />
-              <span>{isRefreshing ? 'SYNCING REAL-TIME...' : 'REFRESH LIVE DATA'}</span>
+              <span>{isRefreshing ? 'SYNCING...' : 'REFRESH LIVE DATA'}</span>
             </button>
           )}
 
           <button
             onClick={() => setActiveSection('SCANNER')}
-            className="px-4 py-2.5 bg-[#00D2BE] hover:bg-[#00b5a3] text-[#08080A] font-display text-xs font-bold flex items-center space-x-2 shadow-lg transition-all rounded-xl"
+            className="flex-1 sm:flex-initial px-4 py-2.5 bg-[#00D2BE] hover:bg-[#00b5a3] text-[#08080A] font-display text-xs font-bold flex items-center justify-center space-x-2 shadow-lg transition-all rounded-xl cursor-pointer"
           >
             <ShieldCheck className="w-4 h-4" />
             <span>🔍 SCAN DRIVER QR PASS</span>
@@ -269,79 +322,79 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
         </div>
       </div>
 
-      {/* Main Administrative Section Navigation Bar */}
-      <div className="flex items-center flex-wrap gap-1 bg-[#111115] p-1 border border-[#22222a] text-xs">
+      {/* Main Administrative Section Navigation Bar (Touch Swipable on Mobile) */}
+      <div className="flex items-center overflow-x-auto whitespace-nowrap scrollbar-none p-1.5 rounded-2xl bg-[#111115] border border-[#22222a] text-xs gap-1.5 w-full">
         <button
           onClick={() => setActiveSection('OVERVIEW')}
-          className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+          className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
             activeSection === 'OVERVIEW'
-              ? 'bg-[#E10600] text-white'
+              ? 'bg-[#E10600] text-white shadow-lg'
               : 'text-[#8A8A93] hover:text-white hover:bg-[#08080A]'
           }`}
         >
           <Activity className="w-4 h-4" />
-          <span>SECTION 01: OVERVIEW &amp; METRICS</span>
+          <span>OVERVIEW &amp; METRICS</span>
         </button>
 
         <button
           onClick={() => setActiveSection('SCANNER')}
-          className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+          className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
             activeSection === 'SCANNER'
-              ? 'bg-[#00D2BE] text-[#08080A]'
+              ? 'bg-[#00D2BE] text-[#08080A] shadow-lg'
               : 'text-[#00D2BE] hover:text-white hover:bg-[#08080A]'
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
-          <span>SECTION 05: SCAN E-PASS QR &amp; VERIFY ENTRY</span>
+          <span>🔍 E-PASS QR SCANNER</span>
         </button>
 
         <button
           onClick={() => setActiveSection('UTR_QUEUE')}
-          className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+          className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
             activeSection === 'UTR_QUEUE'
-              ? 'bg-[#E10600] text-white'
+              ? 'bg-[#E10600] text-white shadow-lg'
               : 'text-[#F5A623] hover:text-white hover:bg-[#08080A]'
           }`}
         >
           <CreditCard className="w-4 h-4" />
-          <span>SECTION 02: UTR VERIFICATION QUEUE [{pendingUtrList.length}]</span>
+          <span>UTR QUEUE [{pendingUtrList.length}]</span>
         </button>
 
         <button
           onClick={() => setActiveSection('APPROVAL_QUEUE')}
-          className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+          className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
             activeSection === 'APPROVAL_QUEUE'
-              ? 'bg-[#E10600] text-white'
+              ? 'bg-[#E10600] text-white shadow-lg'
               : 'text-[#00D2BE] hover:text-white hover:bg-[#08080A]'
           }`}
         >
           <ShieldCheck className="w-4 h-4" />
-          <span>SECTION 03: DRIVER APPROVAL QUEUE [{readyForApprovalList.length}]</span>
+          <span>APPROVAL QUEUE [{readyForApprovalList.length}]</span>
         </button>
 
         <button
           onClick={() => setActiveSection('MASTER_LEDGER')}
-          className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+          className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
             activeSection === 'MASTER_LEDGER'
-              ? 'bg-[#E10600] text-white'
+              ? 'bg-[#E10600] text-white shadow-lg'
               : 'text-[#8A8A93] hover:text-white hover:bg-[#08080A]'
           }`}
         >
           <Users className="w-4 h-4" />
-          <span>SECTION 04: MASTER LEDGER [{registrations.length}]</span>
+          <span>MASTER LEDGER [{registrations.length}]</span>
         </button>
 
         {emailFailedList.length > 0 && (
           <button
             onClick={() => setActiveSection('EMAIL_QUEUE')}
-            className={`px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all ${
+            className={`px-3.5 sm:px-4 py-2 font-display font-bold flex items-center space-x-1.5 transition-all rounded-xl flex-shrink-0 cursor-pointer ${
               activeSection === 'EMAIL_QUEUE'
-                ? 'bg-[#E10600] text-white'
+                ? 'bg-[#E10600] text-white shadow-lg'
                 : 'text-[#E10600] hover:bg-[#E10600]/10'
             }`}
           >
             <AlertTriangle className="w-4 h-4" />
-            <span>SECTION 05: FAILED EMAIL RETRY [{emailFailedList.length}]</span>
+            <span>FAILED EMAILS [{emailFailedList.length}]</span>
           </button>
         )}
       </div>
@@ -637,8 +690,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <span className="bg-[#F5A623] text-black font-bold px-2 py-1">{pendingUtrList.length} PENDING</span>
           </div>
 
-          <div className="bg-[#111115] border border-[#22222a] overflow-hidden">
-            <table className="w-full text-left border-collapse">
+          <div className="bg-[#111115] border border-[#22222a] rounded-2xl overflow-hidden shadow-xl w-full overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
                 <tr className="bg-[#08080A] text-[#8A8A93] uppercase font-display border-b border-[#22222a] text-[10px]">
                   <th className="py-3 px-4">ENTRY ID</th>
@@ -664,13 +717,13 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="py-3.5 px-4 text-right space-x-2">
                         <button
                           onClick={() => setSelectedForPaymentVerify(reg)}
-                          className="px-3 py-1 bg-[#00D2BE] text-[#08080A] font-bold"
+                          className="px-3 py-1 bg-[#00D2BE] text-[#08080A] font-bold rounded-lg"
                         >
                           VERIFY UTR
                         </button>
                         <button
                           onClick={() => setSelectedForRejection(reg)}
-                          className="px-2 py-1 border border-[#E10600] text-[#E10600]"
+                          className="px-2 py-1 border border-[#E10600] text-[#E10600] rounded-lg"
                         >
                           REJECT
                         </button>
@@ -687,16 +740,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* SECTION 3: DRIVER APPROVAL QUEUE */}
       {activeSection === 'APPROVAL_QUEUE' && (
         <div className="space-y-4">
-          <div className="bg-[#111115] border border-[#00D2BE]/40 p-4 flex items-center justify-between text-xs">
+          <div className="bg-[#111115] border border-[#00D2BE]/40 p-4 flex items-center justify-between text-xs rounded-2xl">
             <div>
               <h3 className="font-display font-bold text-white text-sm">FINAL DRIVER APPROVAL &amp; E-PASS ISSUANCE QUEUE</h3>
               <p className="text-[#8A8A93]">Entries with verified payment ready for Driver Number assignment.</p>
             </div>
-            <span className="bg-[#00D2BE] text-black font-bold px-2 py-1">{readyForApprovalList.length} READY</span>
+            <span className="bg-[#00D2BE] text-black font-bold px-2.5 py-1 rounded-lg">{readyForApprovalList.length} READY</span>
           </div>
 
-          <div className="bg-[#111115] border border-[#22222a] overflow-hidden">
-            <table className="w-full text-left border-collapse">
+          <div className="bg-[#111115] border border-[#22222a] rounded-2xl overflow-hidden shadow-xl w-full overflow-x-auto">
+            <table className="w-full text-left border-collapse min-w-[650px]">
               <thead>
                 <tr className="bg-[#08080A] text-[#8A8A93] uppercase font-display border-b border-[#22222a] text-[10px]">
                   <th className="py-3 px-4">ENTRY ID</th>
@@ -722,7 +775,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <td className="py-3.5 px-4 text-right">
                         <button
                           onClick={() => setSelectedForApproval(reg)}
-                          className="px-4 py-1.5 bg-[#E10600] text-white font-display font-bold shadow-md"
+                          className="px-4 py-1.5 bg-[#E10600] text-white font-display font-bold rounded-lg shadow-md"
                         >
                           APPROVE &amp; ISSUE E-PASS
                         </button>
@@ -739,7 +792,7 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
       {/* SECTION 4: MASTER LEDGER */}
       {activeSection === 'MASTER_LEDGER' && (
         <div className="space-y-4">
-          <div className="bg-[#111115] border border-[#22222a] p-3 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="bg-[#111115] border border-[#22222a] p-3 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 rounded-2xl">
             <div className="relative w-full md:w-80">
               <Search className="w-4 h-4 text-[#8A8A93] absolute left-3 top-2.5" />
               <input
@@ -747,16 +800,16 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search Driver Name, Email, UTR..."
-                className="w-full bg-[#08080A] border border-[#22222a] text-white text-xs pl-9 pr-4 py-2 outline-none focus:border-[#00D2BE]"
+                className="w-full bg-[#08080A] border border-[#22222a] text-white text-xs pl-9 pr-4 py-2 outline-none focus:border-[#00D2BE] rounded-xl"
               />
             </div>
 
-            <div className="flex items-center flex-wrap gap-1 w-full md:w-auto text-[11px]">
+            <div className="flex items-center overflow-x-auto whitespace-nowrap scrollbar-none gap-1.5 w-full md:w-auto text-[11px] pb-1 md:pb-0">
               {['ALL', 'PAYMENT_PENDING', 'PAYMENT_VERIFIED', 'APPROVED', 'REJECTED'].map(f => (
                 <button
                   key={f}
                   onClick={() => setStatusFilter(f)}
-                  className={`px-3 py-1.5 border ${
+                  className={`px-3 py-1.5 border rounded-xl flex-shrink-0 transition-all ${
                     statusFilter === f ? 'bg-[#E10600] text-white font-bold border-[#E10600]' : 'bg-[#08080A] text-[#8A8A93] border-[#22222a]'
                   }`}
                 >
