@@ -704,31 +704,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
               </div>
             )}
 
-            {/* College Name & Year */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="sm:col-span-2 space-y-2">
-                <label className="font-display text-xs text-white font-bold tracking-wider flex items-center space-x-2">
-                  <Building className="w-4 h-4 text-[#00D2BE]" />
-                  <span>COLLEGE / INSTITUTION *</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formData.organization}
-                  onChange={e => setFormData({ ...formData, organization: e.target.value })}
-                  onBlur={() => handleBlur('organization')}
-                  placeholder="e.g. Stanford Institute of Technology"
-                  className={`w-full bg-[#14141a] border-2 text-white font-body text-xs px-4 py-3.5 outline-none rounded-xl transition-all ${
-                    touched.organization && !isOrgValid
-                      ? 'border-[#E10600]'
-                      : 'border-[#22222a] focus:border-[#00D2BE]'
-                  }`}
-                />
-              </div>
-
+            {/* Year & Branch Selector */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="font-display text-xs text-white font-bold tracking-wider flex items-center space-x-2">
-                  <span>YEAR</span>
+                  <span>YEAR / ACADEMIC LEVEL</span>
                 </label>
                 <select
                   value={formData.year}
@@ -740,7 +720,21 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   <option value="3rd Year">3rd Year</option>
                   <option value="4th Year">4th Year</option>
                   <option value="Postgraduate">Postgraduate</option>
+                  <option value="Other">Other / Alum</option>
                 </select>
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-display text-xs text-white font-bold tracking-wider flex items-center space-x-2">
+                  <span>BRANCH / DEPARTMENT</span>
+                </label>
+                <input
+                  type="text"
+                  value={formData.department}
+                  onChange={e => setFormData({ ...formData, department: e.target.value })}
+                  placeholder="e.g. Computer Science & AI / Mechanical"
+                  className="w-full bg-[#14141a] border-2 border-[#22222a] focus:border-[#00D2BE] text-white font-body text-xs px-4 py-3.5 outline-none rounded-xl"
+                />
               </div>
             </div>
 
