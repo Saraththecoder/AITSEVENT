@@ -152,26 +152,40 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
   const startCamera = async () => {
     setCameraError('');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      setCameraError('Camera API requires HTTPS or localhost. On mobile, please connect via HTTPS or use manual entry below.');
+      return;
+    }
+
     try {
       let stream: MediaStream | null = null;
       try {
         // Prefer rear camera on mobile devices
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: 'environment' } }
+          video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }
         });
       } catch (e1) {
-        // Fallback for basic video camera constraints
-        stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        try {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: 'environment' }
+          });
+        } catch (e2) {
+          // Fallback for basic video camera constraints
+          stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        }
       }
 
       mediaStreamRef.current = stream;
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
       setIsCameraActive(true);
     } catch (err: any) {
       console.error('Camera access error:', err);
-      setCameraError('Camera access blocked. Please allow camera permissions in your mobile browser settings or use manual entry below.');
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setCameraError('Camera permission denied. Please tap the lock icon in your mobile browser address bar and enable Camera access.');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        setCameraError('No camera hardware found on this device.');
+      } else {
+        setCameraError('Camera access failed. Please grant camera permission or use manual entry below.');
+      }
       setIsCameraActive(false);
     }
   };
@@ -183,6 +197,14 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
     }
     setIsCameraActive(false);
   };
+
+  // Sync camera MediaStream to video element once mounted in DOM
+  useEffect(() => {
+    if (isCameraActive && mediaStreamRef.current && videoRef.current) {
+      videoRef.current.srcObject = mediaStreamRef.current;
+      videoRef.current.play().catch(e => console.error("Camera play error:", e));
+    }
+  }, [isCameraActive]);
 
   useEffect(() => {
     return () => {
