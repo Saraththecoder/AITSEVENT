@@ -216,7 +216,7 @@ export const CoordinatorsPage: React.FC<CoordinatorsPageProps> = ({ onStartRegis
         </p>
 
         <button
-          onClick={onStartRegistration}
+          onClick={() => onStartRegistration()}
           className="px-8 py-3.5 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider rounded-xl shadow-[0_0_25px_rgba(225,6,0,0.6)] transition-all transform hover:scale-105 cursor-pointer"
         >
           <span>START DRIVER REGISTRATION NOW →</span>
