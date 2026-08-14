@@ -39,7 +39,8 @@ export const validatePhone = (phone: string): boolean => {
  */
 export const validateUtr = (utr: string): boolean => {
   const clean = sanitizeInput(utr).trim();
-  return /^\d{12}$/.test(clean);
+  // Accepts 6 to 20 alphanumeric/numeric digits (e.g. 12-digit UTR, GPay ref, or transaction ID)
+  return clean.length >= 6 && clean.length <= 20;
 };
 
 /**

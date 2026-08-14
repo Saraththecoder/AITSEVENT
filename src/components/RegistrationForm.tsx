@@ -85,20 +85,26 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   const isDriver3Valid = teamSizeCount < 3 || validateFullName(formData.driver3Name);
   const isDriver4Valid = teamSizeCount < 4 || validateFullName(formData.driver4Name);
 
-  const validFieldsCount = [
+  const requiredFields = [
     isNameValid,
     isEmailValid,
     isPhoneValid,
-    isDriver2Valid,
+    ...(teamSizeCount >= 2 ? [isDriver2Valid] : []),
+    ...(teamSizeCount >= 3 ? [isDriver3Valid] : []),
+    ...(teamSizeCount >= 4 ? [isDriver4Valid] : []),
     isUtrValid,
     formData.agreedTerms
-  ].filter(Boolean).length;
+  ];
 
-  const progressPercent = Math.round((validFieldsCount / 6) * 100);
+  const validFieldsCount = requiredFields.filter(Boolean).length;
+  const totalRequiredFields = requiredFields.length;
+
+  const isFormComplete = validFieldsCount === totalRequiredFields;
+  const progressPercent = Math.round((validFieldsCount / totalRequiredFields) * 100);
 
   // Live Tachometer RPM and Speed calculations
-  const rpmValue = Math.min(15000, Math.round((validFieldsCount / 6) * 15000));
-  const currentSpeed = Math.round((validFieldsCount / 6) * 352.4);
+  const rpmValue = Math.min(15000, Math.round((validFieldsCount / totalRequiredFields) * 15000));
+  const currentSpeed = Math.round((validFieldsCount / totalRequiredFields) * 352.4);
   const baseFeePerDriver = 
     formData.championship === 'ENGINEERING CHAMPIONSHIP' ? 80 :
     formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? 150 :
@@ -113,8 +119,6 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2000);
   };
-
-  const isFormComplete = isNameValid && isEmailValid && isPhoneValid && isDriver2Valid && isDriver3Valid && isDriver4Valid && isUtrValid && formData.agreedTerms;
 
   const handleChampionshipChange = (champ: ChampionshipType) => {
     if (champ === 'ENGINEERING CHAMPIONSHIP') {
@@ -1093,20 +1097,15 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <input
                   type="text"
                   inputMode="numeric"
-                  maxLength={12}
-                  pattern="[0-9]{12}"
                   required
                   value={formData.utrNumber}
-                  onChange={e => {
-                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, '').slice(0, 12);
-                    setFormData({ ...formData, utrNumber: onlyNumbers });
-                  }}
+                  onChange={e => setFormData({ ...formData, utrNumber: e.target.value.trim() })}
                   onBlur={() => handleBlur('utrNumber')}
-                  placeholder="e.g. 950519820401 (exactly 12 numbers)"
+                  placeholder="e.g. 950519820401 (12-digit UTR or Transaction Ref ID)"
                   className={`w-full bg-[#08080A] border-2 text-white font-mono text-xs sm:text-sm px-4 py-3.5 outline-none rounded-xl transition-all ${
                     touched.utrNumber && !isUtrValid
                       ? 'border-[#E10600] shadow-[0_0_10px_rgba(225,6,0,0.5)]'
-                      : formData.utrNumber.length === 12
+                      : isUtrValid
                       ? 'border-[#22C55E] focus:border-[#22C55E]'
                       : 'border-[#22222a] focus:border-[#00D2BE]'
                   }`}
@@ -1114,7 +1113,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
                 {touched.utrNumber && !isUtrValid && (
                   <p className="text-[10px] text-[#E10600] font-mono">
-                    ⚠ Transaction ID must be strictly 12 numbers (0-9). Currently: {formData.utrNumber.length} digits.
+                    ⚠ Please enter your payment transaction reference ID (e.g. 12-digit UTR).
                   </p>
                 )}
               </div>
@@ -1128,7 +1127,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   className="w-4 h-4 accent-[#E10600] rounded cursor-pointer"
                 />
                 <label htmlFor="terms" className="text-[11px] text-[#8A8A93] cursor-pointer">
-                  I confirm that all entered team driver details, payment deposit of ₹{totalAmountPayable}, and 12-digit transaction ID are authentic.
+                  I confirm that all entered driver details, payment deposit of ₹{totalAmountPayable}, and transaction reference ID are authentic.
                 </label>
               </div>
 
@@ -1141,11 +1140,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 disabled={!isFormComplete}
                 className={`w-full py-4 font-display text-xs sm:text-sm font-bold tracking-wider uppercase transition-all rounded-xl shadow-2xl ${
                   isFormComplete
-                    ? 'bg-[#E10600] hover:bg-[#ff0700] text-white shadow-[0_0_30px_rgba(225,6,0,0.7)] border-l-4 border-white'
+                    ? 'bg-[#E10600] hover:bg-[#ff0700] text-white shadow-[0_0_30px_rgba(225,6,0,0.7)] border-l-4 border-white cursor-pointer'
                     : 'bg-[#22222a] text-[#8A8A93] cursor-not-allowed'
                 }`}
               >
-                {isFormComplete ? `🏁 SUBMIT ${teamSizeCount}-DRIVER TEAM REGISTRATION & CROSS FINISH LINE 🏁` : `FILL ALL FIELDS TO UNLOCK SUBMISSION (${validFieldsCount}/7)`}
+                {isFormComplete 
+                  ? `🏁 SUBMIT ${teamSizeCount > 1 ? `${teamSizeCount}-DRIVER TEAM` : 'SOLO DRIVER'} REGISTRATION 🏁` 
+                  : `FILL ALL REQUIRED FIELDS TO UNLOCK SUBMISSION (${validFieldsCount}/${totalRequiredFields})`}
               </button>
             </div>
 
