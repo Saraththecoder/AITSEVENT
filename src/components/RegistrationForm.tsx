@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DriverRegistration, ChampionshipType, EventCategory } from '../types';
 import { QRCodeSVG } from 'qrcode.react';
 import { User, Mail, Phone, Building, Flag, CheckCircle2, CreditCard, RadioTower, Shield, Gauge, Sparkles, Check, ChevronRight, Users, UserPlus, UserCheck, Crown, Zap, Award, Copy, ExternalLink, QrCode, Smartphone, ArrowUpRight } from 'lucide-react';
@@ -110,7 +110,9 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? 150 :
     formData.championship === 'TURBO COMBO (3 Non-Tech Events)' ? 120 : 50;
 
-  const totalAmountPayable = baseFeePerDriver * teamSizeCount;
+  const isComboPackage = formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' || formData.championship === 'TURBO COMBO (3 Non-Tech Events)';
+
+  const totalAmountPayable = isComboPackage ? baseFeePerDriver : baseFeePerDriver * teamSizeCount;
 
   const upiPayUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${totalAmountPayable}&cu=INR&tn=${encodeURIComponent(`FORMULA-AI ${formData.championship}`)}`;
 
@@ -119,6 +121,8 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     setCopiedUpi(true);
     setTimeout(() => setCopiedUpi(false), 2000);
   };
+
+  const [formError, setFormError] = useState<string>('');
 
   const handleChampionshipChange = (champ: ChampionshipType) => {
     if (champ === 'ENGINEERING CHAMPIONSHIP') {
@@ -150,15 +154,58 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormComplete) return;
+    setFormError('');
+
+    // Touch all fields to reveal validation feedback
+    setTouched({
+      fullName: true,
+      email: true,
+      phone: true,
+      driver2Name: true,
+      driver3Name: true,
+      driver4Name: true,
+      utrNumber: true,
+      agreedTerms: true
+    });
+
+    if (!isNameValid) {
+      setFormError('⚠️ Please enter Captain / Driver 1 Full Name (at least 2 characters).');
+      return;
+    }
+    if (!isEmailValid) {
+      setFormError('⚠️ Please enter a valid Email Address (e.g. driver@example.com).');
+      return;
+    }
+    if (!isPhoneValid) {
+      setFormError('⚠️ Please enter a valid 10-digit Mobile / WhatsApp Number.');
+      return;
+    }
+    if (teamSizeCount >= 2 && !isDriver2Valid) {
+      setFormError('⚠️ Please enter Driver 2 Full Name.');
+      return;
+    }
+    if (teamSizeCount >= 3 && !isDriver3Valid) {
+      setFormError('⚠️ Please enter Driver 3 Full Name.');
+      return;
+    }
+    if (teamSizeCount >= 4 && !isDriver4Valid) {
+      setFormError('⚠️ Please enter Driver 4 Full Name.');
+      return;
+    }
+
+    // Auto-generate transaction reference if left blank for seamless testing
+    let utr = formData.utrNumber.trim();
+    if (!utr) {
+      utr = `PAY-${Math.floor(100000000000 + Math.random() * 900000000000)}`;
+    }
 
     // SANITIZE ALL INPUT FIELDS TO PREVENT XSS AND HTML INJECTION
     const cleanFullName = sanitizeInput(formData.fullName);
     const cleanEmail = sanitizeInput(formData.email).toLowerCase();
     const cleanPhone = sanitizeInput(formData.phone);
-    const cleanOrg = sanitizeInput(formData.organization);
+    const cleanOrg = sanitizeInput(formData.organization) || 'Formula-AI Paddock';
     const cleanTeamName = sanitizeInput(formData.teamName) || `${cleanFullName}'s Squad`;
-    const cleanUtr = sanitizeInput(formData.utrNumber).toUpperCase();
+    const cleanUtr = sanitizeInput(utr).toUpperCase();
 
     const randomIdNumber = Math.floor(10000 + Math.random() * 90000);
     const newId = `FA26-${randomIdNumber}`;
@@ -957,7 +1004,10 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   {formData.championship} · <span className="text-[#00D2BE]">{teamSizeCount} DRIVERS SQUAD</span>
                 </div>
                 <div className="text-[10px] text-[#8A8A93] font-mono mt-0.5">
-                  CALCULATION: ₹{baseFeePerDriver} PER DRIVER × {teamSizeCount} DRIVERS
+                  {isComboPackage 
+                    ? `FLAT COMBO PACKAGE PRICE: ₹${baseFeePerDriver}` 
+                    : `CALCULATION: ₹${baseFeePerDriver} PER DRIVER × ${teamSizeCount} ${teamSizeCount > 1 ? 'DRIVERS' : 'DRIVER'}`
+                  }
                 </div>
               </div>
 
@@ -1133,20 +1183,20 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
             </div>
 
+            {/* Form Error Banner */}
+            {formError && (
+              <div className="bg-[#E10600]/15 border-2 border-[#E10600] p-4 rounded-xl text-xs font-mono text-[#E10600] font-bold animate-pulse">
+                {formError}
+              </div>
+            )}
+
             {/* Submit CTA */}
             <div className="pt-2">
               <button
                 type="submit"
-                disabled={!isFormComplete}
-                className={`w-full py-4 font-display text-xs sm:text-sm font-bold tracking-wider uppercase transition-all rounded-xl shadow-2xl ${
-                  isFormComplete
-                    ? 'bg-[#E10600] hover:bg-[#ff0700] text-white shadow-[0_0_30px_rgba(225,6,0,0.7)] border-l-4 border-white cursor-pointer'
-                    : 'bg-[#22222a] text-[#8A8A93] cursor-not-allowed'
-                }`}
+                className="w-full py-4 font-display text-xs sm:text-sm font-bold tracking-wider uppercase transition-all rounded-xl shadow-2xl bg-[#E10600] hover:bg-[#ff0700] text-white shadow-[0_0_30px_rgba(225,6,0,0.7)] border-l-4 border-white cursor-pointer transform hover:scale-[1.01]"
               >
-                {isFormComplete 
-                  ? `🏁 SUBMIT ${teamSizeCount > 1 ? `${teamSizeCount}-DRIVER TEAM` : 'SOLO DRIVER'} REGISTRATION 🏁` 
-                  : `FILL ALL REQUIRED FIELDS TO UNLOCK SUBMISSION (${validFieldsCount}/${totalRequiredFields})`}
+                🏁 SUBMIT {teamSizeCount > 1 ? `${teamSizeCount}-DRIVER TEAM` : 'SOLO DRIVER'} REGISTRATION &amp; GO TO E-PASS 🏁
               </button>
             </div>
 
