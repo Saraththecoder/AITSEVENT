@@ -466,13 +466,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
 
 
 
-      {/* ========================================================================= */}
+      {/* ===========================================      {/* ========================================================================= */}
       {/* 2. EXCLUSIVE MULTI-EVENT COMBO OFFERS SECTION */}
       {/* ========================================================================= */}
-      <section id="combos" className="py-10 px-3 sm:px-6 max-w-7xl mx-auto space-y-6 overflow-hidden">
+      <section id="combos" className="py-10 sm:py-16 px-3 sm:px-6 max-w-7xl mx-auto space-y-6 sm:space-y-8 overflow-hidden">
         
-        <div className="text-center space-y-2">
-          <div className="inline-flex items-center space-x-2 bg-[#14141a] border border-[#F5A623] px-3.5 py-1 rounded-full text-xs font-mono text-[#F5A623] shadow-[0_0_15px_rgba(245,166,35,0.4)]">
+        <div className="text-center space-y-2 sm:space-y-3 px-2">
+          <div className="inline-flex items-center space-x-2 bg-[#14141a] border border-[#F5A623] px-3.5 sm:px-4 py-1.5 rounded-full text-xs font-mono text-[#F5A623] shadow-[0_0_20px_rgba(245,166,35,0.4)]">
             <Flame className="w-4 h-4 text-[#F5A623] animate-pulse" />
             <span className="font-bold tracking-widest uppercase">🏁 COMBO OFFERS · RACE MORE. SAVE MORE.</span>
           </div>
@@ -480,52 +480,62 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
           <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-black uppercase text-white tracking-wider">
             EXCLUSIVE <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#E10600] via-[#F5A623] to-[#00D2BE]">MULTI-EVENT</span> COMBOS
           </h2>
-          <p className="text-xs sm:text-sm text-[#8A8A93] font-body max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm text-[#8A8A93] font-body max-w-2xl mx-auto leading-relaxed">
             Choose your race package and experience multiple non-tech events at an exclusive combo price.
           </p>
         </div>
 
         {/* 2 Combo Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-data">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 font-data max-w-5xl mx-auto">
           
           {/* PODIUM COMBO */}
-          <div className="bg-[#0b0b0e] border-2 border-[#E10600] p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden space-y-6 flex flex-col justify-between group hover:border-[#00D2BE] transition-all duration-500 hover:-translate-y-1">
-            <div className="absolute top-4 right-4 bg-[#E10600] text-white text-xs font-mono font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-              25% OFF · SAVE ₹50
-            </div>
-
+          <div className="bg-[#0b0b0e] border-2 border-[#E10600] p-5 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col justify-between group hover:border-[#00D2BE] transition-all duration-500 hover:-translate-y-1 space-y-6">
+            
+            {/* Top Card Header */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-3 bg-[#E10600]/15 border border-[#E10600] text-[#E10600] rounded-2xl">
-                  <Trophy className="w-6 h-6" />
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#22222a] pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 sm:p-3 bg-[#E10600]/15 border border-[#E10600] text-[#E10600] rounded-2xl flex-shrink-0">
+                    <Trophy className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-[#00D2BE] font-bold uppercase tracking-wider block">4 NON-TECH EVENTS</span>
+                    <h3 className="font-display font-black text-xl sm:text-2xl text-white uppercase">🏎️ PODIUM COMBO</h3>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-mono text-[#00D2BE] font-bold uppercase tracking-wider block">4 NON-TECH EVENTS</span>
-                  <h3 className="font-display font-black text-2xl text-white uppercase">🏎️ PODIUM COMBO</h3>
+
+                <div className="bg-[#E10600] text-white text-[11px] font-mono font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg flex-shrink-0">
+                  25% OFF · SAVE ₹50
                 </div>
               </div>
 
-              <div className="flex items-baseline space-x-3 bg-[#14141a] p-4 rounded-2xl border border-[#22222a]">
-                <span className="font-display text-4xl font-black text-white">₹150</span>
-                <span className="text-base text-[#8A8A93] line-through font-mono">/₹200/</span>
-                <span className="text-xs font-mono text-[#22C55E] font-bold">SAVE ₹50 (25% OFF)</span>
+              {/* Price Row */}
+              <div className="flex items-center justify-between bg-[#14141a] p-3.5 sm:p-4 rounded-2xl border border-[#22222a]">
+                <div className="flex items-baseline space-x-2.5">
+                  <span className="font-display text-3xl sm:text-4xl font-black text-white">₹150</span>
+                  <span className="text-sm sm:text-base text-[#8A8A93] line-through font-mono">₹200</span>
+                </div>
+                <span className="text-xs font-mono text-[#22C55E] font-bold bg-[#22C55E]/15 border border-[#22C55E]/40 px-2.5 py-1 rounded-xl">
+                  SAVE ₹50
+                </span>
               </div>
 
-              <ul className="space-y-2 text-xs text-[#8A8A93] font-mono">
+              {/* Feature List */}
+              <ul className="space-y-2.5 text-xs text-[#8A8A93] font-mono">
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
-                  <span>Choose any 4 non-tech events of your choice</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
+                  <span className="text-white">Choose any 4 non-tech events of your choice</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
+                  <span className="text-[#E10600] font-bold">🚫</span>
                   <span>Telemetry (Typing Test) excluded as per rules</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
-                  <span>One single combo registration pass</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
+                  <span className="text-white">One single combo registration pass</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
                   <span>Maximum value for multi-event racers</span>
                 </li>
               </ul>
@@ -533,50 +543,60 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
 
             <button
               onClick={() => onStartRegistration('PODIUM COMBO (4 Non-Tech Events)', 'PODIUM COMBO (4 Non-Tech Events)')}
-              className="w-full py-4 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.02]"
+              className="w-full py-3.5 sm:py-4 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.02] cursor-pointer"
             >
-              <span>GRAB THIS COMBO →</span>
+              <span>GRAB PODIUM COMBO (₹150) →</span>
             </button>
           </div>
 
           {/* TURBO COMBO */}
-          <div className="bg-[#0b0b0e] border-2 border-[#00D2BE] p-6 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden space-y-6 flex flex-col justify-between group hover:border-[#E10600] transition-all duration-500 hover:-translate-y-1">
-            <div className="absolute top-4 right-4 bg-[#00D2BE] text-[#08080A] text-xs font-mono font-black px-3.5 py-1.5 rounded-full uppercase tracking-wider shadow-lg">
-              20% OFF · SAVE ₹30
-            </div>
-
+          <div className="bg-[#0b0b0e] border-2 border-[#00D2BE] p-5 sm:p-8 rounded-3xl shadow-2xl relative overflow-hidden flex flex-col justify-between group hover:border-[#E10600] transition-all duration-500 hover:-translate-y-1 space-y-6">
+            
+            {/* Top Card Header */}
             <div className="space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-3 bg-[#00D2BE]/15 border border-[#00D2BE] text-[#00D2BE] rounded-2xl">
-                  <Zap className="w-6 h-6" />
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#22222a] pb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="p-2.5 sm:p-3 bg-[#00D2BE]/15 border border-[#00D2BE] text-[#00D2BE] rounded-2xl flex-shrink-0">
+                    <Zap className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-mono text-[#F5A623] font-bold uppercase tracking-wider block">ANY 3 NON-TECH EVENTS</span>
+                    <h3 className="font-display font-black text-xl sm:text-2xl text-white uppercase">⚡ TURBO COMBO</h3>
+                  </div>
                 </div>
-                <div>
-                  <span className="text-[10px] font-mono text-[#F5A623] font-bold uppercase tracking-wider block">ANY 3 NON-TECH EVENTS</span>
-                  <h3 className="font-display font-black text-2xl text-white uppercase">⚡ TURBO COMBO</h3>
+
+                <div className="bg-[#00D2BE] text-[#08080A] text-[11px] font-mono font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-lg flex-shrink-0">
+                  20% OFF · SAVE ₹30
                 </div>
               </div>
 
-              <div className="flex items-baseline space-x-3 bg-[#14141a] p-4 rounded-2xl border border-[#22222a]">
-                <span className="font-display text-4xl font-black text-white">₹120</span>
-                <span className="text-base text-[#8A8A93] line-through font-mono">/₹150/</span>
-                <span className="text-xs font-mono text-[#22C55E] font-bold">SAVE ₹30 (20% OFF)</span>
+              {/* Price Row */}
+              <div className="flex items-center justify-between bg-[#14141a] p-3.5 sm:p-4 rounded-2xl border border-[#22222a]">
+                <div className="flex items-baseline space-x-2.5">
+                  <span className="font-display text-3xl sm:text-4xl font-black text-white">₹120</span>
+                  <span className="text-sm sm:text-base text-[#8A8A93] line-through font-mono">₹150</span>
+                </div>
+                <span className="text-xs font-mono text-[#22C55E] font-bold bg-[#22C55E]/15 border border-[#22C55E]/40 px-2.5 py-1 rounded-xl">
+                  SAVE ₹30
+                </span>
               </div>
 
-              <ul className="space-y-2 text-xs text-[#8A8A93] font-mono">
+              {/* Feature List */}
+              <ul className="space-y-2.5 text-xs text-[#8A8A93] font-mono">
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
-                  <span>Choose any 3 non-tech events in form</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
+                  <span className="text-white">Choose any 3 non-tech events in form</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
+                  <span className="text-[#E10600] font-bold">🚫</span>
                   <span>Telemetry (Typing Test) excluded as per rules</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
-                  <span>One single combo registration pass</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
+                  <span className="text-white">One single combo registration pass</span>
                 </li>
                 <li className="flex items-center space-x-2">
-                  <span className="text-[#00D2BE]">✓</span>
+                  <span className="text-[#00D2BE] font-bold">✓</span>
                   <span>Perfect for a quick triple-event run</span>
                 </li>
               </ul>
@@ -584,14 +604,13 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
 
             <button
               onClick={() => onStartRegistration('TURBO COMBO (3 Non-Tech Events)', 'TURBO COMBO (3 Non-Tech Events)')}
-              className="w-full py-4 bg-[#14141a] hover:bg-[#1f1f28] border-2 border-[#00D2BE] text-[#00D2BE] font-display text-xs font-bold uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.02]"
+              className="w-full py-3.5 sm:py-4 bg-[#14141a] hover:bg-[#1f1f28] border-2 border-[#00D2BE] text-[#00D2BE] font-display text-xs sm:text-sm font-bold uppercase tracking-wider rounded-xl shadow-lg flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.02] cursor-pointer"
             >
-              <span>CHOOSE YOUR EVENTS →</span>
+              <span>GRAB TURBO COMBO (₹120) →</span>
             </button>
           </div>
 
         </div>
-
       </section>
 
       {/* ========================================================================= */}
@@ -928,198 +947,19 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
 
             <button
               onClick={() => onStartRegistration()}
-              className="w-full sm:w-auto px-7 py-3 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider transition-all rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transform hover:scale-105"
+              className="w-full sm:w-auto px-7 py-3 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider transition-all rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transform hover:scale-105 cursor-pointer"
             >
-              <span>LOCK YOUR DRIVER GRID SLOT NOW</span>
-              <ChevronRight className="w-4 h-4 text-[#00D2BE]" />
+              <span>LOCK YOUR DRIVER GRID SLOT NOW →</span>
             </button>
           </div>
 
         </div>
-
       </section>
 
       {/* ========================================================================= */}
-      {/* 3.5 EXCLUSIVE COMBO OFFERS SECTION: PODIUM & TURBO COMBOS */}
+      {/* REDESIGNED: YOUR RACE. YOUR EVENTS. YOUR CHOICE. RACE PROTOCOL ROADMAP */}
       {/* ========================================================================= */}
-      <section className="py-12 sm:py-20 px-3 sm:px-6 max-w-7xl mx-auto space-y-8 sm:space-y-12 overflow-hidden">
-        
-        {/* Header */}
-        <div className="text-center space-y-3 px-2">
-          <div className="inline-flex items-center space-x-2 bg-[#14141a] border-2 border-[#00D2BE] px-4 py-1.5 rounded-full text-xs font-mono text-[#00D2BE] shadow-[0_0_20px_rgba(0,210,190,0.4)]">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#00D2BE] animate-ping" />
-            <span className="font-bold uppercase tracking-wider">🏁 COMBO OFFERS · RACE MORE. SAVE MORE.</span>
-          </div>
-          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-wider">
-            EXCLUSIVE <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00D2BE] to-white">RACE PACKAGES</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-[#8A8A93] max-w-2xl mx-auto font-data leading-relaxed">
-            Choose your race package and experience multiple non-tech events at an exclusive combo price.
-          </p>
-        </div>
-
-        {/* 2 COMBO CARDS GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto font-data">
-          
-          {/* 🏎️ PODIUM COMBO CARD */}
-          <div className="bg-[#0b0b0e] border-2 border-[#22C55E] p-6 sm:p-8 rounded-[32px] shadow-[0_0_40px_rgba(34,197,94,0.3)] hover:shadow-[0_0_60px_rgba(34,197,94,0.5)] transition-all duration-500 relative overflow-hidden flex flex-col justify-between group transform hover:-translate-y-1">
-            
-            {/* Top Badge Overlay */}
-            <div className="absolute top-0 right-0 bg-[#22C55E] text-[#08080A] font-display font-black text-xs px-5 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg flex items-center space-x-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>25% OFF</span>
-            </div>
-
-            <div className="space-y-6">
-              
-              {/* Title & Subtitle */}
-              <div>
-                <div className="flex items-center space-x-2 text-[#22C55E] text-xs font-mono font-bold uppercase mb-1">
-                  <span>🏎️ MULTI-EVENT PASS</span>
-                </div>
-                <h3 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-wider">
-                  PODIUM COMBO
-                </h3>
-                <span className="text-xs font-mono text-[#00D2BE] font-bold bg-[#00D2BE]/10 border border-[#00D2BE]/30 px-3 py-1 rounded-full inline-block mt-2">
-                  4 NON-TECH EVENTS
-                </span>
-              </div>
-
-              {/* Pricing Display */}
-              <div className="bg-[#14141a] border border-[#22C55E]/40 p-4 sm:p-5 rounded-2xl flex items-baseline justify-between">
-                <div>
-                  <div className="flex items-baseline space-x-3">
-                    <span className="font-display text-4xl sm:text-5xl font-black text-[#22C55E] drop-shadow-[0_0_15px_rgba(34,197,94,0.6)]">
-                      ₹150
-                    </span>
-                    <span className="line-through text-lg font-mono text-[#8A8A93]">
-                      ₹200
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-[#8A8A93] font-mono block mt-1">SINGLE REGISTRATION FOR ALL 4 EVENTS</span>
-                </div>
-
-                <span className="bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E] text-xs font-mono font-bold px-3 py-1 rounded-xl">
-                  SAVE ₹50
-                </span>
-              </div>
-
-              {/* Feature Bullets */}
-              <ul className="space-y-3 text-xs sm:text-sm text-white font-mono border-t border-[#22222a] pt-4">
-                <li className="flex items-center space-x-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] flex-shrink-0" />
-                  <span>Choose any 4 non-tech events</span>
-                </li>
-                <li className="flex items-center space-x-2.5 text-[#8A8A93]">
-                  <span className="text-[#E10600] font-bold flex-shrink-0">🚫</span>
-                  <span className="line-through">Telemetry (Typing Test) excluded</span>
-                </li>
-                <li className="flex items-center space-x-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] flex-shrink-0" />
-                  <span>One combo registration</span>
-                </li>
-                <li className="flex items-center space-x-2.5 text-[#00D2BE] font-bold">
-                  <Sparkles className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
-                  <span>Maximum value for multi-event racers</span>
-                </li>
-              </ul>
-
-            </div>
-
-            {/* CTA Button */}
-            <div className="pt-6">
-              <button
-                onClick={() => onStartRegistration('PODIUM COMBO (4 Non-Tech Events)', 'RADIO COMMUNICATION (Dumb Charades)')}
-                className="w-full py-4 bg-gradient-to-r from-[#22C55E] via-[#16a34a] to-[#22C55E] hover:from-[#16a34a] hover:to-[#22C55E] text-[#08080A] font-display text-xs sm:text-sm font-black uppercase tracking-wider transition-all rounded-2xl shadow-[0_0_25px_rgba(34,197,94,0.7)] flex items-center justify-center space-x-2 transform hover:scale-[1.02]"
-              >
-                <span>GRAB THIS COMBO →</span>
-              </button>
-            </div>
-
-          </div>
-
-          {/* ⚡ TURBO COMBO CARD */}
-          <div className="bg-[#0b0b0e] border-2 border-[#00D2BE] p-6 sm:p-8 rounded-[32px] shadow-[0_0_40px_rgba(0,210,190,0.3)] hover:shadow-[0_0_60px_rgba(0,210,190,0.5)] transition-all duration-500 relative overflow-hidden flex flex-col justify-between group transform hover:-translate-y-1">
-            
-            {/* Top Badge Overlay */}
-            <div className="absolute top-0 right-0 bg-[#00D2BE] text-[#08080A] font-display font-black text-xs px-5 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg flex items-center space-x-1">
-              <Zap className="w-3.5 h-3.5" />
-              <span>20% OFF</span>
-            </div>
-
-            <div className="space-y-6">
-              
-              {/* Title & Subtitle */}
-              <div>
-                <div className="flex items-center space-x-2 text-[#00D2BE] text-xs font-mono font-bold uppercase mb-1">
-                  <span>⚡ TRIPLE TRIPLE PASS</span>
-                </div>
-                <h3 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-wider">
-                  TURBO COMBO
-                </h3>
-                <span className="text-xs font-mono text-[#F5A623] font-bold bg-[#F5A623]/10 border border-[#F5A623]/30 px-3 py-1 rounded-full inline-block mt-2">
-                  ANY 3 NON-TECH EVENTS
-                </span>
-              </div>
-
-              {/* Pricing Display */}
-              <div className="bg-[#14141a] border border-[#00D2BE]/40 p-4 sm:p-5 rounded-2xl flex items-baseline justify-between">
-                <div>
-                  <div className="flex items-baseline space-x-3">
-                    <span className="font-display text-4xl sm:text-5xl font-black text-[#00D2BE] drop-shadow-[0_0_15px_rgba(0,210,190,0.6)]">
-                      ₹120
-                    </span>
-                    <span className="line-through text-lg font-mono text-[#8A8A93]">
-                      ₹150
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-[#8A8A93] font-mono block mt-1">SINGLE REGISTRATION FOR ANY 3 EVENTS</span>
-                </div>
-
-                <span className="bg-[#00D2BE]/20 text-[#00D2BE] border border-[#00D2BE] text-xs font-mono font-bold px-3 py-1 rounded-xl">
-                  SAVE ₹30
-                </span>
-              </div>
-
-              {/* Feature Bullets */}
-              <ul className="space-y-3 text-xs sm:text-sm text-white font-mono border-t border-[#22222a] pt-4">
-                <li className="flex items-center space-x-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
-                  <span>Choose any 3 non-tech events</span>
-                </li>
-                <li className="flex items-center space-x-2.5 text-[#8A8A93]">
-                  <span className="text-[#E10600] font-bold flex-shrink-0">🚫</span>
-                  <span className="line-through">Telemetry (Typing Test) excluded</span>
-                </li>
-                <li className="flex items-center space-x-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
-                  <span>One combo registration</span>
-                </li>
-                <li className="flex items-center space-x-2.5 text-[#F5A623] font-bold">
-                  <Zap className="w-4 h-4 text-[#F5A623] flex-shrink-0" />
-                  <span>Perfect for a quick triple-event run</span>
-                </li>
-              </ul>
-
-            </div>
-
-            {/* CTA Button */}
-            <div className="pt-6">
-              <button
-                onClick={() => onStartRegistration('TURBO COMBO (3 Non-Tech Events)', 'RADIO COMMUNICATION (Dumb Charades)')}
-                className="w-full py-4 bg-gradient-to-r from-[#00D2BE] via-[#00a394] to-[#00D2BE] hover:from-[#00a394] hover:to-[#00D2BE] text-[#08080A] font-display text-xs sm:text-sm font-black uppercase tracking-wider transition-all rounded-2xl shadow-[0_0_25px_rgba(0,210,190,0.7)] flex items-center justify-center space-x-2 transform hover:scale-[1.02]"
-              >
-                <span>CHOOSE YOUR EVENTS →</span>
-              </button>
-            </div>
-
-          </div>
-
-        </div>
-
-        {/* ========================================================================= */}
-        {/* REDESIGNED: YOUR RACE. YOUR EVENTS. YOUR CHOICE. RACE PROTOCOL ROADMAP */}
-        {/* ========================================================================= */}
+      <section className="py-12 px-3 sm:px-6 max-w-7xl mx-auto font-data overflow-hidden">
         <div className="max-w-6xl mx-auto pt-6 font-data relative">
           
           <div className="bg-[#0b0b0e] border-2 border-[#E10600] p-6 sm:p-12 rounded-[36px] shadow-[0_0_60px_rgba(225,6,0,0.4)] relative overflow-hidden space-y-8 group hover:border-[#00D2BE] transition-all duration-700">

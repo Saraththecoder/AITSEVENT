@@ -14,6 +14,7 @@ import { AdminDashboard } from './components/AdminDashboard';
 import { EmailTemplates } from './components/EmailTemplates';
 import { F1AudioPlayer } from './components/F1AudioPlayer';
 import { EventsPage } from './components/EventsPage';
+import { CoordinatorsPage } from './components/CoordinatorsPage';
 import { SplashScreen } from './components/SplashScreen';
 import { submitRegistrationToGoogleSheet, fetchRegistrationsFromGoogleSheet } from './services/apiService';
 
@@ -190,6 +191,12 @@ export const App: React.FC = () => {
 
         {currentView === 'EVENTS' && (
           <EventsPage
+            onStartRegistration={handleStartRegistration}
+          />
+        )}
+
+        {currentView === 'COORDINATORS' && (
+          <CoordinatorsPage
             onStartRegistration={handleStartRegistration}
           />
         )}

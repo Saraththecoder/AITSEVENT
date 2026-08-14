@@ -106,6 +106,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>DRIVER STATUS &amp; E-PASS</span>
             </button>
 
+            <button
+              onClick={() => setCurrentView('COORDINATORS')}
+              className={`px-4 py-2 flex items-center space-x-2 transition-all duration-300 font-bold rounded-xl text-xs uppercase ${
+                currentView === 'COORDINATORS'
+                  ? 'bg-[#E10600] text-white shadow-[0_0_20px_rgba(225,6,0,0.6)]'
+                  : 'text-[#8A8A93] hover:text-white hover:bg-[#1f1f28]'
+              }`}
+            >
+              <Radio className="w-3.5 h-3.5 text-[#E10600]" />
+              <span>COORDINATORS</span>
+            </button>
+
             {/* Secret Admin Navigation - ONLY visible when authenticated */}
             {isAdminAuthenticated && (
               <div className="flex items-center space-x-1 pl-2 border-l border-[#22222a]">
@@ -205,6 +217,22 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center space-x-3">
               <UserCheck className="w-4 h-4 text-[#00D2BE]" />
               <span>DRIVER STATUS &amp; E-PASS</span>
+            </div>
+            <ChevronRight className="w-4 h-4 opacity-50" />
+          </button>
+
+          <button
+            onClick={() => {
+              setCurrentView('COORDINATORS');
+              setMobileMenuOpen(false);
+            }}
+            className={`w-full p-3 text-left font-bold flex items-center justify-between rounded-xl transition-all ${
+              currentView === 'COORDINATORS' ? 'bg-[#E10600] text-white shadow-lg' : 'text-[#8A8A93] bg-[#14141a] hover:text-white'
+            }`}
+          >
+            <div className="flex items-center space-x-3">
+              <Radio className="w-4 h-4 text-[#E10600]" />
+              <span>EVENT COORDINATORS</span>
             </div>
             <ChevronRight className="w-4 h-4 opacity-50" />
           </button>
