@@ -15,10 +15,11 @@ import { EmailTemplates } from './components/EmailTemplates';
 import { F1AudioPlayer } from './components/F1AudioPlayer';
 import { EventsPage } from './components/EventsPage';
 import { SplashScreen } from './components/SplashScreen';
-import { submitRegistrationToGoogleSheet } from './services/apiService';
+import { submitRegistrationToGoogleSheet, fetchRegistrationsFromGoogleSheet } from './services/apiService';
 
 export const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState<boolean>(true);
+  const [isRefreshingData, setIsRefreshingData] = useState<boolean>(false);
   const [registrations, setRegistrations] = useState<DriverRegistration[]>(() => {
     const saved = localStorage.getItem('formula_ai_registrations_2026');
     if (saved) {
@@ -50,6 +51,46 @@ export const App: React.FC = () => {
   useEffect(() => {
     sessionStorage.setItem('formula_ai_admin_auth', isAdminAuthenticated ? 'true' : 'false');
   }, [isAdminAuthenticated]);
+
+  // Real-time synchronization with Google Apps Script
+  const handleSyncRealtimeData = async () => {
+    setIsRefreshingData(true);
+    try {
+      const remoteData = await fetchRegistrationsFromGoogleSheet();
+      if (remoteData && remoteData.length > 0) {
+        setRegistrations(prev => {
+          const map = new Map<string, DriverRegistration>();
+          // Preserve local status updates while adopting new entries from sheet
+          prev.forEach(item => map.set(item.id, item));
+          remoteData.forEach(item => {
+            const existing = map.get(item.id);
+            if (!existing) {
+              map.set(item.id, item);
+            } else {
+              // Merge remote status if changed
+              map.set(item.id, { ...existing, ...item });
+            }
+          });
+          return Array.from(map.values());
+        });
+      }
+    } catch (e) {
+      console.error('Failed real-time sync:', e);
+    } finally {
+      setIsRefreshingData(false);
+    }
+  };
+
+  // Automatic real-time polling every 10 seconds when viewing Admin Dashboard
+  useEffect(() => {
+    if (currentView === 'ADMIN_DASHBOARD') {
+      handleSyncRealtimeData();
+      const interval = setInterval(() => {
+        handleSyncRealtimeData();
+      }, 10000);
+      return () => clearInterval(interval);
+    }
+  }, [currentView]);
 
   // Secret Route Protection: Admin can ONLY be accessed via URL parameter ?route=admin or ?view=ADMIN_DASHBOARD
   useEffect(() => {
@@ -206,6 +247,8 @@ export const App: React.FC = () => {
               onUpdateRegistration={handleUpdateRegistration}
               onAddRegistration={handleAddRegistrationFromAdmin}
               onSelectForView={handleSelectForView}
+              onRefreshData={handleSyncRealtimeData}
+              isRefreshing={isRefreshingData}
             />
           ) : (
             <AdminLogin

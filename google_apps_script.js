@@ -1,13 +1,66 @@
 /**
  * =========================================================================
- * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V4 - ULTRA DEDUPLICATION)
- * =========================================================================
- * Updates in V4:
- * 1. Ultra-Strict Deduplication: Scans ID, Email, and UTR across entire sheet.
- *    If ANY matching entry exists, it OVERWRITES that exact row instead of appending duplicates!
- * 2. Inline Image Blob (cid:qrCodeBlob): Embedded QR Code image for 100% Gmail inline display.
+ * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V6 - FULL SCHEME REAL-TIME)
  * =========================================================================
  */
+
+function doGet(e) {
+  try {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var lastRow = sheet.getLastRow();
+    if (lastRow <= 1) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ "result": "success", "data": [] }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var lastCol = Math.max(sheet.getLastColumn(), 25);
+    var allData = sheet.getRange(2, 1, lastRow - 1, lastCol).getValues();
+    var registrations = [];
+
+    for (var i = 0; i < allData.length; i++) {
+      var row = allData[i];
+      if (!row[0]) continue;
+
+      registrations.push({
+        id: row[0] ? row[0].toString() : "",
+        submittedAt: row[1] ? row[1].toString() : "",
+        fullName: row[2] ? row[2].toString() : "",
+        email: row[3] ? row[3].toString() : "",
+        phone: row[4] ? row[4].toString() : "",
+        organization: row[5] ? row[5].toString() : "",
+        year: row[6] ? row[6].toString() : "",
+        department: row[7] ? row[7].toString() : "",
+        teamName: row[8] ? row[8].toString() : "",
+        teamSizeCount: row[9] ? Number(row[9]) : 1,
+        teamMembers: row[10] ? row[10].toString().split(", ") : [],
+        championship: row[11] ? row[11].toString() : "",
+        category: row[12] ? row[12].toString() : "",
+        utrNumber: row[13] ? row[13].toString() : "",
+        paymentAmount: row[14] ? Number(row[14]) : 0,
+        paymentStatus: row[15] ? row[15].toString() : "PENDING",
+        status: row[16] ? row[16].toString() : "SUBMITTED",
+        driverNumber: row[17] ? row[17].toString() : "",
+        emailStatus: row[18] ? row[18].toString() : "SENT",
+        driver2Name: row[19] ? row[19].toString() : "",
+        driver2Phone: row[20] ? row[20].toString() : "",
+        driver3Name: row[21] ? row[21].toString() : "",
+        driver3Phone: row[22] ? row[22].toString() : "",
+        driver4Name: row[23] ? row[23].toString() : "",
+        driver4Phone: row[24] ? row[24].toString() : ""
+      });
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ "result": "success", "data": registrations }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ "result": "error", "error": err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
 
 function doPost(e) {
   var lock = LockService.getScriptLock();
@@ -35,9 +88,17 @@ function doPost(e) {
         "12-DIGIT UTR NUMBER",
         "AMOUNT PAYABLE (INR)",
         "PAYMENT STATUS",
-        "REGISTRATION STATUS"
+        "REGISTRATION STATUS",
+        "DRIVER NUMBER",
+        "EMAIL STATUS",
+        "DRIVER 2 NAME",
+        "DRIVER 2 PHONE",
+        "DRIVER 3 NAME",
+        "DRIVER 3 PHONE",
+        "DRIVER 4 NAME",
+        "DRIVER 4 PHONE"
       ]);
-      sheet.getRange(1, 1, 1, 17).setFontWeight("bold").setBackground("#111115").setFontColor("#00D2BE");
+      sheet.getRange(1, 1, 1, 25).setFontWeight("bold").setBackground("#111115").setFontColor("#00D2BE");
     }
 
     var data = JSON.parse(e.postData.contents);
@@ -52,13 +113,27 @@ function doPost(e) {
     var department = data.department || "";
     var teamName = data.teamName || "";
     var teamSize = data.teamSizeCount || 1;
-    var teamMembers = (data.teamMembers || []).join(", ");
+
+    var membersList = [fullName];
+    if (data.driver2Name) membersList.push(data.driver2Name);
+    if (data.driver3Name) membersList.push(data.driver3Name);
+    if (data.driver4Name) membersList.push(data.driver4Name);
+
+    var teamMembers = (data.teamMembers && data.teamMembers.length > 0) ? data.teamMembers.join(", ") : membersList.join(", ");
     var championship = data.championship || "";
     var category = data.category || "";
     var utrNumber = (data.utrNumber || "").toString().trim();
     var paymentAmount = data.paymentAmount || 0;
     var paymentStatus = data.paymentStatus || "PENDING";
     var status = data.status || "SUBMITTED";
+    var driverNumber = data.driverNumber || "";
+    var emailStatus = data.emailStatus || "SENT";
+    var driver2Name = data.driver2Name || "";
+    var driver2Phone = data.driver2Phone || "";
+    var driver3Name = data.driver3Name || "";
+    var driver3Phone = data.driver3Phone || "";
+    var driver4Name = data.driver4Name || "";
+    var driver4Phone = data.driver4Phone || "";
 
     var rowValues = [
       entryId,
@@ -77,7 +152,15 @@ function doPost(e) {
       utrNumber,
       paymentAmount,
       paymentStatus,
-      status
+      status,
+      driverNumber,
+      emailStatus,
+      driver2Name,
+      driver2Phone,
+      driver3Name,
+      driver3Phone,
+      driver4Name,
+      driver4Phone
     ];
 
     // ULTRA-STRICT DEDUPLICATION CHECK:
@@ -85,7 +168,7 @@ function doPost(e) {
     var existingRowIndex = -1;
     var lastRow = sheet.getLastRow();
     if (lastRow > 1) {
-      var allData = sheet.getRange(2, 1, lastRow - 1, 17).getValues();
+      var allData = sheet.getRange(2, 1, lastRow - 1, 25).getValues();
       var targetId = entryId.toUpperCase();
       var targetEmail = email.toLowerCase();
       var targetUtr = utrNumber.toUpperCase();
@@ -95,19 +178,16 @@ function doPost(e) {
         var rowEmail = allData[i][3] ? allData[i][3].toString().trim().toLowerCase() : "";
         var rowUtr = allData[i][13] ? allData[i][13].toString().trim().toUpperCase() : "";
 
-        // Match by Entry ID OR by Email + UTR combination
         if (rowId === targetId || (targetEmail !== "" && rowEmail === targetEmail && targetUtr !== "" && rowUtr === targetUtr)) {
-          existingRowIndex = i + 2; // Rows are 1-indexed, header is row 1
+          existingRowIndex = i + 2;
           break;
         }
       }
     }
 
     if (existingRowIndex > -1) {
-      // OVERWRITE EXISTING ROW (Guarantees 0 duplicate rows!)
       sheet.getRange(existingRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
     } else {
-      // APPEND NEW ROW
       sheet.appendRow(rowValues);
     }
 
