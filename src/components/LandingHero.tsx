@@ -182,7 +182,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'POLE POSITION CHALLENGE (Coding)',
       fee: 80,
-      teamSize: 'Maximum 4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Test your coding speed, logical thinking, debugging ability and problem-solving skills through multiple qualifying rounds.',
       rules: [
         'Round 01 Easy Level: 3 Problems · 10 Marks each',
@@ -199,7 +199,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'PIT STRATEGY CHALLENGE (Prompt Engineering)',
       fee: 80,
-      teamSize: 'Individual Driver',
+      teamSize: '1 Driver (Solo Entry)',
       duration: '1 Hour',
       description: 'Get a real-world AI problem statement and craft the most effective prompt to solve it within 1 hour.',
       rules: [
@@ -217,7 +217,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'CONSTRUCTORS GARAGE (Hackathon)',
       fee: 80,
-      teamSize: 'Maximum 4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Build a working prototype for a given problem statement across 3 structured stages.',
       rules: [
         'Stage 1: Blueprint Planning (Problem Analysis, Solution Architecture, Workflow)',
@@ -234,7 +234,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'RADIO COMMUNICATION (Dumb Charades)',
       fee: 50,
-      teamSize: '1–4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'One driver acts like a Formula One engineer communicating through radio signals. Teammates decode the hidden move.',
       rules: [
         'No speaking allowed during transmission.',
@@ -251,7 +251,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'LIGHTS OUT! (Guess Movie in 1 Sec)',
       fee: 50,
-      teamSize: '1–3 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'A one-second movie clip will be displayed. Drivers must identify the movie before other teams.',
       rules: [
         'Movie clip duration is strictly 1.0 second.',
@@ -268,7 +268,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'PIT STOP CHALLENGE (Minute to Win It)',
       fee: 50,
-      teamSize: '1–3 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Complete exciting one-minute tasks inspired by F1 pit stops.',
       rules: [
         'Countdown timer is strictly 60 seconds.',
@@ -285,7 +285,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'TYRE CHANGE CHALLENGE (Bottle Challenge)',
       fee: 50,
-      teamSize: '1–4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'A teamwork challenge inspired by F1 tyre changes. Complete the task in the shortest time.',
       rules: [
         'Sequential station handoffs.',
@@ -302,7 +302,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'TELEMETRY TEST (Typing Competition)',
       fee: 50,
-      teamSize: 'Individual / Team',
+      teamSize: '1 Driver (Solo Entry)',
       description: 'Type the displayed text as accurately and quickly as possible, just like live telemetry data streams.',
       rules: [
         'Real-time live telemetry stream text strings.',
@@ -643,7 +643,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Test your coding speed, logical thinking, debugging ability and problem-solving skills through multiple qualifying rounds.
               </p>
               <div className="text-[9px] sm:text-[10px] text-white flex flex-wrap justify-between gap-1 border-t border-[#22222a] pt-2.5 font-mono">
-                <span className="text-[#8A8A93]">TEAM: Max 4 Drivers</span>
+                <span className="text-[#8A8A93]">TEAM: 2–4 Drivers</span>
                 <span className="text-[#E10600] font-bold">🏆 Pole Position Trophy</span>
               </div>
             </div>
@@ -666,7 +666,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Get a real-world AI problem statement and craft the most effective prompt to solve it within 1 hour.
               </p>
               <div className="text-[9px] sm:text-[10px] text-white flex flex-wrap justify-between gap-1 border-t border-[#22222a] pt-2.5 font-mono">
-                <span className="text-[#8A8A93]">TEAM: Individual Driver (1 Hour)</span>
+                <span className="text-[#8A8A93]">TEAM: 1 Driver (Solo Entry)</span>
                 <span className="text-[#E10600] font-bold">🏆 Strategy Master Trophy</span>
               </div>
             </div>
@@ -689,7 +689,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Build a working prototype for a given problem statement across 3 stages: Blueprint, Prototype, and Presentation.
               </p>
               <div className="text-[9px] sm:text-[10px] text-white flex flex-wrap justify-between gap-1 border-t border-[#22222a] pt-2.5 font-mono">
-                <span className="text-[#8A8A93]">TEAM: Max 4 Drivers</span>
+                <span className="text-[#8A8A93]">TEAM: 2–4 Drivers</span>
                 <span className="text-[#E10600] font-bold">🏆 Constructors Trophy</span>
               </div>
             </div>
@@ -728,7 +728,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 One driver acts like an F1 engineer communicating radio signals; teammates decode the hidden move.
               </p>
               <div className="text-[9px] sm:text-[10px] text-[#8A8A93] border-t border-[#22222a] pt-2 font-mono flex flex-wrap justify-between gap-1">
-                <span>TEAM: 1–4 Drivers</span>
+                <span>TEAM: 2–4 Drivers</span>
                 <span className="text-[#00D2BE] font-bold">🏆 Daytona Medals</span>
               </div>
             </div>
@@ -751,7 +751,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 A 1-second movie clip is displayed. Identify the movie before other teams.
               </p>
               <div className="text-[9px] sm:text-[10px] text-[#8A8A93] border-t border-[#22222a] pt-2 font-mono flex flex-wrap justify-between gap-1">
-                <span>TEAM: 1–3 Drivers</span>
+                <span>TEAM: 2–4 Drivers</span>
                 <span className="text-[#00D2BE] font-bold">🏆 Daytona Medals</span>
               </div>
             </div>
@@ -774,7 +774,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Complete exciting 1-minute tasks inspired by F1 pit stops.
               </p>
               <div className="text-[9px] sm:text-[10px] text-[#8A8A93] border-t border-[#22222a] pt-2 font-mono flex flex-wrap justify-between gap-1">
-                <span>TEAM: 1–3 Drivers</span>
+                <span>TEAM: 2–4 Drivers</span>
                 <span className="text-[#00D2BE] font-bold">🏆 Daytona Medals</span>
               </div>
             </div>
@@ -797,7 +797,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Teamwork challenge inspired by F1 tyre changes. Complete the task in shortest time.
               </p>
               <div className="text-[9px] sm:text-[10px] text-[#8A8A93] border-t border-[#22222a] pt-2 font-mono flex flex-wrap justify-between gap-1">
-                <span>TEAM: 1–4 Drivers</span>
+                <span>TEAM: 2–4 Drivers</span>
                 <span className="text-[#00D2BE] font-bold">🏆 Daytona Medals</span>
               </div>
             </div>
@@ -820,7 +820,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
                 Type displayed text as accurately and quickly as possible, just like live telemetry data streams.
               </p>
               <div className="text-[9px] sm:text-[10px] text-[#8A8A93] border-t border-[#22222a] pt-2 font-mono flex flex-wrap justify-between gap-1">
-                <span>TEAM: Solo / Team</span>
+                <span>TEAM: 1 Driver (Solo Entry)</span>
                 <span className="text-[#00D2BE] font-bold">🏆 Daytona Medals</span>
               </div>
             </div>

@@ -59,7 +59,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'POLE POSITION CHALLENGE (Coding)',
       fee: 80,
-      teamSize: 'Maximum 4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Test your coding speed, logical thinking, debugging ability and problem-solving skills through multiple qualifying rounds.',
       rules: [
         'Round 01 Easy Level: 3 Problems · 10 Marks each',
@@ -76,7 +76,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'PIT STRATEGY CHALLENGE (Prompt Engineering)',
       fee: 80,
-      teamSize: 'Solo Driver Only (1 Driver Entry)',
+      teamSize: '1 Driver (Solo Entry)',
       isSolo: true,
       duration: '1 Hour',
       description: 'Get a real-world AI problem statement and craft the most effective prompt to solve it within 1 hour.',
@@ -95,7 +95,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'ENGINEERING CHAMPIONSHIP',
       categoryName: 'CONSTRUCTORS GARAGE (Hackathon)',
       fee: 80,
-      teamSize: 'Maximum 4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Build a working prototype for a given problem statement across 3 structured stages.',
       rules: [
         'Stage 1: Blueprint Planning (Problem Analysis, Solution Architecture, Workflow)',
@@ -112,7 +112,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'RADIO COMMUNICATION (Dumb Charades)',
       fee: 50,
-      teamSize: '1–4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'One driver acts like a Formula One engineer communicating through radio signals. Teammates decode the hidden move.',
       rules: [
         'No speaking allowed during transmission.',
@@ -129,7 +129,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'LIGHTS OUT! (Guess Movie in 1 Sec)',
       fee: 50,
-      teamSize: '1–3 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'A one-second movie clip will be displayed. Drivers must identify the movie before other teams.',
       rules: [
         'Movie clip duration is strictly 1.0 second.',
@@ -146,7 +146,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'PIT STOP CHALLENGE (Minute to Win It)',
       fee: 50,
-      teamSize: '1–3 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'Complete exciting one-minute tasks inspired by F1 pit stops.',
       rules: [
         'Countdown timer is strictly 60 seconds.',
@@ -163,7 +163,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'TYRE CHANGE CHALLENGE (Bottle Challenge)',
       fee: 50,
-      teamSize: '1–4 Drivers',
+      teamSize: '2 to 4 Drivers',
       description: 'A teamwork challenge inspired by F1 tyre changes. Complete the task in the shortest time.',
       rules: [
         'Sequential station handoffs.',
@@ -180,7 +180,7 @@ export const EventsPage: React.FC<EventsPageProps> = ({ onStartRegistration }) =
       championship: 'DAYTONA CHAMPIONSHIP',
       categoryName: 'TELEMETRY TEST (Typing Competition)',
       fee: 50,
-      teamSize: 'Solo Driver Only (1 Driver Entry)',
+      teamSize: '1 Driver (Solo Entry)',
       isSolo: true,
       description: 'Type the displayed text as accurately and quickly as possible, just like live telemetry data streams.',
       rules: [
