@@ -81,11 +81,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
 
             <button
-              onClick={scrollToEvents}
-              className="px-4 py-2 text-[#8A8A93] hover:text-white hover:bg-[#1f1f28] transition-all flex items-center space-x-1.5 font-bold rounded-xl text-xs uppercase cursor-pointer"
+              onClick={() => setCurrentView('EVENTS')}
+              className={`px-4 py-2 flex items-center space-x-2 transition-all duration-300 font-bold rounded-xl text-xs uppercase ${
+                currentView === 'EVENTS'
+                  ? 'bg-[#E10600] text-white shadow-[0_0_20px_rgba(225,6,0,0.6)]'
+                  : 'text-[#8A8A93] hover:text-white hover:bg-[#1f1f28]'
+              }`}
             >
               <Trophy className="w-3.5 h-3.5 text-[#F5A623]" />
-              <span>8 COMPETITIONS</span>
+              <span>EVENTS &amp; RULES</span>
             </button>
 
             <button
@@ -167,11 +171,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <button
-            onClick={scrollToEvents}
-            className="w-full p-3 text-left font-bold flex items-center space-x-3 rounded-xl text-[#F5A623] bg-[#14141a] hover:bg-[#1f1f28]"
+            onClick={() => {
+              setCurrentView('EVENTS');
+              setMobileMenuOpen(false);
+            }}
+            className={`w-full p-3 text-left font-bold flex items-center space-x-3 rounded-xl ${
+              currentView === 'EVENTS' ? 'bg-[#E10600] text-white' : 'text-[#F5A623] bg-[#14141a]'
+            }`}
           >
             <Trophy className="w-4 h-4 text-[#F5A623]" />
-            <span>8 COMPETITIONS &amp; RULES</span>
+            <span>EVENTS &amp; RULES</span>
           </button>
 
           <button

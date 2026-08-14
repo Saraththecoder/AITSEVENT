@@ -65,6 +65,7 @@ export interface DriverRegistration {
 
 export type AppView = 
   | 'LANDING' 
+  | 'EVENTS'
   | 'REGISTRATION_FORM' 
   | 'REGISTRATION_RECEIVED' 
   | 'STATUS_PAGE' 

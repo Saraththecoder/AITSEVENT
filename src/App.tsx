@@ -13,6 +13,7 @@ import { AdminLogin } from './components/AdminLogin';
 import { AdminDashboard } from './components/AdminDashboard';
 import { EmailTemplates } from './components/EmailTemplates';
 import { F1AudioPlayer } from './components/F1AudioPlayer';
+import { EventsPage } from './components/EventsPage';
 import { submitRegistrationToGoogleSheet } from './services/apiService';
 
 export const App: React.FC = () => {
@@ -137,6 +138,12 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {currentView === 'LANDING' && (
           <LandingHero
+            onStartRegistration={handleStartRegistration}
+          />
+        )}
+
+        {currentView === 'EVENTS' && (
+          <EventsPage
             onStartRegistration={handleStartRegistration}
           />
         )}
