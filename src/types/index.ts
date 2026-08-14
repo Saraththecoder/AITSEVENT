@@ -18,7 +18,9 @@ export type EmailStatus =
 
 export type ChampionshipType = 
   | 'ENGINEERING CHAMPIONSHIP' 
-  | 'DAYTONA CHAMPIONSHIP';
+  | 'DAYTONA CHAMPIONSHIP'
+  | 'PODIUM COMBO (4 Non-Tech Events)'
+  | 'TURBO COMBO (3 Non-Tech Events)';
 
 export type EventCategory = 
   // Technical / Engineering (₹80)
@@ -30,7 +32,10 @@ export type EventCategory =
   | 'LIGHTS OUT! (Guess Movie in 1 Sec)'
   | 'PIT STOP CHALLENGE (Minute to Win It)'
   | 'TYRE CHANGE CHALLENGE (Bottle Challenge)'
-  | 'TELEMETRY TEST (Typing Competition)';
+  | 'TELEMETRY TEST (Typing Competition)'
+  // Combos
+  | 'PODIUM COMBO (4 Non-Tech Events)'
+  | 'TURBO COMBO (3 Non-Tech Events)';
 
 export interface DriverRegistration {
   id: string; // e.g. "FA26-00042"
@@ -60,7 +65,6 @@ export interface DriverRegistration {
 
 export type AppView = 
   | 'LANDING' 
-  | 'EVENT_WORKFLOW'
   | 'REGISTRATION_FORM' 
   | 'REGISTRATION_RECEIVED' 
   | 'STATUS_PAGE' 

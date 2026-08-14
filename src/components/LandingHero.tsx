@@ -32,6 +32,48 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
   const [activeFlowStep, setActiveFlowStep] = useState<number>(0);
   const [startLightsCount, setStartLightsCount] = useState<number>(5);
 
+  // Live F1 Race Weekend Countdown State (Target: August 19, 2026 at 09:00 AM IST)
+  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number }>({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+  const [isTick, setIsTick] = useState(false);
+
+  useEffect(() => {
+    const updateTimer = () => {
+      const now = new Date();
+      // August is 0-indexed in JS (7 = August)
+      const targetTime = new Date(2026, 7, 19, 9, 0, 0).getTime();
+      const diff = targetTime - now.getTime();
+
+      setIsTick(prev => !prev);
+
+      if (diff > 0) {
+        setTimeLeft({
+          days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diff / (1000 * 60)) % 60),
+          seconds: Math.floor((diff / 1000) % 60)
+        });
+      } else {
+        const nextYearTime = new Date(2027, 7, 19, 9, 0, 0).getTime();
+        const diffNext = nextYearTime - now.getTime();
+        setTimeLeft({
+          days: Math.floor(diffNext / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diffNext / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((diffNext / (1000 * 60)) % 60),
+          seconds: Math.floor((diffNext / 1000) % 60)
+        });
+      }
+    };
+
+    updateTimer();
+    const timer = setInterval(updateTimer, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Animated start lights sequence
   useEffect(() => {
     const timer = setInterval(() => {
@@ -301,7 +343,7 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
               <Calendar className="w-4 h-4 text-[#00D2BE] animate-pulse" />
               <span className="text-[#8A8A93] font-mono text-[10px]">RACE WEEKEND:</span>
               <span className="text-white font-mono font-bold text-xs tracking-wider">
-                MARCH <strong className="text-[#E10600]">19TH</strong> &amp; <strong className="text-[#00D2BE]">20TH</strong>, 2026
+                AUGUST <strong className="text-[#E10600]">19TH</strong> &amp; <strong className="text-[#00D2BE]">20TH</strong>, 2026
               </span>
             </div>
           </div>
@@ -310,45 +352,45 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
           <div className="relative my-auto py-8 sm:py-16 flex items-center justify-center">
             
             {/* Ambient Background Radial Halos */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[500px] h-[500px] bg-[#E10600]/15 rounded-full blur-[150px] animate-pulse-glow" />
-              <div className="w-[400px] h-[400px] bg-[#00D2BE]/10 rounded-full blur-[130px] pointer-events-none" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+              <div className="w-full max-w-[300px] sm:max-w-[500px] h-[300px] sm:h-[500px] bg-[#E10600]/15 rounded-full blur-[120px] sm:blur-[150px] animate-pulse-glow" />
+              <div className="w-full max-w-[260px] sm:max-w-[400px] h-[260px] sm:h-[400px] bg-[#00D2BE]/10 rounded-full blur-[100px] sm:blur-[130px] pointer-events-none" />
             </div>
 
             {/* Kinetic Typography Grid (FORMULA-AI 2026 GRAND PRIX Content) */}
-            <div className="w-full relative text-white font-display font-black tracking-tighter uppercase select-none z-10 leading-none space-y-2 sm:space-y-4">
+            <div className="w-full relative text-white font-display font-black tracking-tighter uppercase select-none z-10 leading-none space-y-1 sm:space-y-4 max-w-full overflow-hidden">
               
               {/* Row 1: FORMULA ... AI */}
               <div className="flex justify-between items-baseline">
-                <span className="text-5xl sm:text-7xl lg:text-9xl text-white opacity-95">FORMULA</span>
-                <span className="text-5xl sm:text-7xl lg:text-9xl text-[#E10600] opacity-95">AI</span>
+                <span className="text-3xl sm:text-7xl lg:text-9xl text-white opacity-95">FORMULA</span>
+                <span className="text-3xl sm:text-7xl lg:text-9xl text-[#E10600] opacity-95">AI</span>
               </div>
 
               {/* Row 2: 2026 GRAND PRIX */}
-              <div className="flex justify-center items-center py-2 sm:py-4">
-                <span className="text-6xl sm:text-8xl lg:text-[11rem] text-transparent bg-clip-text bg-gradient-to-r from-[#E10600] via-white to-[#00D2BE] tracking-widest drop-shadow-2xl animate-text-shine">
+              <div className="flex justify-center items-center py-1 sm:py-4">
+                <span className="text-4xl sm:text-8xl lg:text-[11rem] text-transparent bg-clip-text bg-gradient-to-r from-[#E10600] via-white to-[#00D2BE] tracking-widest drop-shadow-2xl animate-text-shine">
                   2026
                 </span>
               </div>
 
               {/* Row 3: GRAND ... PRIX */}
               <div className="flex justify-between items-center">
-                <span className="text-5xl sm:text-7xl lg:text-9xl text-white">GRAND</span>
+                <span className="text-3xl sm:text-7xl lg:text-9xl text-white">GRAND</span>
                 
                 {/* Tagline Subtitle & Event Dates on right side */}
                 <div className="hidden lg:block max-w-xs text-[10px] font-data text-[#8A8A93] normal-case tracking-normal leading-relaxed text-right border-r-2 border-[#E10600] pr-3">
-                  <span className="text-[#00D2BE] font-mono font-bold block uppercase text-xs">🏁 MARCH 19 &amp; 20, 2026</span>
+                  <span className="text-[#00D2BE] font-mono font-bold block uppercase text-xs">🏁 AUGUST 19 &amp; 20, 2026</span>
                   <span className="text-white font-bold block">"MORE THAN A FEST. A CHAMPIONSHIP."</span>
                   Compete across 8 technical &amp; non-technical events.
                 </div>
 
-                <span className="text-5xl sm:text-7xl lg:text-9xl text-[#00D2BE]">PRIX</span>
+                <span className="text-3xl sm:text-7xl lg:text-9xl text-[#00D2BE]">PRIX</span>
               </div>
 
               {/* Row 4: ENGINEERING CHAMPIONSHIP */}
-              <div className="flex justify-between items-baseline pt-2">
-                <span className="text-4xl sm:text-6xl lg:text-8xl text-white">ENGINEERING</span>
-                <span className="text-4xl sm:text-6xl lg:text-8xl text-[#F5A623]">DAYTONA</span>
+              <div className="flex justify-between items-baseline pt-1">
+                <span className="text-2xl sm:text-6xl lg:text-8xl text-white">ENGINEERING</span>
+                <span className="text-2xl sm:text-6xl lg:text-8xl text-[#F5A623]">DAYTONA</span>
               </div>
 
             </div>
@@ -380,6 +422,8 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
             </div>
 
           </div>
+
+
 
           {/* Bottom Championship Action Footer */}
           <div className="border-t border-[#1f1f28] pt-6 flex flex-col sm:flex-row items-center justify-center sm:justify-between gap-4 z-20 font-data">
@@ -656,6 +700,460 @@ export const LandingHero: React.FC<LandingHeroProps> = ({ onStartRegistration })
           </div>
 
         </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 3. STANDALONE LIVE F1 RACE WEEKEND COUNTDOWN CLOCK SECTION */}
+      {/* ========================================================================= */}
+      <section id="countdown" className="py-12 sm:py-16 px-3 sm:px-6 max-w-7xl mx-auto font-data overflow-hidden">
+        
+        <div className="bg-[#0b0b0e] border-2 border-[#E10600] p-6 sm:p-10 rounded-[32px] shadow-[0_0_60px_rgba(225,6,0,0.4)] relative overflow-hidden space-y-8 group hover:border-[#00D2BE] transition-all duration-700">
+          
+          {/* Ambient Background Radial Halos */}
+          <div className="absolute top-0 left-1/3 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-[#E10600]/15 rounded-full blur-[130px] pointer-events-none" />
+          <div className="absolute bottom-0 right-1/3 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-[#00D2BE]/15 rounded-full blur-[130px] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(#00D2BE_1px,transparent_1px)] [background-size:24px_24px] opacity-10 pointer-events-none" />
+
+          {/* Section Header */}
+          <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-[#22222a] pb-6 gap-4 text-center md:text-left relative z-10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 bg-[#14141a] border border-[#E10600] px-3.5 py-1 rounded-full text-xs font-mono text-[#E10600] shadow-[0_0_15px_rgba(225,6,0,0.4)]">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#E10600] animate-ping" />
+                <span className="font-bold tracking-widest uppercase">⏱️ GREEN FLAG TELEMETRY COUNTDOWN</span>
+              </div>
+
+              <h3 className="font-display text-2xl sm:text-4xl md:text-5xl font-black uppercase text-white tracking-wider">
+                MONZA CIRCUIT <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00D2BE] to-white">RACE WEEKEND</span> CLOCK
+              </h3>
+            </div>
+
+            <div className="bg-[#14141a] border border-[#00D2BE]/50 px-4 py-2 rounded-2xl shadow-xl text-center self-center md:self-auto flex items-center space-x-3">
+              <Clock className="w-5 h-5 text-[#00D2BE] animate-spin" />
+              <div className="text-left">
+                <span className="text-[10px] text-[#8A8A93] font-mono block">GREEN FLAG START DATE</span>
+                <span className="font-display text-xs sm:text-sm font-black text-[#00D2BE] tracking-wider uppercase">
+                  AUGUST 19, 2026 · 09:00 AM IST
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 4 LED Digital Countdown Cards Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 relative z-10 text-center">
+            
+            {/* DAYS */}
+            <div className="bg-[#14141a] border-2 border-[#22222a] hover:border-[#00D2BE] p-4 sm:p-7 rounded-2xl transition-all duration-300 group/card transform hover:-translate-y-1 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black font-display text-white tracking-tight drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]">
+                {String(timeLeft.days).padStart(2, '0')}
+              </div>
+              <div className="pt-2 mt-2 border-t border-[#22222a] flex items-center justify-between text-xs font-mono">
+                <span className="text-[#00D2BE] font-bold tracking-widest">DAYS</span>
+                <span className="text-[#8A8A93] text-[10px]">UNTIL RACE</span>
+              </div>
+            </div>
+
+            {/* HOURS */}
+            <div className="bg-[#14141a] border-2 border-[#22222a] hover:border-[#00D2BE] p-4 sm:p-7 rounded-2xl transition-all duration-300 group/card transform hover:-translate-y-1 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black font-display text-[#00D2BE] tracking-tight drop-shadow-[0_0_20px_rgba(0,210,190,0.6)]">
+                {String(timeLeft.hours).padStart(2, '0')}
+              </div>
+              <div className="pt-2 mt-2 border-t border-[#22222a] flex items-center justify-between text-xs font-mono">
+                <span className="text-[#00D2BE] font-bold tracking-widest">HOURS</span>
+                <span className="text-[#8A8A93] text-[10px]">REMAINING</span>
+              </div>
+            </div>
+
+            {/* MINUTES */}
+            <div className="bg-[#14141a] border-2 border-[#22222a] hover:border-[#F5A623] p-4 sm:p-7 rounded-2xl transition-all duration-300 group/card transform hover:-translate-y-1 shadow-[0_0_20px_rgba(0,0,0,0.8)]">
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black font-display text-[#F5A623] tracking-tight drop-shadow-[0_0_20px_rgba(245,166,35,0.6)]">
+                {String(timeLeft.minutes).padStart(2, '0')}
+              </div>
+              <div className="pt-2 mt-2 border-t border-[#22222a] flex items-center justify-between text-xs font-mono">
+                <span className="text-[#F5A623] font-bold tracking-widest">MINUTES</span>
+                <span className="text-[#8A8A93] text-[10px]">REMAINING</span>
+              </div>
+            </div>
+
+            {/* SECONDS */}
+            <div className={`bg-[#14141a] border-2 p-4 sm:p-7 rounded-2xl transition-all duration-300 group/card transform shadow-[0_0_25px_rgba(225,6,0,0.5)] ${
+              isTick ? 'border-[#E10600] scale-[1.03]' : 'border-[#E10600]/60 scale-100'
+            }`}>
+              <div className="text-4xl sm:text-6xl lg:text-7xl font-black font-display text-[#E10600] tracking-tight drop-shadow-[0_0_25px_rgba(225,6,0,0.9)]">
+                {String(timeLeft.seconds).padStart(2, '0')}
+              </div>
+              <div className="pt-2 mt-2 border-t border-[#22222a] flex items-center justify-between text-xs font-mono">
+                <span className="text-[#E10600] font-bold tracking-widest">SECONDS</span>
+                <span className={`text-[10px] font-bold transition-colors duration-200 ${isTick ? 'text-[#E10600]' : 'text-[#00D2BE]'}`}>
+                  ● LIVE TICK
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Bottom Telemetry Status Pill & Registration Button */}
+          <div className="pt-4 border-t border-[#22222a] flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10 text-xs font-mono">
+            <div className="text-[#8A8A93] flex items-center space-x-2">
+              <span className="w-2 h-2 rounded-full bg-[#00D2BE] animate-ping" />
+              <span>MONZA TELEMETRY STATUS: PADDOCK TURNSTILES OPEN ON AUGUST 19TH</span>
+            </div>
+
+            <button
+              onClick={() => onStartRegistration()}
+              className="w-full sm:w-auto px-7 py-3 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider transition-all rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transform hover:scale-105"
+            >
+              <span>LOCK YOUR DRIVER GRID SLOT NOW</span>
+              <ChevronRight className="w-4 h-4 text-[#00D2BE]" />
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 3.5 EXCLUSIVE COMBO OFFERS SECTION: PODIUM & TURBO COMBOS */}
+      {/* ========================================================================= */}
+      <section className="py-12 sm:py-20 px-3 sm:px-6 max-w-7xl mx-auto space-y-8 sm:space-y-12 overflow-hidden">
+        
+        {/* Header */}
+        <div className="text-center space-y-3 px-2">
+          <div className="inline-flex items-center space-x-2 bg-[#14141a] border-2 border-[#00D2BE] px-4 py-1.5 rounded-full text-xs font-mono text-[#00D2BE] shadow-[0_0_20px_rgba(0,210,190,0.4)]">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#00D2BE] animate-ping" />
+            <span className="font-bold uppercase tracking-wider">🏁 COMBO OFFERS · RACE MORE. SAVE MORE.</span>
+          </div>
+          <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-black uppercase text-white tracking-wider">
+            EXCLUSIVE <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00D2BE] to-white">RACE PACKAGES</span>
+          </h2>
+          <p className="text-xs sm:text-sm text-[#8A8A93] max-w-2xl mx-auto font-data leading-relaxed">
+            Choose your race package and experience multiple non-tech events at an exclusive combo price.
+          </p>
+        </div>
+
+        {/* 2 COMBO CARDS GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto font-data">
+          
+          {/* 🏎️ PODIUM COMBO CARD */}
+          <div className="bg-[#0b0b0e] border-2 border-[#22C55E] p-6 sm:p-8 rounded-[32px] shadow-[0_0_40px_rgba(34,197,94,0.3)] hover:shadow-[0_0_60px_rgba(34,197,94,0.5)] transition-all duration-500 relative overflow-hidden flex flex-col justify-between group transform hover:-translate-y-1">
+            
+            {/* Top Badge Overlay */}
+            <div className="absolute top-0 right-0 bg-[#22C55E] text-[#08080A] font-display font-black text-xs px-5 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg flex items-center space-x-1">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>25% OFF</span>
+            </div>
+
+            <div className="space-y-6">
+              
+              {/* Title & Subtitle */}
+              <div>
+                <div className="flex items-center space-x-2 text-[#22C55E] text-xs font-mono font-bold uppercase mb-1">
+                  <span>🏎️ MULTI-EVENT PASS</span>
+                </div>
+                <h3 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-wider">
+                  PODIUM COMBO
+                </h3>
+                <span className="text-xs font-mono text-[#00D2BE] font-bold bg-[#00D2BE]/10 border border-[#00D2BE]/30 px-3 py-1 rounded-full inline-block mt-2">
+                  4 NON-TECH EVENTS
+                </span>
+              </div>
+
+              {/* Pricing Display */}
+              <div className="bg-[#14141a] border border-[#22C55E]/40 p-4 sm:p-5 rounded-2xl flex items-baseline justify-between">
+                <div>
+                  <div className="flex items-baseline space-x-3">
+                    <span className="font-display text-4xl sm:text-5xl font-black text-[#22C55E] drop-shadow-[0_0_15px_rgba(34,197,94,0.6)]">
+                      ₹150
+                    </span>
+                    <span className="line-through text-lg font-mono text-[#8A8A93]">
+                      ₹200
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-[#8A8A93] font-mono block mt-1">SINGLE REGISTRATION FOR ALL 4 EVENTS</span>
+                </div>
+
+                <span className="bg-[#22C55E]/20 text-[#22C55E] border border-[#22C55E] text-xs font-mono font-bold px-3 py-1 rounded-xl">
+                  SAVE ₹50
+                </span>
+              </div>
+
+              {/* Feature Bullets */}
+              <ul className="space-y-3 text-xs sm:text-sm text-white font-mono border-t border-[#22222a] pt-4">
+                <li className="flex items-center space-x-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] flex-shrink-0" />
+                  <span>Choose any 4 non-tech events</span>
+                </li>
+                <li className="flex items-center space-x-2.5 text-[#8A8A93]">
+                  <span className="text-[#E10600] font-bold flex-shrink-0">🚫</span>
+                  <span className="line-through">Telemetry (Typing Test) excluded</span>
+                </li>
+                <li className="flex items-center space-x-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#22C55E] flex-shrink-0" />
+                  <span>One combo registration</span>
+                </li>
+                <li className="flex items-center space-x-2.5 text-[#00D2BE] font-bold">
+                  <Sparkles className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
+                  <span>Maximum value for multi-event racers</span>
+                </li>
+              </ul>
+
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-6">
+              <button
+                onClick={() => onStartRegistration('PODIUM COMBO (4 Non-Tech Events)', 'RADIO COMMUNICATION (Dumb Charades)')}
+                className="w-full py-4 bg-gradient-to-r from-[#22C55E] via-[#16a34a] to-[#22C55E] hover:from-[#16a34a] hover:to-[#22C55E] text-[#08080A] font-display text-xs sm:text-sm font-black uppercase tracking-wider transition-all rounded-2xl shadow-[0_0_25px_rgba(34,197,94,0.7)] flex items-center justify-center space-x-2 transform hover:scale-[1.02]"
+              >
+                <span>GRAB THIS COMBO →</span>
+              </button>
+            </div>
+
+          </div>
+
+          {/* ⚡ TURBO COMBO CARD */}
+          <div className="bg-[#0b0b0e] border-2 border-[#00D2BE] p-6 sm:p-8 rounded-[32px] shadow-[0_0_40px_rgba(0,210,190,0.3)] hover:shadow-[0_0_60px_rgba(0,210,190,0.5)] transition-all duration-500 relative overflow-hidden flex flex-col justify-between group transform hover:-translate-y-1">
+            
+            {/* Top Badge Overlay */}
+            <div className="absolute top-0 right-0 bg-[#00D2BE] text-[#08080A] font-display font-black text-xs px-5 py-2 rounded-bl-2xl uppercase tracking-widest shadow-lg flex items-center space-x-1">
+              <Zap className="w-3.5 h-3.5" />
+              <span>20% OFF</span>
+            </div>
+
+            <div className="space-y-6">
+              
+              {/* Title & Subtitle */}
+              <div>
+                <div className="flex items-center space-x-2 text-[#00D2BE] text-xs font-mono font-bold uppercase mb-1">
+                  <span>⚡ TRIPLE TRIPLE PASS</span>
+                </div>
+                <h3 className="font-display text-3xl sm:text-4xl font-black text-white uppercase tracking-wider">
+                  TURBO COMBO
+                </h3>
+                <span className="text-xs font-mono text-[#F5A623] font-bold bg-[#F5A623]/10 border border-[#F5A623]/30 px-3 py-1 rounded-full inline-block mt-2">
+                  ANY 3 NON-TECH EVENTS
+                </span>
+              </div>
+
+              {/* Pricing Display */}
+              <div className="bg-[#14141a] border border-[#00D2BE]/40 p-4 sm:p-5 rounded-2xl flex items-baseline justify-between">
+                <div>
+                  <div className="flex items-baseline space-x-3">
+                    <span className="font-display text-4xl sm:text-5xl font-black text-[#00D2BE] drop-shadow-[0_0_15px_rgba(0,210,190,0.6)]">
+                      ₹120
+                    </span>
+                    <span className="line-through text-lg font-mono text-[#8A8A93]">
+                      ₹150
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-[#8A8A93] font-mono block mt-1">SINGLE REGISTRATION FOR ANY 3 EVENTS</span>
+                </div>
+
+                <span className="bg-[#00D2BE]/20 text-[#00D2BE] border border-[#00D2BE] text-xs font-mono font-bold px-3 py-1 rounded-xl">
+                  SAVE ₹30
+                </span>
+              </div>
+
+              {/* Feature Bullets */}
+              <ul className="space-y-3 text-xs sm:text-sm text-white font-mono border-t border-[#22222a] pt-4">
+                <li className="flex items-center space-x-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
+                  <span>Choose any 3 non-tech events</span>
+                </li>
+                <li className="flex items-center space-x-2.5 text-[#8A8A93]">
+                  <span className="text-[#E10600] font-bold flex-shrink-0">🚫</span>
+                  <span className="line-through">Telemetry (Typing Test) excluded</span>
+                </li>
+                <li className="flex items-center space-x-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-[#00D2BE] flex-shrink-0" />
+                  <span>One combo registration</span>
+                </li>
+                <li className="flex items-center space-x-2.5 text-[#F5A623] font-bold">
+                  <Zap className="w-4 h-4 text-[#F5A623] flex-shrink-0" />
+                  <span>Perfect for a quick triple-event run</span>
+                </li>
+              </ul>
+
+            </div>
+
+            {/* CTA Button */}
+            <div className="pt-6">
+              <button
+                onClick={() => onStartRegistration('TURBO COMBO (3 Non-Tech Events)', 'RADIO COMMUNICATION (Dumb Charades)')}
+                className="w-full py-4 bg-gradient-to-r from-[#00D2BE] via-[#00a394] to-[#00D2BE] hover:from-[#00a394] hover:to-[#00D2BE] text-[#08080A] font-display text-xs sm:text-sm font-black uppercase tracking-wider transition-all rounded-2xl shadow-[0_0_25px_rgba(0,210,190,0.7)] flex items-center justify-center space-x-2 transform hover:scale-[1.02]"
+              >
+                <span>CHOOSE YOUR EVENTS →</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* ========================================================================= */}
+        {/* REDESIGNED: YOUR RACE. YOUR EVENTS. YOUR CHOICE. RACE PROTOCOL ROADMAP */}
+        {/* ========================================================================= */}
+        <div className="max-w-6xl mx-auto pt-6 font-data relative">
+          
+          <div className="bg-[#0b0b0e] border-2 border-[#E10600] p-6 sm:p-12 rounded-[36px] shadow-[0_0_60px_rgba(225,6,0,0.4)] relative overflow-hidden space-y-8 group hover:border-[#00D2BE] transition-all duration-700">
+            
+            {/* Ambient Background Radial Glowing Laser Trails */}
+            <div className="absolute top-0 left-1/4 w-[400px] h-[400px] bg-[#E10600]/15 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-[#00D2BE]/15 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(#00D2BE_1px,transparent_1px)] [background-size:32px_32px] opacity-10 pointer-events-none" />
+
+            {/* Top Race Control Header Bar */}
+            <div className="flex flex-col sm:flex-row items-center justify-between border-b border-[#22222a] pb-6 gap-4 text-center sm:text-left relative z-10">
+              
+              <div className="space-y-1">
+                <div className="inline-flex items-center space-x-2 bg-[#14141a] border border-[#E10600] px-3.5 py-1 rounded-full text-xs font-mono text-[#E10600] shadow-[0_0_15px_rgba(225,6,0,0.4)]">
+                  <span className="w-2 h-2 rounded-full bg-[#E10600] animate-ping" />
+                  <span className="font-bold tracking-widest uppercase">🏁 CHAMPIONSHIP PROTOCOL DIRECTIVE</span>
+                </div>
+                
+                <h3 className="font-display text-2xl sm:text-4xl md:text-5xl font-black uppercase text-white tracking-wider">
+                  YOUR RACE. <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-[#00D2BE] to-white">YOUR EVENTS.</span> YOUR CHOICE.
+                </h3>
+              </div>
+
+              {/* Formula-AI Motto Chip */}
+              <div className="bg-[#14141a] border border-[#00D2BE]/50 px-4 py-2 rounded-2xl shadow-xl text-center self-center sm:self-auto">
+                <span className="text-[10px] text-[#8A8A93] font-mono block">OFFICIAL MOTTO</span>
+                <span className="font-display text-xs font-black text-[#00D2BE] tracking-widest uppercase">
+                  FORMULA-AI · THINK BEYOND LIMITS
+                </span>
+              </div>
+
+            </div>
+
+            {/* 4-STAGE INTERACTIVE PROTOCOL CARDS GRID */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
+              
+              {/* STEP 01 */}
+              <div className="bg-[#14141a] border border-[#22222a] hover:border-[#E10600] p-5 rounded-2xl space-y-3 transition-all duration-300 group/card transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(225,6,0,0.4)] relative overflow-hidden flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold bg-[#E10600]/20 text-[#E10600] px-2.5 py-0.5 rounded border border-[#E10600]/30">
+                      STEP 01
+                    </span>
+                    <Trophy className="w-4 h-4 text-[#E10600] group-hover/card:scale-125 transition-transform" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-white uppercase tracking-wider group-hover/card:text-[#E10600] transition-colors">
+                      PICK YOUR EVENTS
+                    </h4>
+                    <p className="text-[11px] text-[#8A8A93] mt-1 leading-relaxed">
+                      Choose Engineering track, Daytona track, or Podium &amp; Turbo Combo packages.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-[#22222a] text-[10px] font-mono text-[#00D2BE] font-bold flex items-center justify-between">
+                  <span>SELECT TRACK</span>
+                  <span>→</span>
+                </div>
+              </div>
+
+              {/* STEP 02 */}
+              <div className="bg-[#14141a] border border-[#22222a] hover:border-[#00D2BE] p-5 rounded-2xl space-y-3 transition-all duration-300 group/card transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(0,210,190,0.4)] relative overflow-hidden flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold bg-[#00D2BE]/20 text-[#00D2BE] px-2.5 py-0.5 rounded border border-[#00D2BE]/30">
+                      STEP 02
+                    </span>
+                    <Shield className="w-4 h-4 text-[#00D2BE] group-hover/card:scale-125 transition-transform" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-white uppercase tracking-wider group-hover/card:text-[#00D2BE] transition-colors">
+                      REGISTER DRIVER
+                    </h4>
+                    <p className="text-[11px] text-[#8A8A93] mt-1 leading-relaxed">
+                      Enter team squad details and submit your 12-digit transaction ID.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-[#22222a] text-[10px] font-mono text-[#00D2BE] font-bold flex items-center justify-between">
+                  <span>INPUT TELEMETRY</span>
+                  <span>→</span>
+                </div>
+              </div>
+
+              {/* STEP 03 */}
+              <div className="bg-[#14141a] border border-[#22222a] hover:border-[#22C55E] p-5 rounded-2xl space-y-3 transition-all duration-300 group/card transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(34,197,94,0.4)] relative overflow-hidden flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold bg-[#22C55E]/20 text-[#22C55E] px-2.5 py-0.5 rounded border border-[#22C55E]/30">
+                      STEP 03
+                    </span>
+                    <Gauge className="w-4 h-4 text-[#22C55E] group-hover/card:scale-125 transition-transform" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-white uppercase tracking-wider group-hover/card:text-[#22C55E] transition-colors">
+                      HIT THE TRACK
+                    </h4>
+                    <p className="text-[11px] text-[#8A8A93] mt-1 leading-relaxed">
+                      Get your FIA Driver E-Pass and scan QR code at turnstile entry gates.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-[#22222a] text-[10px] font-mono text-[#22C55E] font-bold flex items-center justify-between">
+                  <span>SCAN E-PASS</span>
+                  <span>→</span>
+                </div>
+              </div>
+
+              {/* STEP 04 */}
+              <div className="bg-[#14141a] border border-[#22222a] hover:border-[#F5A623] p-5 rounded-2xl space-y-3 transition-all duration-300 group/card transform hover:-translate-y-1 hover:shadow-[0_0_25px_rgba(245,166,35,0.4)] relative overflow-hidden flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-mono font-bold bg-[#F5A623]/20 text-[#F5A623] px-2.5 py-0.5 rounded border border-[#F5A623]/30">
+                      STEP 04
+                    </span>
+                    <Zap className="w-4 h-4 text-[#F5A623] group-hover/card:scale-125 transition-transform" />
+                  </div>
+
+                  <div>
+                    <h4 className="font-display text-sm font-bold text-white uppercase tracking-wider group-hover/card:text-[#F5A623] transition-colors">
+                      RACE BEYOND LIMITS
+                    </h4>
+                    <p className="text-[11px] text-[#8A8A93] mt-1 leading-relaxed">
+                      Outpace competition, claim official FIA trophies, medals &amp; glory.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-[#22222a] text-[10px] font-mono text-[#F5A623] font-bold flex items-center justify-between">
+                  <span>PODIUM VICTORY</span>
+                  <span>🏆</span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Bottom Quick Action Callout */}
+            <div className="pt-4 border-t border-[#22222a] flex flex-col sm:flex-row items-center justify-between gap-4 relative z-10">
+              <div className="text-xs text-[#8A8A93] font-mono flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-[#00D2BE] animate-ping" />
+                <span>READY TO RACE AT MONZA NATIONAL CIRCUIT?</span>
+              </div>
+
+              <button
+                onClick={() => onStartRegistration()}
+                className="w-full sm:w-auto px-7 py-3 bg-[#E10600] hover:bg-[#ff1a1a] text-white font-display text-xs font-bold uppercase tracking-wider transition-all rounded-xl shadow-[0_0_20px_rgba(225,6,0,0.6)] flex items-center justify-center space-x-2 transform hover:scale-105"
+              >
+                <span>REGISTER FOR YOUR RACE NOW</span>
+                <ChevronRight className="w-4 h-4 text-[#00D2BE]" />
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+
       </section>
 
       {/* ========================================================================= */}

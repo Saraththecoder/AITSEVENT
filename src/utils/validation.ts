@@ -35,11 +35,11 @@ export const validatePhone = (phone: string): boolean => {
 
 /**
  * Validates Bank Deposit 12-Digit UTR / Transaction Reference Number.
+ * Must be strictly 12 numeric digits.
  */
 export const validateUtr = (utr: string): boolean => {
-  const clean = sanitizeInput(utr);
-  // Must be at least 10-16 alphanumeric characters without spaces
-  return clean.length >= 8 && /^[a-zA-Z0-9]+$/.test(clean);
+  const clean = sanitizeInput(utr).trim();
+  return /^\d{12}$/.test(clean);
 };
 
 /**

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppView } from '../types';
-import { Flag, UserCheck, LayoutDashboard, LogOut, ChevronRight, Trophy, Compass, Menu, X, Radio } from 'lucide-react';
+import { Flag, UserCheck, LayoutDashboard, LogOut, ChevronRight, Trophy, Menu, X, Radio } from 'lucide-react';
 
 interface NavbarProps {
   currentView: AppView;
@@ -32,21 +32,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               setCurrentView('LANDING');
               setMobileMenuOpen(false);
             }}
-            className="flex items-center space-x-3 cursor-pointer group"
+            className="flex items-center space-x-2 sm:space-x-3 cursor-pointer group flex-shrink-0"
           >
-            <div className="w-10 h-10 bg-[#14141a] border-2 border-[#E10600] group-hover:border-[#00D2BE] flex items-center justify-center font-display font-black text-lg text-[#E10600] group-hover:text-[#00D2BE] transition-all shadow-[0_0_20px_rgba(225,6,0,0.5)] rounded-xl transform group-hover:scale-105">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#14141a] border-2 border-[#E10600] group-hover:border-[#00D2BE] flex items-center justify-center font-display font-black text-sm sm:text-lg text-[#E10600] group-hover:text-[#00D2BE] transition-all shadow-[0_0_20px_rgba(225,6,0,0.5)] rounded-xl flex-shrink-0">
               F1
             </div>
             <div>
-              <div className="font-display text-base sm:text-lg font-black tracking-wider text-white flex items-center space-x-2">
+              <div className="font-display text-sm sm:text-lg font-black tracking-wider text-white flex items-center space-x-1.5 sm:space-x-2">
                 <span>FORMULA-AI</span>
-                <span className="text-[10px] font-mono bg-[#E10600] text-white px-2 py-0.5 font-bold rounded shadow-[0_0_8px_#E10600]">
+                <span className="text-[9px] sm:text-[10px] font-mono bg-[#E10600] text-white px-1.5 py-0.5 font-bold rounded shadow-[0_0_8px_#E10600]">
                   2026
                 </span>
               </div>
-              <div className="text-[9px] text-[#00D2BE] font-mono tracking-widest uppercase flex items-center space-x-1.5">
+              <div className="text-[8px] sm:text-[9px] text-[#00D2BE] font-mono tracking-widest uppercase flex items-center space-x-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00D2BE] animate-ping" />
-                <span>MONZA GRAND PRIX PADDOCK</span>
+                <span className="truncate max-w-[130px] sm:max-w-none">MONZA GRAND PRIX</span>
               </div>
             </div>
           </div>
@@ -64,18 +64,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Flag className="w-3.5 h-3.5" />
               <span>HOME</span>
-            </button>
-
-            <button
-              onClick={() => setCurrentView('EVENT_WORKFLOW')}
-              className={`px-4 py-2 flex items-center space-x-2 transition-all duration-300 font-bold rounded-xl text-xs uppercase ${
-                currentView === 'EVENT_WORKFLOW'
-                  ? 'bg-[#00D2BE] text-[#08080A] shadow-[0_0_20px_rgba(0,210,190,0.8)] font-black'
-                  : 'text-[#8A8A93] hover:text-white hover:bg-[#1f1f28]'
-              }`}
-            >
-              <Compass className="w-3.5 h-3.5" />
-              <span>EVENT FLOW</span>
             </button>
 
             <a
@@ -129,14 +117,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Right Primary Action & Mobile Menu Toggle */}
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
             <button
               onClick={() => setCurrentView('REGISTRATION_FORM')}
-              className="group relative inline-flex items-center justify-center bg-gradient-to-r from-[#E10600] via-[#ff261b] to-[#E10600] text-white px-5 py-2.5 font-display text-xs font-black tracking-wider uppercase transition-all duration-300 rounded-xl shadow-[0_0_25px_rgba(225,6,0,0.7)] hover:shadow-[0_0_40px_rgba(0,210,190,0.8)] border border-white/80 overflow-hidden transform hover:scale-105"
+              className="group relative inline-flex items-center justify-center bg-gradient-to-r from-[#E10600] via-[#ff261b] to-[#E10600] text-white px-3 sm:px-5 py-2 sm:py-2.5 font-display text-[10px] sm:text-xs font-black tracking-wider uppercase transition-all duration-300 rounded-xl shadow-[0_0_25px_rgba(225,6,0,0.7)] hover:shadow-[0_0_40px_rgba(0,210,190,0.8)] border border-white/80 overflow-hidden transform hover:scale-105 flex-shrink-0"
             >
-              <span className="w-2 h-2 rounded-full bg-[#00D2BE] animate-ping mr-2" />
+              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#00D2BE] animate-ping mr-1.5" />
               <span>REGISTER DRIVER NOW</span>
-              <ChevronRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform text-[#00D2BE]" />
+              <ChevronRight className="w-3.5 h-3.5 ml-1 group-hover:translate-x-1 transition-transform text-[#00D2BE]" />
             </button>
 
             {/* Mobile Menu Toggle Button */}
@@ -165,19 +153,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Flag className="w-4 h-4" />
             <span>HOME</span>
-          </button>
-
-          <button
-            onClick={() => {
-              setCurrentView('EVENT_WORKFLOW');
-              setMobileMenuOpen(false);
-            }}
-            className={`w-full p-3 text-left font-bold flex items-center space-x-3 rounded-xl ${
-              currentView === 'EVENT_WORKFLOW' ? 'bg-[#00D2BE] text-[#08080A]' : 'text-[#8A8A93] bg-[#14141a]'
-            }`}
-          >
-            <Compass className="w-4 h-4" />
-            <span>EVENT FLOW PAGE</span>
           </button>
 
           <button

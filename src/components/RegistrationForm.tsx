@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { DriverRegistration, ChampionshipType, EventCategory } from '../types';
-import { User, Mail, Phone, Building, Flag, CheckCircle2, CreditCard, RadioTower, Shield, Gauge, Sparkles, Check, ChevronRight, Users, UserPlus, UserCheck, Crown, Zap, Award } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
+import { User, Mail, Phone, Building, Flag, CheckCircle2, CreditCard, RadioTower, Shield, Gauge, Sparkles, Check, ChevronRight, Users, UserPlus, UserCheck, Crown, Zap, Award, Copy, ExternalLink, QrCode, Smartphone, ArrowUpRight } from 'lucide-react';
 import { sanitizeInput, validateEmail, validatePhone, validateUtr, validateFullName } from '../utils/validation';
 
 interface RegistrationFormProps {
@@ -17,6 +18,30 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   initialCategory
 }) => {
   const [teamSizeCount, setTeamSizeCount] = useState<number>(2); // Default to 2 Drivers Team (2 to 4 limit)
+  const [copiedUpi, setCopiedUpi] = useState(false);
+  const [turboEvents, setTurboEvents] = useState<string[]>([
+    'RADIO COMMUNICATION (Dumb Charades)',
+    'LIGHTS OUT! (Guess Movie in 1 Sec)',
+    'PIT STOP CHALLENGE (Minute to Win It)'
+  ]);
+
+  const toggleTurboEvent = (eventName: string) => {
+    if (turboEvents.includes(eventName)) {
+      if (turboEvents.length > 1) {
+        setTurboEvents(prev => prev.filter(e => e !== eventName));
+      }
+    } else {
+      if (turboEvents.length < 3) {
+        setTurboEvents(prev => [...prev, eventName]);
+      } else {
+        // Swap oldest selection to maintain exactly 3 selected events
+        setTurboEvents(prev => [...prev.slice(1), eventName]);
+      }
+    }
+  };
+  
+  const upiId = import.meta.env.VITE_UPI_ID || '9505198204-2@ybl';
+  const upiName = import.meta.env.VITE_UPI_NAME || 'FORMULA-AI 2026 RACE CONTROL';
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -33,7 +58,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     driver4Name: '',
     driver4Phone: '',
     championship: (initialChampionship || 'ENGINEERING CHAMPIONSHIP') as ChampionshipType,
-    category: (initialCategory || 'POLE POSITION CHALLENGE (Coding)') as EventCategory,
+    category: (initialCategory || (initialChampionship === 'TURBO COMBO (3 Non-Tech Events)' ? 'TURBO COMBO (3 Non-Tech Events)' : initialChampionship === 'PODIUM COMBO (4 Non-Tech Events)' ? 'PODIUM COMBO (4 Non-Tech Events)' : 'POLE POSITION CHALLENGE (Coding)')) as EventCategory,
     utrNumber: '',
     agreedTerms: false
   });
@@ -66,8 +91,20 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   // Live Tachometer RPM and Speed calculations
   const rpmValue = Math.min(15000, Math.round((validFieldsCount / 7) * 15000));
   const currentSpeed = Math.round((validFieldsCount / 7) * 352.4);
-  const baseFeePerDriver = formData.championship === 'ENGINEERING CHAMPIONSHIP' ? 80 : 50;
+  const baseFeePerDriver = 
+    formData.championship === 'ENGINEERING CHAMPIONSHIP' ? 80 :
+    formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? 150 :
+    formData.championship === 'TURBO COMBO (3 Non-Tech Events)' ? 120 : 50;
+
   const totalAmountPayable = baseFeePerDriver * teamSizeCount;
+
+  const upiPayUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${totalAmountPayable}&cu=INR&tn=${encodeURIComponent(`FORMULA-AI ${formData.championship}`)}`;
+
+  const handleCopyUpiId = () => {
+    navigator.clipboard.writeText(upiId);
+    setCopiedUpi(true);
+    setTimeout(() => setCopiedUpi(false), 2000);
+  };
 
   const isFormComplete = isNameValid && isEmailValid && isPhoneValid && isOrgValid && isDriver2Valid && isDriver3Valid && isDriver4Valid && isUtrValid && formData.agreedTerms;
 
@@ -77,6 +114,18 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
         ...prev,
         championship: champ,
         category: 'POLE POSITION CHALLENGE (Coding)'
+      }));
+    } else if (champ === 'PODIUM COMBO (4 Non-Tech Events)') {
+      setFormData(prev => ({
+        ...prev,
+        championship: champ,
+        category: 'PODIUM COMBO (4 Non-Tech Events)'
+      }));
+    } else if (champ === 'TURBO COMBO (3 Non-Tech Events)') {
+      setFormData(prev => ({
+        ...prev,
+        championship: champ,
+        category: 'TURBO COMBO (3 Non-Tech Events)'
       }));
     } else {
       setFormData(prev => ({
@@ -262,7 +311,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
               {/* Dynamic Avatars Grid (Renders 2, 3, or 4 Sleek Vector Lucide Driver Avatar Badges) */}
               <div className={`grid gap-2 transition-all duration-500 ${
-                teamSizeCount === 2 ? 'grid-cols-2' : teamSizeCount === 3 ? 'grid-cols-3' : 'grid-cols-4'
+                teamSizeCount === 2 ? 'grid-cols-2' : teamSizeCount === 3 ? 'grid-cols-3' : 'grid-cols-2 sm:grid-cols-4'
               }`}>
                 {/* Driver 1 (Captain) */}
                 <div className="bg-[#14141a] border-2 border-[#E10600] p-2.5 rounded-xl shadow-[0_0_15px_rgba(225,6,0,0.4)] flex flex-col items-center text-center space-y-1 relative group">
@@ -399,7 +448,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 </span>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 pt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 pt-1">
                 {[
                   { count: 2, label: '2 DRIVERS TEAM', sub: 'Driver 1 & Driver 2' },
                   { count: 3, label: '3 DRIVERS TEAM', sub: 'Driver 1, 2 & 3' },
@@ -624,20 +673,21 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
               </div>
             </div>
 
-            {/* Track Category */}
+            {/* Track Category & Combo Packages */}
             <div className="space-y-4">
               <label className="font-display text-xs text-white font-bold tracking-wider flex items-center space-x-2">
                 <Flag className="w-4 h-4 text-[#E10600]" />
-                <span>SELECT CHAMPIONSHIP TRACK *</span>
+                <span>SELECT CHAMPIONSHIP TRACK OR COMBO PACKAGE *</span>
               </label>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {/* 1. ENGINEERING CHAMPIONSHIP */}
                 <button
                   type="button"
                   onClick={() => handleChampionshipChange('ENGINEERING CHAMPIONSHIP')}
                   className={`p-4 border-2 text-left transition-all rounded-xl ${
                     formData.championship === 'ENGINEERING CHAMPIONSHIP'
-                      ? 'bg-[#14141a] border-[#E10600] text-white shadow-xl'
+                      ? 'bg-[#14141a] border-[#E10600] text-white shadow-xl scale-[1.01]'
                       : 'bg-[#14141a]/50 border-[#22222a] text-[#8A8A93] hover:border-white'
                   }`}
                 >
@@ -649,21 +699,70 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   <div className="text-[10px] text-[#8A8A93] mt-1">Coding · Prompts · Hackathon</div>
                 </button>
 
+                {/* 2. DAYTONA CHAMPIONSHIP */}
                 <button
                   type="button"
                   onClick={() => handleChampionshipChange('DAYTONA CHAMPIONSHIP')}
                   className={`p-4 border-2 text-left transition-all rounded-xl ${
                     formData.championship === 'DAYTONA CHAMPIONSHIP'
-                      ? 'bg-[#14141a] border-[#00D2BE] text-white shadow-xl'
+                      ? 'bg-[#14141a] border-[#00D2BE] text-white shadow-xl scale-[1.01]'
                       : 'bg-[#14141a]/50 border-[#22222a] text-[#8A8A93] hover:border-white'
                   }`}
                 >
                   <div className="flex justify-between items-center mb-1">
-                    <span className="font-display font-bold text-xs">DAYTONA TRACK</span>
+                    <span className="font-display font-bold text-xs">DAYTONA SINGLE</span>
                     <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹50</span>
                   </div>
-                  <div className="text-white font-bold text-sm">DAYTONA</div>
-                  <div className="text-[10px] text-[#8A8A93] mt-1">Charades · Movies · Telemetry</div>
+                  <div className="text-white font-bold text-sm">DAYTONA TRACK</div>
+                  <div className="text-[10px] text-[#8A8A93] mt-1">1 Non-Tech Event Entry</div>
+                </button>
+
+                {/* 3. PODIUM COMBO (4 NON-TECH EVENTS) */}
+                <button
+                  type="button"
+                  onClick={() => handleChampionshipChange('PODIUM COMBO (4 Non-Tech Events)')}
+                  className={`p-4 border-2 text-left transition-all rounded-xl relative ${
+                    formData.championship === 'PODIUM COMBO (4 Non-Tech Events)'
+                      ? 'bg-[#14141a] border-[#22C55E] text-white shadow-[0_0_20px_rgba(34,197,94,0.4)] scale-[1.01]'
+                      : 'bg-[#14141a]/50 border-[#22222a] text-[#8A8A93] hover:border-[#22C55E]'
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-display font-bold text-xs text-[#22C55E] flex items-center space-x-1">
+                      <span>🏎️ PODIUM COMBO</span>
+                      <span className="bg-[#22C55E]/20 text-[#22C55E] text-[8px] px-1.5 py-0.5 rounded">25% OFF</span>
+                    </span>
+                    <div className="text-right">
+                      <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹200</span>
+                      <span className="bg-[#22C55E] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹150</span>
+                    </div>
+                  </div>
+                  <div className="text-white font-bold text-sm">4 NON-TECH EVENTS</div>
+                  <div className="text-[10px] text-[#22C55E] mt-1">SAVE ₹50 · Max Value Combo</div>
+                </button>
+
+                {/* 4. TURBO COMBO (3 NON-TECH EVENTS) */}
+                <button
+                  type="button"
+                  onClick={() => handleChampionshipChange('TURBO COMBO (3 Non-Tech Events)')}
+                  className={`p-4 border-2 text-left transition-all rounded-xl relative ${
+                    formData.championship === 'TURBO COMBO (3 Non-Tech Events)'
+                      ? 'bg-[#14141a] border-[#00D2BE] text-white shadow-[0_0_20px_rgba(0,210,190,0.4)] scale-[1.01]'
+                      : 'bg-[#14141a]/50 border-[#22222a] text-[#8A8A93] hover:border-[#00D2BE]'
+                  }`}
+                >
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="font-display font-bold text-xs text-[#00D2BE] flex items-center space-x-1">
+                      <span>⚡ TURBO COMBO</span>
+                      <span className="bg-[#00D2BE]/20 text-[#00D2BE] text-[8px] px-1.5 py-0.5 rounded">20% OFF</span>
+                    </span>
+                    <div className="text-right">
+                      <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹150</span>
+                      <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹120</span>
+                    </div>
+                  </div>
+                  <div className="text-white font-bold text-sm">ANY 3 NON-TECH EVENTS</div>
+                  <div className="text-[10px] text-[#00D2BE] mt-1">SAVE ₹30 · Triple-Event Run</div>
                 </button>
               </div>
 
@@ -672,12 +771,102 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 <label className="font-display text-xs text-[#00D2BE] font-bold tracking-wider flex items-center justify-between">
                   <span className="flex items-center space-x-2">
                     <Sparkles className="w-4 h-4 text-[#00D2BE]" />
-                    <span>SELECT SPECIFIC COMPETITION EVENT *</span>
+                    <span>SELECT SPECIFIC COMPETITION EVENT OR COMBO PACKAGE *</span>
                   </span>
-                  <span className="text-[10px] text-[#8A8A93] font-mono">SUB-EVENT</span>
+                  <span className="text-[10px] text-[#8A8A93] font-mono">SELECTION</span>
                 </label>
 
-                {formData.championship === 'ENGINEERING CHAMPIONSHIP' ? (
+                {formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? (
+                  <div className="space-y-3 bg-[#08080A] p-4 border border-[#22C55E]/40 rounded-xl font-data">
+                    <div className="flex items-center space-x-2 text-[#22C55E] text-xs font-mono font-bold">
+                      <Sparkles className="w-4 h-4 text-[#22C55E]" />
+                      <span>🏎️ PODIUM COMBO UNLOCKED (₹150 · SAVE ₹50 | 25% OFF)</span>
+                    </div>
+                    <p className="text-[11px] text-[#8A8A93] font-mono">
+                      Includes <strong>all 4 Non-Tech Events</strong> below! One single combo registration unlocks your quad-race paddock pass.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-mono text-white">
+                      <div className="bg-[#14141a] p-2.5 rounded-lg border border-[#22C55E]/40 flex items-center justify-between">
+                        <span>📻 1. Radio Communication (Charades)</span>
+                        <Check className="w-4 h-4 text-[#22C55E]" />
+                      </div>
+                      <div className="bg-[#14141a] p-2.5 rounded-lg border border-[#22C55E]/40 flex items-center justify-between">
+                        <span>🎬 2. Lights Out! (Movie Guess)</span>
+                        <Check className="w-4 h-4 text-[#22C55E]" />
+                      </div>
+                      <div className="bg-[#14141a] p-2.5 rounded-lg border border-[#22C55E]/40 flex items-center justify-between">
+                        <span>⏱️ 3. Pit Stop Challenge (Minute to Win)</span>
+                        <Check className="w-4 h-4 text-[#22C55E]" />
+                      </div>
+                      <div className="bg-[#14141a] p-2.5 rounded-lg border border-[#22C55E]/40 flex items-center justify-between">
+                        <span>🍾 4. Tyre Change (Bottle Challenge)</span>
+                        <Check className="w-4 h-4 text-[#22C55E]" />
+                      </div>
+                    </div>
+                    <div className="text-[10px] text-[#E10600] font-mono bg-[#E10600]/10 p-2 rounded-lg border border-[#E10600]/30 flex items-center space-x-1">
+                      <span>🚫 Note: Telemetry (Typing Test) is excluded from combo deals as per rules.</span>
+                    </div>
+                  </div>
+                ) : formData.championship === 'TURBO COMBO (3 Non-Tech Events)' ? (
+                  <div className="space-y-3 bg-[#08080A] p-4 border border-[#00D2BE]/40 rounded-xl font-data">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#22222a] pb-2.5">
+                      <div className="flex items-center space-x-2 text-[#00D2BE] text-xs font-mono font-bold">
+                        <Zap className="w-4 h-4 text-[#00D2BE]" />
+                        <span>⚡ TURBO COMBO UNLOCKED (₹120 · SAVE ₹30 | 20% OFF)</span>
+                      </div>
+                      <span className={`text-[10px] font-mono font-bold px-2.5 py-1 rounded-full flex items-center space-x-1 self-start sm:self-auto ${
+                        turboEvents.length === 3
+                          ? 'bg-[#00D2BE] text-[#08080A] shadow-[0_0_10px_#00D2BE]'
+                          : 'bg-[#F5A623] text-[#08080A]'
+                      }`}>
+                        <span>{turboEvents.length}/3 EVENTS SELECTED</span>
+                        {turboEvents.length === 3 && <span>✓</span>}
+                      </span>
+                    </div>
+
+                    <p className="text-[11px] text-[#8A8A93] font-mono">
+                      Tap below to pick <strong>ANY 3 NON-TECH EVENTS</strong> for your Turbo Combo package:
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono text-white">
+                      {[
+                        { name: 'RADIO COMMUNICATION (Dumb Charades)', short: '📻 1. Radio Communication (Charades)' },
+                        { name: 'LIGHTS OUT! (Guess Movie in 1 Sec)', short: '🎬 2. Lights Out (Movie Guess)' },
+                        { name: 'PIT STOP CHALLENGE (Minute to Win It)', short: '⏱️ 3. Pit Stop Challenge' },
+                        { name: 'TYRE CHANGE CHALLENGE (Bottle Challenge)', short: '🍾 4. Tyre Change Challenge' }
+                      ].map(ev => {
+                        const isSelected = turboEvents.includes(ev.name);
+                        return (
+                          <button
+                            key={ev.name}
+                            type="button"
+                            onClick={() => toggleTurboEvent(ev.name)}
+                            className={`p-3 rounded-xl text-left font-mono transition-all text-xs flex items-center justify-between border-2 ${
+                              isSelected
+                                ? 'bg-[#14141a] border-[#00D2BE] text-white font-bold shadow-[0_0_15px_rgba(0,210,190,0.3)] scale-[1.01]'
+                                : 'bg-[#14141a]/40 border-[#22222a] text-[#8A8A93] hover:text-white hover:border-[#00D2BE]/50'
+                            }`}
+                          >
+                            <span className="truncate max-w-[200px] sm:max-w-none">{ev.short}</span>
+                            {isSelected ? (
+                              <span className="w-5 h-5 rounded-full bg-[#00D2BE] text-[#08080A] flex items-center justify-center font-bold text-[10px] flex-shrink-0 ml-2">
+                                ✓
+                              </span>
+                            ) : (
+                              <span className="w-5 h-5 rounded-full border border-[#22222a] text-[10px] flex items-center justify-center text-[#8A8A93] flex-shrink-0 ml-2">
+                                +
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <div className="text-[10px] text-[#E10600] font-mono bg-[#E10600]/10 p-2 rounded-lg border border-[#E10600]/30 flex items-center space-x-1">
+                      <span>🚫 Note: Telemetry (Typing Test) is excluded from combo deals as per rules.</span>
+                    </div>
+                  </div>
+                ) : formData.championship === 'ENGINEERING CHAMPIONSHIP' ? (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {[
                       { name: 'POLE POSITION CHALLENGE (Coding)', short: '1. Coding Challenge', icon: '💻' },
@@ -756,33 +945,158 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
               </div>
             </div>
 
-            {/* UTR Deposit */}
-            <div className="space-y-3 bg-[#14141a] p-5 border border-[#22222a] rounded-2xl">
+            {/* 4. UPI PAYMENT REDIRECT & DEPOSIT CONSOLE */}
+            <div className="space-y-4 bg-[#14141a] p-5 border-2 border-[#00D2BE]/60 rounded-2xl shadow-[0_0_30px_rgba(0,210,190,0.15)]">
+              
+              {/* Header */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-[#22222a] pb-3 gap-2">
                 <span className="font-display text-xs text-white font-bold tracking-wider flex items-center space-x-2">
                   <CreditCard className="w-4 h-4 text-[#00D2BE]" />
-                  <span>ENTER 12-DIGIT UTR DEPOSIT NUMBER *</span>
+                  <span>PAYMENT TELEMETRY & UPI REDIRECT</span>
                 </span>
-                <span className="text-xs text-[#00D2BE] font-mono font-bold">
-                  UPI: {import.meta.env.VITE_UPI_ID || 'formula-ai@upi'}
+                <span className="text-[10px] bg-[#00D2BE]/20 text-[#00D2BE] px-2.5 py-0.5 font-mono font-bold rounded flex items-center space-x-1">
+                  <Smartphone className="w-3 h-3" />
+                  <span>INSTANT UPI REDIRECT</span>
                 </span>
               </div>
 
-              <div>
-                <label className="block text-[10px] text-[#8A8A93] font-mono mb-1">DEPOSIT UTR / TRANSACTION REF NO. *</label>
+              {/* UPI ID Banner + Quick Copy Widget */}
+              <div className="bg-[#08080A] border border-[#22222a] p-3.5 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span className="text-[10px] text-[#8A8A93] font-mono block">OFFICIAL EVENT UPI ID</span>
+                  <div className="font-mono text-sm sm:text-base font-bold text-[#00D2BE] tracking-wider flex items-center space-x-2">
+                    <span>{upiId}</span>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleCopyUpiId}
+                  className={`px-4 py-2 text-xs font-mono font-bold border transition-all rounded-xl flex items-center space-x-1.5 self-start sm:self-auto ${
+                    copiedUpi
+                      ? 'bg-[#22C55E]/20 text-[#22C55E] border-[#22C55E]'
+                      : 'bg-[#14141a] hover:bg-[#1f1f28] text-white border-[#00D2BE]/40 hover:border-[#00D2BE]'
+                  }`}
+                >
+                  {copiedUpi ? <Check className="w-3.5 h-3.5 text-[#22C55E]" /> : <Copy className="w-3.5 h-3.5 text-[#00D2BE]" />}
+                  <span>{copiedUpi ? 'UPI ID COPIED!' : 'COPY UPI ID'}</span>
+                </button>
+              </div>
+
+              {/* Instant UPI Redirect & QR Code Display */}
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center bg-[#08080A]/60 p-4 border border-[#22222a] rounded-xl">
+                
+                {/* Left Side: Mobile UPI App Redirect Buttons */}
+                <div className="md:col-span-7 space-y-3">
+                  <div>
+                    <span className="text-[11px] font-bold text-white font-display block">INSTANT UPI REDIRECT OPTIONS:</span>
+                    <span className="text-[10px] text-[#8A8A93] font-mono">Tap below to redirect directly to installed payment app:</span>
+                  </div>
+
+                  {/* Primary Direct UPI Redirect CTA */}
+                  <a
+                    href={upiPayUrl}
+                    className="w-full py-3 px-4 bg-gradient-to-r from-[#00D2BE] to-[#00a394] hover:from-[#00e6d0] hover:to-[#00b8a7] text-[#08080A] font-display font-extrabold text-xs uppercase tracking-wider rounded-xl shadow-[0_0_20px_rgba(0,210,190,0.4)] flex items-center justify-center space-x-2 transition-all transform hover:scale-[1.01]"
+                  >
+                    <Smartphone className="w-4 h-4 text-[#08080A]" />
+                    <span>PAY VIA UPI APP (AUTO-REDIRECT ₹{totalAmountPayable})</span>
+                    <ArrowUpRight className="w-4 h-4 text-[#08080A]" />
+                  </a>
+
+                  {/* Quick App Redirect Badges */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                    <a
+                      href={upiPayUrl}
+                      className="p-2 bg-[#14141a] hover:bg-[#1c1c24] border border-[#22222a] hover:border-[#00D2BE] text-center rounded-lg text-[10px] font-mono font-bold text-white flex flex-col items-center justify-center space-y-0.5 transition-all"
+                    >
+                      <span className="text-[#34A853] font-black text-xs">GPay</span>
+                      <span className="text-[9px] text-[#8A8A93]">Google Pay</span>
+                    </a>
+
+                    <a
+                      href={upiPayUrl}
+                      className="p-2 bg-[#14141a] hover:bg-[#1c1c24] border border-[#22222a] hover:border-[#00D2BE] text-center rounded-lg text-[10px] font-mono font-bold text-white flex flex-col items-center justify-center space-y-0.5 transition-all"
+                    >
+                      <span className="text-[#5f259f] font-black text-xs">PhonePe</span>
+                      <span className="text-[9px] text-[#8A8A93]">PhonePe</span>
+                    </a>
+
+                    <a
+                      href={upiPayUrl}
+                      className="p-2 bg-[#14141a] hover:bg-[#1c1c24] border border-[#22222a] hover:border-[#00D2BE] text-center rounded-lg text-[10px] font-mono font-bold text-white flex flex-col items-center justify-center space-y-0.5 transition-all"
+                    >
+                      <span className="text-[#00baf2] font-black text-xs">Paytm</span>
+                      <span className="text-[9px] text-[#8A8A93]">Paytm UPI</span>
+                    </a>
+
+                    <a
+                      href={upiPayUrl}
+                      className="p-2 bg-[#14141a] hover:bg-[#1c1c24] border border-[#22222a] hover:border-[#00D2BE] text-center rounded-lg text-[10px] font-mono font-bold text-white flex flex-col items-center justify-center space-y-0.5 transition-all"
+                    >
+                      <span className="text-[#00D2BE] font-black text-xs">BHIM</span>
+                      <span className="text-[9px] text-[#8A8A93]">Any UPI App</span>
+                    </a>
+                  </div>
+                </div>
+
+                {/* Right Side: QR Code Scanner for Desktop Users */}
+                <div className="md:col-span-5 flex flex-col items-center justify-center border-t md:border-t-0 md:border-l border-[#22222a] pt-3 md:pt-0 md:pl-4 space-y-2">
+                  <span className="text-[10px] font-mono text-[#8A8A93] flex items-center space-x-1">
+                    <QrCode className="w-3.5 h-3.5 text-[#00D2BE]" />
+                    <span>OR SCAN QR CODE TO PAY</span>
+                  </span>
+
+                  <a href={upiPayUrl} title="Click to pay via UPI" className="p-2 bg-white rounded-xl shadow-lg hover:scale-105 transition-transform cursor-pointer">
+                    <QRCodeSVG value={upiPayUrl} size={110} level="H" />
+                  </a>
+
+                  <span className="text-[9px] text-[#8A8A93] font-mono text-center">
+                    Scan with any UPI Scanner app
+                  </span>
+                </div>
+
+              </div>
+
+              {/* 12-Digit Transaction ID Input Field */}
+              <div className="space-y-2 pt-2 border-t border-[#22222a]">
+                <div className="flex justify-between items-center">
+                  <label className="block text-[10px] text-white font-mono font-bold">
+                    ENTER 12-DIGIT TRANSACTION ID (12 NUMBERS) *
+                  </label>
+                  <span className={`text-[10px] font-mono font-bold ${
+                    formData.utrNumber.length === 12 ? 'text-[#22C55E]' : 'text-[#8A8A93]'
+                  }`}>
+                    {formData.utrNumber.length}/12 NUMBERS {formData.utrNumber.length === 12 && '✓'}
+                  </span>
+                </div>
+
                 <input
                   type="text"
+                  inputMode="numeric"
+                  maxLength={12}
+                  pattern="[0-9]{12}"
                   required
                   value={formData.utrNumber}
-                  onChange={e => setFormData({ ...formData, utrNumber: e.target.value })}
+                  onChange={e => {
+                    const onlyNumbers = e.target.value.replace(/[^0-9]/g, '').slice(0, 12);
+                    setFormData({ ...formData, utrNumber: onlyNumbers });
+                  }}
                   onBlur={() => handleBlur('utrNumber')}
-                  placeholder="e.g. 423910582914"
-                  className={`w-full bg-[#08080A] border-2 text-white font-mono text-xs px-4 py-3.5 outline-none rounded-xl transition-all ${
+                  placeholder="e.g. 950519820401 (exactly 12 numbers)"
+                  className={`w-full bg-[#08080A] border-2 text-white font-mono text-xs sm:text-sm px-4 py-3.5 outline-none rounded-xl transition-all ${
                     touched.utrNumber && !isUtrValid
-                      ? 'border-[#E10600]'
+                      ? 'border-[#E10600] shadow-[0_0_10px_rgba(225,6,0,0.5)]'
+                      : formData.utrNumber.length === 12
+                      ? 'border-[#22C55E] focus:border-[#22C55E]'
                       : 'border-[#22222a] focus:border-[#00D2BE]'
                   }`}
                 />
+
+                {touched.utrNumber && !isUtrValid && (
+                  <p className="text-[10px] text-[#E10600] font-mono">
+                    ⚠ Transaction ID must be strictly 12 numbers (0-9). Currently: {formData.utrNumber.length} digits.
+                  </p>
+                )}
               </div>
 
               <div className="flex items-center space-x-3 pt-1">
@@ -791,12 +1105,13 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   id="terms"
                   checked={formData.agreedTerms}
                   onChange={e => setFormData({ ...formData, agreedTerms: e.target.checked })}
-                  className="w-4 h-4 accent-[#E10600]"
+                  className="w-4 h-4 accent-[#E10600] rounded cursor-pointer"
                 />
                 <label htmlFor="terms" className="text-[11px] text-[#8A8A93] cursor-pointer">
-                  I confirm that all entered team driver telemetry details and UTR deposit are authentic.
+                  I confirm that all entered team driver details, payment deposit of ₹{totalAmountPayable}, and 12-digit transaction ID are authentic.
                 </label>
               </div>
+
             </div>
 
             {/* Submit CTA */}

@@ -4,7 +4,6 @@ import { INITIAL_MOCK_REGISTRATIONS } from './data/mockData';
 import { TelemetryTicker } from './components/TelemetryTicker';
 import { Navbar } from './components/Navbar';
 import { LandingHero } from './components/LandingHero';
-import { EventWorkflowView } from './components/EventWorkflowView';
 import { RegistrationForm } from './components/RegistrationForm';
 import { RegistrationReceived } from './components/RegistrationReceived';
 import { StatusPage } from './components/StatusPage';
@@ -123,7 +122,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080A] text-[#F5F5F7] font-body flex flex-col selection:bg-[#E10600] selection:text-white">
+    <div className="min-h-screen bg-[#08080A] text-[#F5F5F7] font-body flex flex-col selection:bg-[#E10600] selection:text-white w-full max-w-full overflow-x-hidden">
       
       {/* Main Public Navbar (Hides Admin references unless authenticated) */}
       <Navbar
@@ -138,12 +137,6 @@ export const App: React.FC = () => {
       <main className="flex-1">
         {currentView === 'LANDING' && (
           <LandingHero
-            onStartRegistration={handleStartRegistration}
-          />
-        )}
-
-        {currentView === 'EVENT_WORKFLOW' && (
-          <EventWorkflowView
             onStartRegistration={handleStartRegistration}
           />
         )}

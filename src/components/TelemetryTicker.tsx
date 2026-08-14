@@ -20,13 +20,13 @@ export const TelemetryTicker: React.FC<TelemetryTickerProps> = ({
   const [timeLeft, setTimeLeft] = useState({ days: 33, hours: 14, minutes: 22, seconds: 45 });
 
   useEffect(() => {
-    const raceDate = new Date('2026-03-19T09:00:00').getTime();
-
-    const timer = setInterval(() => {
+    const updateTickerTimer = () => {
       setMs(Math.floor(100 + Math.random() * 899));
       
-      const now = new Date().getTime();
-      const difference = raceDate - now;
+      const now = new Date();
+      // August 19, 2026 09:00:00 IST (7 = August)
+      const raceDate = new Date(2026, 7, 19, 9, 0, 0).getTime();
+      const difference = raceDate - now.getTime();
 
       if (difference > 0) {
         setTimeLeft({
@@ -35,9 +35,20 @@ export const TelemetryTicker: React.FC<TelemetryTickerProps> = ({
           minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
           seconds: Math.floor((difference % (1000 * 60)) / 1000)
         });
+      } else {
+        const nextRaceDate = new Date(2027, 7, 19, 9, 0, 0).getTime();
+        const diffNext = nextRaceDate - now.getTime();
+        setTimeLeft({
+          days: Math.floor(diffNext / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((diffNext % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((diffNext % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((diffNext % (1000 * 60)) / 1000)
+        });
       }
-    }, 1000);
+    };
 
+    updateTickerTimer();
+    const timer = setInterval(updateTickerTimer, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -46,8 +57,8 @@ export const TelemetryTicker: React.FC<TelemetryTickerProps> = ({
   const approvedCount = registrations.filter(r => r.status === 'APPROVED').length;
 
   return (
-    <div className="sticky top-0 z-50 w-full bg-[#08080A] border-b border-[#22222a] select-none text-[11px] font-data">
-      <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between gap-4">
+    <div className="sticky top-0 z-50 w-full max-w-full overflow-hidden bg-[#08080A] border-b border-[#22222a] select-none text-[11px] font-data">
+      <div className="max-w-7xl mx-auto px-4 py-1.5 flex items-center justify-between gap-2 sm:gap-4 overflow-hidden">
         
         {/* Left Side: Broadcast Telemetry Feed */}
         <div className="flex items-center space-x-3 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -56,10 +67,10 @@ export const TelemetryTicker: React.FC<TelemetryTickerProps> = ({
             <span className="font-display text-[10px] font-bold tracking-widest uppercase">AWS TELEMETRY LIVE</span>
           </div>
 
-          {/* LIVE RACE DAY MARCH 19 COUNTDOWN */}
+          {/* LIVE RACE DAY AUGUST 19 COUNTDOWN */}
           <div className="hidden sm:flex items-center space-x-1.5 bg-[#14141a] px-2.5 py-0.5 border border-[#E10600]/60 text-white rounded font-mono text-[10px]">
             <Timer className="w-3 h-3 text-[#E10600] animate-pulse" />
-            <span>MARCH 19 RACE: <strong className="text-[#E10600] font-bold">{timeLeft.days}D {timeLeft.hours}H {timeLeft.minutes}M {timeLeft.seconds}S</strong></span>
+            <span>AUGUST 19 RACE: <strong className="text-[#E10600] font-bold">{timeLeft.days}D {timeLeft.hours}H {timeLeft.minutes}M {timeLeft.seconds}S</strong></span>
           </div>
 
           <span className="text-[#8A8A93] hidden md:inline">|</span>
