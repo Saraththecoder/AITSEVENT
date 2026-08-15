@@ -758,7 +758,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 >
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-display font-bold text-xs">TECHNICAL TRACK</span>
-                    <span className="bg-[#E10600] text-white text-[9px] font-bold px-2 py-0.5 rounded">₹80</span>
+                    <span className="bg-[#E10600] text-white text-[9px] font-bold px-2 py-0.5 rounded">₹80 / DRIVER</span>
                   </div>
                   <div className="text-white font-bold text-sm">ENGINEERING</div>
                   <div className="text-[10px] text-[#8A8A93] mt-1">Coding · Prompts · Hackathon</div>
@@ -776,7 +776,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                 >
                   <div className="flex justify-between items-center mb-1">
                     <span className="font-display font-bold text-xs">DAYTONA SINGLE</span>
-                    <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹50</span>
+                    <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹50 / DRIVER</span>
                   </div>
                   <div className="text-white font-bold text-sm">DAYTONA TRACK</div>
                   <div className="text-[10px] text-[#8A8A93] mt-1">1 Non-Tech Event Entry</div>
@@ -799,11 +799,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     </span>
                     <div className="text-right">
                       <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹200</span>
-                      <span className="bg-[#22C55E] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹150</span>
+                      <span className="bg-[#22C55E] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹150 TOTAL</span>
                     </div>
                   </div>
                   <div className="text-white font-bold text-sm">4 NON-TECH EVENTS</div>
-                  <div className="text-[10px] text-[#22C55E] mt-1">SAVE ₹50 · Max Value Combo</div>
+                  <div className="text-[10px] text-[#22C55E] mt-1">SAVE ₹50 · Flat Combo Price</div>
                 </button>
 
                 {/* 4. TURBO COMBO (3 NON-TECH EVENTS) */}
@@ -823,11 +823,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                     </span>
                     <div className="text-right">
                       <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹150</span>
-                      <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹120</span>
+                      <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹120 TOTAL</span>
                     </div>
                   </div>
-                  <div className="text-white font-bold text-sm">ANY 3 NON-TECH EVENTS</div>
-                  <div className="text-[10px] text-[#00D2BE] mt-1">SAVE ₹30 · Triple-Event Run</div>
+                  <div className="text-white font-bold text-sm">3 NON-TECH EVENTS</div>
+                  <div className="text-[10px] text-[#00D2BE] mt-1">SAVE ₹30 · Flat Combo Price</div>
                 </button>
               </div>
 
