@@ -14,6 +14,8 @@ export const submitRegistrationToGoogleSheet = async (registration: DriverRegist
     await fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
       method: 'POST',
       mode: 'no-cors',
+      cache: 'no-cache',
+      redirect: 'follow',
       headers: {
         'Content-Type': 'text/plain;charset=utf-8',
       },
@@ -36,6 +38,8 @@ export const fetchRegistrationsFromGoogleSheet = async (): Promise<DriverRegistr
 
     const res = await fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
       method: 'GET',
+      cache: 'no-cache',
+      redirect: 'follow'
     });
 
     if (!res.ok) {

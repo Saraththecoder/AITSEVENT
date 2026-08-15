@@ -1,20 +1,21 @@
 /**
  * =========================================================================
- * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V9 - BULLETPROOF)
+ * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V10 - GUARANTEED)
  * =========================================================================
  */
 
 function doGet(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName("REGISTRATIONS") || ss.getSheets()[0];
     var lastRow = sheet.getLastRow();
+    
     if (lastRow <= 1) {
       return ContentService
         .createTextOutput(JSON.stringify({ "result": "success", "data": [] }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    // Safely check columns to prevent range exception
     var maxCols = Math.max(sheet.getLastColumn(), 1);
     var colCount = Math.min(maxCols, 25);
     var allData = sheet.getRange(2, 1, lastRow - 1, colCount).getValues();
@@ -69,14 +70,14 @@ function doPost(e) {
   lock.tryLock(10000);
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    // Always target first sheet tab or sheet named REGISTRATIONS to guarantee writing to active main table
+    var sheet = ss.getSheetByName("REGISTRATIONS") || ss.getSheets()[0];
     
-    // Ensure Sheet has at least 25 columns to prevent Range Errors
     if (sheet.getMaxColumns() < 25) {
       sheet.insertColumnsAfter(sheet.getMaxColumns(), 25 - sheet.getMaxColumns());
     }
 
-    // Create Header Row if sheet is empty
     if (sheet.getLastRow() === 0) {
       sheet.appendRow([
         "ENTRY ID",
@@ -108,7 +109,16 @@ function doPost(e) {
       sheet.getRange(1, 1, 1, 25).setFontWeight("bold").setBackground("#111115").setFontColor("#00D2BE");
     }
 
-    var data = JSON.parse(e.postData.contents);
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch(pErr) {
+        data = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    }
 
     var entryId = (data.id || data.entryId || "FA26-" + Math.floor(10000 + Math.random() * 90000)).toString().trim();
     var submittedAt = data.submittedAt || new Date().toISOString();
@@ -126,7 +136,7 @@ function doPost(e) {
     if (data.driver3Name) membersList.push(data.driver3Name);
     if (data.driver4Name) membersList.push(data.driver4Name);
 
-    var teamMembers = (data.teamMembers && data.teamMembers.length > 0) ? data.teamMembers.join(", ") : membersList.join(", ");
+    var teamMembers = (data.teamMembers && data.teamMembers.length > 0) ? (Array.isArray(data.teamMembers) ? data.teamMembers.join(", ") : data.teamMembers.toString()) : membersList.join(", ");
     var championship = data.championship || "";
     var category = data.category || "";
     var utrNumber = (data.utrNumber || "").toString().trim();
@@ -170,7 +180,6 @@ function doPost(e) {
       driver4Phone
     ];
 
-    // Safe Deduplication Check
     var existingRowIndex = -1;
     var lastRow = sheet.getLastRow();
     if (lastRow > 1) {
@@ -198,7 +207,6 @@ function doPost(e) {
       sheet.appendRow(rowValues);
     }
 
-    // Determine Technical vs Non-Technical events
     var champUpper = (championship || "").toUpperCase();
     var catUpper = (category || "").toUpperCase();
 
@@ -233,7 +241,6 @@ function doPost(e) {
       hasNonTechEvent = true;
     }
 
-    // Gmail-compatible High-Contrast Button Table HTML for WhatsApp Groups
     var whatsappGroupHtml = 
       "<div style='background-color: #111115; border: 2px solid #25D366; padding: 18px; border-radius: 12px; margin-top: 20px; text-align: center; font-family: Arial, sans-serif;'>" +
         "<div style='color: #25D366; font-size: 14px; font-weight: bold; margin-bottom: 14px;'>💬 OFFICIAL WHATSAPP GROUP JOIN LINKS</div>";
@@ -264,7 +271,6 @@ function doPost(e) {
       "</div>" +
     "</div>";
 
-    // Send Automated HTML Email
     if (email && email.indexOf("@") !== -1) {
       try {
         var subject = status === "APPROVED" 
@@ -285,7 +291,6 @@ function doPost(e) {
               "<p style='color: #8A8A93; font-size: 13px; margin-top: 8px;'>Current Registration Status: <strong style='color: #00D2BE; font-size: 14px;'>" + status + "</strong>.</p>" +
             "</div>" +
 
-            "<!-- EMBEDDED E-PASS QR CODE CARD -->" +
             "<div style='background-color: #111115; border: 2px solid #00D2BE; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0;'>" +
               "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR E-PASS</div>" +
               "<div style='font-size: 22px; font-weight: bold; color: #FFFFFF; margin: 5px 0;'>" + entryId + "</div>" +
