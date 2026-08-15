@@ -267,82 +267,82 @@ function doPost(e) {
 
     // Send Automated HTML Email with Embedded Inline QR Code Image
     if (email && email.indexOf("@") !== -1) {
-      var subject = status === "APPROVED" 
-        ? "🎉 [FORMULA-AI 2026] GRID CONFIRMED - Driver E-Pass & QR Code (ID: " + entryId + ")"
-        : "🏁 [FORMULA-AI 2026] Thank You For Registering - Entry ID: " + entryId;
+      try {
+        var subject = status === "APPROVED" 
+          ? "🎉 [FORMULA-AI 2026] GRID CONFIRMED - Driver E-Pass & QR Code (ID: " + entryId + ")"
+          : "🏁 [FORMULA-AI 2026] Thank You For Registering - Entry ID: " + entryId;
 
-      var htmlBody = 
-        "<div style='font-family: Arial, sans-serif; background-color: #08080A; color: #FFFFFF; padding: 25px; border-radius: 16px; border: 2px solid #00D2BE; max-width: 600px; margin: 0 auto;'>" +
-          "<div style='text-align: center; border-bottom: 2px solid #22222a; padding-bottom: 15px; margin-bottom: 20px;'>" +
-            "<h1 style='color: #E10600; margin: 0; font-size: 24px; letter-spacing: 2px;'>🏎️ FORMULA-AI 2026 GRAND PRIX</h1>" +
-            "<p style='color: #00D2BE; font-size: 13px; font-weight: bold; margin-top: 5px;'>MONZA CIRCUIT RACE CONTROL TELEMETRY</p>" +
-          "</div>" +
-
-          "<div style='font-size: 15px; line-height: 1.6; border-bottom: 1px solid #22222a; padding-bottom: 15px; margin-bottom: 15px;'>" +
-            "<p style='margin-top: 0;'>Dear <strong>" + fullName + "</strong>,</p>" +
-            "<p style='color: #00D2BE; font-size: 16px; font-weight: bold; margin: 10px 0;'>✨ THANK YOU FOR REGISTERING FOR FORMULA-AI 2026! ✨</p>" +
-            "<p style='color: #CCCCCC; font-size: 13px; margin: 5px 0;'>We are thrilled to welcome you and your team to the Monza National Circuit Grid! Your registration request has been successfully recorded under Entry ID: <strong style='color: #F5A623;'>" + entryId + "</strong>.</p>" +
-            "<p style='color: #8A8A93; font-size: 13px; margin-top: 8px;'>Current Registration Status: <strong style='color: #00D2BE; font-size: 14px;'>" + status + "</strong>.</p>" +
-          "</div>" +
-
-          "<!-- EMBEDDED E-PASS QR CODE CARD -->" +
-          "<div style='background-color: #111115; border: 2px solid #00D2BE; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0;'>" +
-            "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR E-PASS</div>" +
-            "<div style='font-size: 22px; font-weight: bold; color: #FFFFFF; margin: 5px 0;'>" + entryId + "</div>" +
-            
-            "<div style='margin: 15px 0; text-align: center;'>" +
-              (qrBlob 
-                ? "<img src='cid:qrCodeBlob' alt='Formula AI Driver QR Code' style='width: 160px; height: 160px; border: 4px solid #FFFFFF; border-radius: 8px;' />" 
-                : "<img src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(entryId) + "' alt='Formula AI Driver QR Code' style='width: 160px; height: 160px; border: 4px solid #FFFFFF; border-radius: 8px;' />"
-              ) +
+        var htmlBody = 
+          "<div style='font-family: Arial, sans-serif; background-color: #08080A; color: #FFFFFF; padding: 25px; border-radius: 16px; border: 2px solid #00D2BE; max-width: 600px; margin: 0 auto;'>" +
+            "<div style='text-align: center; border-bottom: 2px solid #22222a; padding-bottom: 15px; margin-bottom: 20px;'>" +
+              "<h1 style='color: #E10600; margin: 0; font-size: 24px; letter-spacing: 2px;'>🏎️ FORMULA-AI 2026 GRAND PRIX</h1>" +
+              "<p style='color: #00D2BE; font-size: 13px; font-weight: bold; margin-top: 5px;'>MONZA CIRCUIT RACE CONTROL TELEMETRY</p>" +
             "</div>" +
 
-            "<div style='color: #00D2BE; font-size: 12px; font-weight: bold; margin-bottom: 12px;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
-            "<div>" +
-              "<a href='https://aitsevent.vercel.app/?view=E_PASS&id=" + entryId + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; shadow: 0 4px 10px rgba(225,6,0,0.5);'>" +
-                "🎫 VIEW &amp; DOWNLOAD DIGITAL DRIVER E-PASS →" +
-              "</a>" +
+            "<div style='font-size: 15px; line-height: 1.6; border-bottom: 1px solid #22222a; padding-bottom: 15px; margin-bottom: 15px;'>" +
+              "<p style='margin-top: 0;'>Dear <strong>" + fullName + "</strong>,</p>" +
+              "<p style='color: #00D2BE; font-size: 16px; font-weight: bold; margin: 10px 0;'>✨ THANK YOU FOR REGISTERING FOR FORMULA-AI 2026! ✨</p>" +
+              "<p style='color: #CCCCCC; font-size: 13px; margin: 5px 0;'>We are thrilled to welcome you and your team to the Monza National Circuit Grid! Your registration request has been successfully recorded under Entry ID: <strong style='color: #F5A623;'>" + entryId + "</strong>.</p>" +
+              "<p style='color: #8A8A93; font-size: 13px; margin-top: 8px;'>Current Registration Status: <strong style='color: #00D2BE; font-size: 14px;'>" + status + "</strong>.</p>" +
             "</div>" +
-          "</div>" +
 
-          "<div style='font-size: 12px; font-weight: bold; color: #E10600; margin-bottom: 8px; font-family: monospace;'>📋 REGISTRATION SUMMARY</div>" +
-          "<table style='width: 100%; color: #FFFFFF; font-size: 13px; border-collapse: collapse; margin: 10px 0; font-family: monospace;'>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>ENTRY ID:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>" + entryId + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TEAM CALLSIGN:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + teamName + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>REGISTERED MEMBERS:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + teamMembers + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>CHAMPIONSHIP TRACK:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + championship + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>CATEGORY / EVENT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + category + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>12-DIGIT UTR REF:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + utrNumber + "</td></tr>" +
-            "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TOTAL ENTRY DEPOSIT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>₹" + paymentAmount + "</td></tr>" +
-          "</table>" +
+            "<!-- EMBEDDED E-PASS QR CODE CARD -->" +
+            "<div style='background-color: #111115; border: 2px solid #00D2BE; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0;'>" +
+              "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR E-PASS</div>" +
+              "<div style='font-size: 22px; font-weight: bold; color: #FFFFFF; margin: 5px 0;'>" + entryId + "</div>" +
+              
+              "<div style='margin: 15px 0; text-align: center;'>" +
+                "<img src='https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=" + encodeURIComponent(entryId) + "' alt='Formula AI Driver QR Code' style='width: 160px; height: 160px; border: 4px solid #FFFFFF; border-radius: 8px;' />" +
+              "</div>" +
 
-          whatsappGroupHtml +
+              "<div style='color: #00D2BE; font-size: 12px; font-weight: bold; margin-bottom: 12px;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
+              "<div>" +
+                "<a href='https://aitsevent.vercel.app/?view=E_PASS&id=" + entryId + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; shadow: 0 4px 10px rgba(225,6,0,0.5);'>" +
+                  "🎫 VIEW &amp; DOWNLOAD DIGITAL DRIVER E-PASS →" +
+                "</a>" +
+              "</div>" +
+            "</div>" +
 
-          "<div style='background-color: #111115; border: 1px solid #22222a; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 12px; text-align: left;'>" +
-            "<div style='color: #F5A623; font-weight: bold; margin-bottom: 6px;'>📞 NEED ASSISTANCE? STUDENT COORDINATORS CONTACT:</div>" +
-            "<div style='color: #CCCCCC; margin-bottom: 4px;'>⚙️ <strong>Technical Coordinators:</strong> B Sarath Kumar (8074244332) · S M Zunaid (88970 02082)</div>" +
-            "<div style='color: #CCCCCC;'>🎨 <strong>Non-Technical Coordinators:</strong> B Poojan Sai (79893 72489) · S Rajkumar (63003 45719) · M Muwaz (81258 91502)</div>" +
-          "</div>" +
+            "<div style='font-size: 12px; font-weight: bold; color: #E10600; margin-bottom: 8px; font-family: monospace;'>📋 REGISTRATION SUMMARY</div>" +
+            "<table style='width: 100%; color: #FFFFFF; font-size: 13px; border-collapse: collapse; margin: 10px 0; font-family: monospace;'>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>ENTRY ID:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>" + entryId + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TEAM CALLSIGN:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + teamName + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>REGISTERED MEMBERS:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + teamMembers + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>CHAMPIONSHIP TRACK:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + championship + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>CATEGORY / EVENT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a;'>" + category + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>12-DIGIT UTR REF:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + utrNumber + "</td></tr>" +
+              "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TOTAL ENTRY DEPOSIT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>₹" + paymentAmount + "</td></tr>" +
+            "</table>" +
 
-          "<div style='text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #22222a;'>" +
-            "<p style='font-size: 13px; color: #FFFFFF; font-weight: bold; margin: 0;'>Warm Regards &amp; Best of Luck!</p>" +
-            "<p style='font-size: 11px; color: #8A8A93; margin-top: 5px;'>Race Control Team · Formula-AI 2026 National Championship</p>" +
-          "</div>" +
-        "</div>";
+            whatsappGroupHtml +
 
-      var emailOptions = {
-        to: email,
-        subject: subject,
-        htmlBody: htmlBody
-      };
+            "<div style='background-color: #111115; border: 1px solid #22222a; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 12px; text-align: left;'>" +
+              "<div style='color: #F5A623; font-weight: bold; margin-bottom: 6px;'>📞 NEED ASSISTANCE? STUDENT COORDINATORS CONTACT:</div>" +
+              "<div style='color: #CCCCCC; margin-bottom: 4px;'>⚙️ <strong>Technical Coordinators:</strong> B Sarath Kumar (8074244332) · S M Zunaid (88970 02082)</div>" +
+              "<div style='color: #CCCCCC;'>🎨 <strong>Non-Technical Coordinators:</strong> B Poojan Sai (79893 72489) · S Rajkumar (63003 45719) · M Muwaz (81258 91502)</div>" +
+            "</div>" +
 
-      if (qrBlob) {
-        emailOptions.inlineImages = {
-          qrCodeBlob: qrBlob
-        };
+            "<div style='text-align: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #22222a;'>" +
+              "<p style='font-size: 13px; color: #FFFFFF; font-weight: bold; margin: 0;'>Warm Regards &amp; Best of Luck!</p>" +
+              "<p style='font-size: 11px; color: #8A8A93; margin-top: 5px;'>Race Control Team · Formula-AI 2026 National Championship</p>" +
+            "</div>" +
+          "</div>";
+
+        try {
+          MailApp.sendEmail({
+            to: email,
+            subject: subject,
+            htmlBody: htmlBody
+          });
+        } catch (mailErr) {
+          Logger.log("MailApp Error, attempting GmailApp fallback: " + mailErr);
+          GmailApp.sendEmail(email, subject, "", {
+            htmlBody: htmlBody
+          });
+        }
+      } catch (emailErr) {
+        Logger.log("Email dispatch failed: " + emailErr);
       }
-
-      MailApp.sendEmail(emailOptions);
     }
 
     return ContentService
