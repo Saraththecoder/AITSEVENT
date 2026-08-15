@@ -10,12 +10,30 @@
  *  - basic email format validation before attempting to send
  *  - emailStatus is updated to reflect actual send success/failure and written back to the row
  *  - WhatsApp links & coordinator contacts pulled into CONFIG for easy maintenance
+ *  - status / paymentStatus / driverNumber are now admin-only fields, gated
+ *    behind a secret token so the public form endpoint can't be used to
+ *    self-approve a registration or forge a payment status
+ *
+ * ONE-TIME SETUP REQUIRED:
+ *  Run this once from the script editor (Run > setAdminSecret, after editing
+ *  the value below), or set it manually under Project Settings > Script
+ *  Properties > ADMIN_SECRET. Keep this value private - anyone who has it
+ *  can approve registrations and set payment status via the API.
  * =========================================================================
  */
+
+function setAdminSecret() {
+  // EDIT THE VALUE BELOW, then run this function once from the script editor.
+  PropertiesService.getScriptProperties().setProperty("ADMIN_SECRET", "REPLACE_WITH_A_LONG_RANDOM_SECRET");
+  Logger.log("Admin secret has been set.");
+}
 
 var CONFIG = {
   SHEET_NAME: "REGISTRATIONS",
   MAX_COLS: 25,
+  // Fields only an authenticated (admin) request is allowed to set/change.
+  // Public form submissions can never flip these, even on an "update" match.
+  ADMIN_ONLY_FIELDS: ["status", "paymentStatus", "driverNumber"],
   WHATSAPP: {
     TECH: "https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0",
     NON_TECH: "https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0",
@@ -105,6 +123,22 @@ function parseRequestBody_(e) {
     data = e.parameter;
   }
   return data;
+}
+
+/**
+ * Admin secret lives in Script Properties, NOT hardcoded in source.
+ * Set it once via: Project Settings > Script Properties > ADMIN_SECRET
+ * or programmatically: PropertiesService.getScriptProperties().setProperty('ADMIN_SECRET', '...')
+ */
+function isAuthenticatedAdmin_(data) {
+  var configuredSecret = PropertiesService.getScriptProperties().getProperty("ADMIN_SECRET");
+  if (!configuredSecret) {
+    // No secret configured yet -> admin-only fields are locked down for everyone.
+    // This fails closed rather than open.
+    return false;
+  }
+  var providedSecret = (data.adminSecret || data.secret || "").toString();
+  return providedSecret !== "" && providedSecret === configuredSecret;
 }
 
 function generateUniqueEntryId_(existingIds) {
@@ -320,6 +354,7 @@ function doPost(e) {
     var sheet = getOrCreateSheet_(ss);
 
     var data = parseRequestBody_(e);
+    var isAdmin = isAuthenticatedAdmin_(data);
 
     var lastRow = sheet.getLastRow();
     var existingData = [];
@@ -357,9 +392,12 @@ function doPost(e) {
     var category = (data.category || "").toString();
     var utrNumber = (data.utrNumber || "").toString().trim();
     var paymentAmount = toSafeNumber_(data.paymentAmount, 0);
-    var paymentStatus = (data.paymentStatus || "PENDING").toString();
-    var status = (data.status || "SUBMITTED").toString();
-    var driverNumber = (data.driverNumber || "").toString();
+
+    // Admin-only fields: a non-admin request can never set these, regardless
+    // of what was submitted in the payload.
+    var paymentStatus = isAdmin ? (data.paymentStatus || "PENDING").toString() : "PENDING";
+    var status = isAdmin ? (data.status || "SUBMITTED").toString() : "SUBMITTED";
+    var driverNumber = isAdmin ? (data.driverNumber || "").toString() : "";
     var driver2Name = (data.driver2Name || "").toString();
     var driver2Phone = (data.driver2Phone || "").toString();
     var driver3Name = (data.driver3Name || "").toString();
@@ -382,6 +420,19 @@ function doPost(e) {
         existingRowIndex = i + 2;
         break;
       }
+    }
+
+    // If this is an update to an existing row and the request is NOT admin-
+    // authenticated, carry forward the existing admin-controlled values
+    // instead of resetting them to defaults. A team editing their own
+    // details (e.g. fixing a phone number) should never be able to knock
+    // their registration back from APPROVED to SUBMITTED, and a stranger
+    // re-POSTing a known entryId should never be able to touch these either.
+    if (existingRowIndex > -1 && !isAdmin) {
+      var existingRow = existingData[existingRowIndex - 2];
+      paymentStatus = existingRow[15] ? existingRow[15].toString() : paymentStatus;
+      status = existingRow[16] ? existingRow[16].toString() : status;
+      driverNumber = existingRow[17] ? existingRow[17].toString() : driverNumber;
     }
 
     // Send email and record the real outcome
@@ -428,7 +479,8 @@ function doPost(e) {
         result: "success",
         id: entryId,
         updated: existingRowIndex > -1,
-        emailStatus: emailStatus
+        emailStatus: emailStatus,
+        adminAuthenticated: isAdmin
       }))
       .setMimeType(ContentService.MimeType.JSON);
 
