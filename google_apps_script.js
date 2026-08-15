@@ -214,11 +214,7 @@ function buildEmailHtml_(fields) {
 
     "<div style='color: #00D2BE; font-size: 12px; font-weight: bold; margin-bottom: 12px;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
 
-    "<div style='margin-bottom: 15px;'>" +
-    "<a href='" + CONFIG.EPASS_BASE_URL + encodeURIComponent(fields.entryId) + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
-    "🎫 VIEW &amp; DOWNLOAD DIGITAL DRIVER E-PASS →" +
-    "</a>" +
-    "</div>" +
+
 
     whatsappHtml +
     "</div>" +
