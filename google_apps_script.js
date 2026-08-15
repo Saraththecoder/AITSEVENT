@@ -439,12 +439,14 @@ function doPost(e) {
     var champUpper = championship.toUpperCase();
     var catUpper = category.toUpperCase();
     var hasTechEvent = champUpper.indexOf("ENGINEERING") !== -1 ||
-      catUpper.indexOf("MONACO") !== -1 ||
-      catUpper.indexOf("LE MANS") !== -1 ||
-      catUpper.indexOf("SILVERSTONE") !== -1 ||
-      catUpper.indexOf("TELEMETRY") !== -1 ||
+      catUpper.indexOf("ENGINEERING") !== -1 ||
+      catUpper.indexOf("CODING") !== -1 ||
       catUpper.indexOf("CODE") !== -1 ||
-      catUpper.indexOf("WEB") !== -1 ||
+      catUpper.indexOf("PROMPT") !== -1 ||
+      catUpper.indexOf("HACKATHON") !== -1 ||
+      catUpper.indexOf("CONSTRUCTORS") !== -1 ||
+      catUpper.indexOf("POLE POSITION") !== -1 ||
+      catUpper.indexOf("TELEMETRY") !== -1 ||
       catUpper.indexOf("DEBUGGING") !== -1 ||
       catUpper.indexOf("TYPING") !== -1;
 
