@@ -1,6 +1,6 @@
 /**
  * =========================================================================
- * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V10 - GUARANTEED)
+ * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V11)
  * =========================================================================
  */
 
@@ -71,7 +71,6 @@ function doPost(e) {
 
   try {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
-    // Always target first sheet tab or sheet named REGISTRATIONS to guarantee writing to active main table
     var sheet = ss.getSheetByName("REGISTRATIONS") || ss.getSheets()[0];
     
     if (sheet.getMaxColumns() < 25) {
@@ -242,13 +241,13 @@ function doPost(e) {
     }
 
     var whatsappGroupHtml = 
-      "<div style='background-color: #111115; border: 2px solid #25D366; padding: 18px; border-radius: 12px; margin-top: 20px; text-align: center; font-family: Arial, sans-serif;'>" +
-        "<div style='color: #25D366; font-size: 14px; font-weight: bold; margin-bottom: 14px;'>💬 OFFICIAL WHATSAPP GROUP JOIN LINKS</div>";
+      "<div style='background-color: #111115; border: 2px solid #25D366; padding: 16px; border-radius: 12px; margin-top: 15px; text-align: center; font-family: Arial, sans-serif;'>" +
+        "<div style='color: #25D366; font-size: 13px; font-weight: bold; margin-bottom: 12px;'>💬 OFFICIAL WHATSAPP GROUP JOIN LINKS</div>";
 
     if (hasTechEvent) {
       whatsappGroupHtml += 
-        "<div style='margin-bottom: 10px;'>" +
-          "<a href='https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #00D2BE; color: #000000; padding: 12px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
+        "<div style='margin-bottom: 8px;'>" +
+          "<a href='https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #00D2BE; color: #000000; padding: 11px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
             "💻 JOIN TECHNICAL EVENTS WHATSAPP GROUP →" +
           "</a>" +
         "</div>";
@@ -256,8 +255,8 @@ function doPost(e) {
 
     if (hasNonTechEvent) {
       whatsappGroupHtml += 
-        "<div style='margin-bottom: 10px;'>" +
-          "<a href='https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #F5A623; color: #000000; padding: 12px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
+        "<div style='margin-bottom: 8px;'>" +
+          "<a href='https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #F5A623; color: #000000; padding: 11px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
             "🎨 JOIN NON-TECHNICAL EVENTS WHATSAPP GROUP →" +
           "</a>" +
         "</div>";
@@ -265,7 +264,7 @@ function doPost(e) {
 
     whatsappGroupHtml += 
       "<div>" +
-        "<a href='https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0' target='_blank' style='display: block; background-color: #25D366; color: #FFFFFF; padding: 14px 14px; border-radius: 8px; font-size: 14px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
+        "<a href='https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0' target='_blank' style='display: block; background-color: #25D366; color: #FFFFFF; padding: 12px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
           "🌐 JOIN OVERALL FORMULA-AI COMMUNITY GROUP →" +
         "</a>" +
       "</div>" +
@@ -291,6 +290,7 @@ function doPost(e) {
               "<p style='color: #8A8A93; font-size: 13px; margin-top: 8px;'>Current Registration Status: <strong style='color: #00D2BE; font-size: 14px;'>" + status + "</strong>.</p>" +
             "</div>" +
 
+            "<!-- EMBEDDED OFFICIAL E-PASS & WHATSAPP CARD -->" +
             "<div style='background-color: #111115; border: 2px solid #00D2BE; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0;'>" +
               "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR E-PASS</div>" +
               "<div style='font-size: 22px; font-weight: bold; color: #FFFFFF; margin: 5px 0;'>" + entryId + "</div>" +
@@ -300,11 +300,15 @@ function doPost(e) {
               "</div>" +
 
               "<div style='color: #00D2BE; font-size: 12px; font-weight: bold; margin-bottom: 12px;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
-              "<div>" +
-                "<a href='https://aitsevent.vercel.app/?view=E_PASS&id=" + entryId + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
+              
+              "<div style='margin-bottom: 15px;'>" +
+                "<a href='https://aitsevent.vercel.app/?view=E_PASS&id=" + entryId + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 12px 20px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase; shadow: 0 0 10px #E10600;'>" +
                   "🎫 VIEW &amp; DOWNLOAD DIGITAL DRIVER E-PASS →" +
                 "</a>" +
               "</div>" +
+
+              "<!-- WHATSAPP LINKS EMBEDDED INSIDE E-PASS CARD -->" +
+              whatsappGroupHtml +
             "</div>" +
 
             "<div style='font-size: 12px; font-weight: bold; color: #E10600; margin-bottom: 8px; font-family: monospace;'>📋 REGISTRATION SUMMARY</div>" +
@@ -317,8 +321,6 @@ function doPost(e) {
               "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>12-DIGIT UTR REF:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + utrNumber + "</td></tr>" +
               "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TOTAL ENTRY DEPOSIT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>₹" + paymentAmount + "</td></tr>" +
             "</table>" +
-
-            whatsappGroupHtml +
 
             "<div style='background-color: #111115; border: 1px solid #22222a; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 12px; text-align: left;'>" +
               "<div style='color: #F5A623; font-weight: bold; margin-bottom: 6px;'>📞 NEED ASSISTANCE? STUDENT COORDINATORS CONTACT:</div>" +
