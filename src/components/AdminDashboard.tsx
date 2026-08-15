@@ -46,9 +46,10 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   const [rejectionReasonText, setRejectionReasonText] = useState('');
   const [isProcessingApproval, setIsProcessingApproval] = useState(false);
 
-  // Section Counts
-  const pendingUtrList = registrations.filter(r => r.paymentStatus === 'PENDING' && r.status !== 'REJECTED');
-  const readyForApprovalList = registrations.filter(r => r.paymentStatus === 'VERIFIED' && r.status !== 'APPROVED' && r.status !== 'REJECTED');
+  // UTR Queue: only registrations that are freshly submitted and awaiting UTR verification
+  const pendingUtrList = registrations.filter(r => r.status === 'SUBMITTED');
+  // Approval Queue: UTR verified, waiting for final admin approval
+  const readyForApprovalList = registrations.filter(r => r.status === 'PAYMENT_VERIFIED');
   const approvedList = registrations.filter(r => r.status === 'APPROVED');
   const rejectedList = registrations.filter(r => r.status === 'REJECTED');
   const emailFailedList = registrations.filter(r => r.emailStatus === 'FAILED');
