@@ -287,7 +287,7 @@ function doPost(e) {
 
           "<!-- EMBEDDED E-PASS QR CODE CARD -->" +
           "<div style='background-color: #111115; border: 2px solid #00D2BE; padding: 20px; border-radius: 12px; text-align: center; margin: 20px 0;'>" +
-            "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR PASS</div>" +
+            "<div style='color: #8A8A93; font-size: 11px; font-weight: bold; letter-spacing: 1px;'>OFFICIAL DRIVER QR E-PASS</div>" +
             "<div style='font-size: 22px; font-weight: bold; color: #FFFFFF; margin: 5px 0;'>" + entryId + "</div>" +
             
             "<div style='margin: 15px 0; text-align: center;'>" +
@@ -297,7 +297,12 @@ function doPost(e) {
               ) +
             "</div>" +
 
-            "<div style='color: #00D2BE; font-size: 12px; font-weight: bold;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
+            "<div style='color: #00D2BE; font-size: 12px; font-weight: bold; margin-bottom: 12px;'>SCAN AT MONZA VENUE TURNSTILE GATE</div>" +
+            "<div>" +
+              "<a href='https://aitsevent.vercel.app/?view=E_PASS&id=" + entryId + "' target='_blank' style='display: inline-block; background-color: #E10600; color: #FFFFFF; padding: 10px 18px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase; shadow: 0 4px 10px rgba(225,6,0,0.5);'>" +
+                "🎫 VIEW &amp; DOWNLOAD DIGITAL DRIVER E-PASS →" +
+              "</a>" +
+            "</div>" +
           "</div>" +
 
           "<div style='font-size: 12px; font-weight: bold; color: #E10600; margin-bottom: 8px; font-family: monospace;'>📋 REGISTRATION SUMMARY</div>" +
