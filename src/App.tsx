@@ -21,6 +21,12 @@ export const App: React.FC = () => {
   const [showSplash, setShowSplash] = useState<boolean>(true);
   const [isRefreshingData, setIsRefreshingData] = useState<boolean>(false);
   const [registrations, setRegistrations] = useState<DriverRegistration[]>(() => {
+    // Clear old cached data from previous versions
+    const storedVersion = localStorage.getItem('formula_ai_data_version');
+    if (storedVersion !== '2026-v2') {
+      localStorage.removeItem('formula_ai_registrations_2026');
+      localStorage.setItem('formula_ai_data_version', '2026-v2');
+    }
     const saved = localStorage.getItem('formula_ai_registrations_2026');
     if (saved) {
       try {
