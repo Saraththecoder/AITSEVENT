@@ -235,11 +235,6 @@ function doPost(e) {
                           catUpper.indexOf("MEMORY") !== -1 || 
                           catUpper.indexOf("TREASURE") !== -1;
 
-    if (!hasTechEvent && !hasNonTechEvent) {
-      hasTechEvent = true;
-      hasNonTechEvent = true;
-    }
-
     var whatsappGroupHtml = 
       "<div style='background-color: #111115; border: 2px solid #25D366; padding: 16px; border-radius: 12px; margin-top: 15px; text-align: center; font-family: Arial, sans-serif;'>" +
         "<div style='color: #25D366; font-size: 13px; font-weight: bold; margin-bottom: 12px;'>💬 OFFICIAL WHATSAPP GROUP JOIN LINKS</div>";
@@ -251,9 +246,7 @@ function doPost(e) {
             "💻 JOIN TECHNICAL EVENTS WHATSAPP GROUP →" +
           "</a>" +
         "</div>";
-    }
-
-    if (hasNonTechEvent) {
+    } else {
       whatsappGroupHtml += 
         "<div style='margin-bottom: 8px;'>" +
           "<a href='https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #F5A623; color: #000000; padding: 11px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
