@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { AppView } from '../types';
-import { Flag, UserCheck, LayoutDashboard, LogOut, ChevronRight, Trophy, Menu, X, Radio } from 'lucide-react';
+import { Flag, LayoutDashboard, LogOut, ChevronRight, Trophy, Menu, X, Radio } from 'lucide-react';
 
 interface NavbarProps {
   currentView: AppView;
@@ -94,17 +94,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span>EVENTS &amp; RULES</span>
             </button>
 
-            <button
-              onClick={() => setCurrentView('STATUS_PAGE')}
-              className={`px-4 py-2 flex items-center space-x-2 transition-all duration-300 font-bold rounded-xl text-xs uppercase ${
-                currentView === 'STATUS_PAGE' || currentView === 'E_PASS'
-                  ? 'bg-[#E10600] text-white shadow-[0_0_20px_rgba(225,6,0,0.6)]'
-                  : 'text-[#8A8A93] hover:text-white hover:bg-[#1f1f28]'
-              }`}
-            >
-              <UserCheck className="w-3.5 h-3.5 text-[#00D2BE]" />
-              <span>DRIVER STATUS &amp; E-PASS</span>
-            </button>
 
             <button
               onClick={() => setCurrentView('COORDINATORS')}
@@ -201,22 +190,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="flex items-center space-x-3">
               <Trophy className="w-4 h-4 text-[#F5A623]" />
               <span>8 COMPETITIONS &amp; RULES</span>
-            </div>
-            <ChevronRight className="w-4 h-4 opacity-50" />
-          </button>
-
-          <button
-            onClick={() => {
-              setCurrentView('STATUS_PAGE');
-              setMobileMenuOpen(false);
-            }}
-            className={`w-full p-3 text-left font-bold flex items-center justify-between rounded-xl transition-all ${
-              currentView === 'STATUS_PAGE' || currentView === 'E_PASS' ? 'bg-[#E10600] text-white shadow-lg' : 'text-[#8A8A93] bg-[#14141a] hover:text-white'
-            }`}
-          >
-            <div className="flex items-center space-x-3">
-              <UserCheck className="w-4 h-4 text-[#00D2BE]" />
-              <span>DRIVER STATUS &amp; E-PASS</span>
             </div>
             <ChevronRight className="w-4 h-4 opacity-50" />
           </button>
