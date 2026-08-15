@@ -82,6 +82,49 @@ export const RegistrationReceived: React.FC<RegistrationReceivedProps> = ({
           </p>
         </div>
 
+        {/* OFFICIAL WHATSAPP GROUP JOIN LINKS CARD */}
+        <div className="bg-[#08080A] border-2 border-[#25D366] p-4 rounded-xl space-y-3 text-left">
+          <div className="flex items-center justify-between border-b border-[#22222a] pb-2">
+            <span className="text-[#25D366] font-display text-xs font-bold uppercase tracking-wider flex items-center space-x-1.5">
+              <span>💬 OFFICIAL WHATSAPP GROUPS</span>
+            </span>
+            <span className="bg-[#25D366]/20 text-[#25D366] text-[9px] font-mono px-2 py-0.5 rounded font-bold">
+              JOIN NOW
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <a
+              href="https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 bg-[#14141a] hover:bg-[#1c1c24] border border-[#00D2BE] text-[#00D2BE] rounded-lg text-xs font-bold flex items-center justify-between transition-all"
+            >
+              <span>💻 TECHNICAL EVENTS GROUP</span>
+              <span>→</span>
+            </a>
+
+            <a
+              href="https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2.5 bg-[#14141a] hover:bg-[#1c1c24] border border-[#F5A623] text-[#F5A623] rounded-lg text-xs font-bold flex items-center justify-between transition-all"
+            >
+              <span>🎨 NON-TECH EVENTS GROUP</span>
+              <span>→</span>
+            </a>
+          </div>
+
+          <a
+            href="https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full p-3 bg-[#25D366] hover:bg-[#20bd5a] text-[#08080A] font-display font-bold text-xs uppercase tracking-wider rounded-lg flex items-center justify-center space-x-1.5 transition-all"
+          >
+            <span>🌐 JOIN OVERALL FORMULA-AI COMMUNITY GROUP →</span>
+          </a>
+        </div>
+
         {/* Check Status Button */}
         <div className="pt-2">
           <button

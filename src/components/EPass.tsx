@@ -165,6 +165,54 @@ export const EPass: React.FC<EPassProps> = ({ registration, onGoToVerification }
 
         </div>
       </div>
+
+      {/* OFFICIAL WHATSAPP GROUP JOIN LINKS CARD */}
+      <div className="bg-[#111115] border-2 border-[#25D366] p-5 rounded-2xl shadow-[0_0_30px_rgba(37,211,102,0.2)] space-y-3 font-data">
+        <div className="flex items-center justify-between border-b border-[#22222a] pb-2.5">
+          <div className="flex items-center space-x-2 text-[#25D366] font-display text-xs font-bold uppercase tracking-wider">
+            <span className="text-base">💬</span>
+            <span>OFFICIAL FORMULA-AI WHATSAPP GROUPS</span>
+          </div>
+          <span className="bg-[#25D366]/20 text-[#25D366] text-[10px] font-mono px-2 py-0.5 rounded font-bold">
+            INSTANT JOIN
+          </span>
+        </div>
+
+        <p className="text-[11px] text-[#8A8A93] leading-relaxed">
+          Join your official event WhatsApp group to receive live announcements, schedule updates, and race control telemetry directly on your phone:
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <a
+            href="https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 bg-[#08080A] hover:bg-[#14141a] border border-[#00D2BE] hover:border-[#00e6d0] text-[#00D2BE] rounded-xl text-xs font-bold flex items-center justify-between transition-all shadow-md group"
+          >
+            <span>💻 TECHNICAL EVENTS GROUP</span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+
+          <a
+            href="https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3 bg-[#08080A] hover:bg-[#14141a] border border-[#F5A623] hover:border-[#ffb73b] text-[#F5A623] rounded-xl text-xs font-bold flex items-center justify-between transition-all shadow-md group"
+          >
+            <span>🎨 NON-TECHNICAL EVENTS GROUP</span>
+            <span className="group-hover:translate-x-1 transition-transform">→</span>
+          </a>
+        </div>
+
+        <a
+          href="https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full p-3.5 bg-[#25D366] hover:bg-[#20bd5a] text-[#08080A] font-display font-extrabold text-xs uppercase tracking-wider rounded-xl flex items-center justify-center space-x-2 transition-all shadow-[0_0_20px_rgba(37,211,102,0.4)]"
+        >
+          <span>🌐 JOIN OVERALL FORMULA-AI COMMUNITY GROUP →</span>
+        </a>
+      </div>
     </div>
   );
 };
