@@ -6,7 +6,6 @@ import { Navbar } from './components/Navbar';
 import { LandingHero } from './components/LandingHero';
 import { RegistrationForm } from './components/RegistrationForm';
 import { RegistrationReceived } from './components/RegistrationReceived';
-import { StatusPage } from './components/StatusPage';
 import { EPass } from './components/EPass';
 import { QRVerification } from './components/QRVerification';
 import { AdminLogin } from './components/AdminLogin';
@@ -221,17 +220,6 @@ export const App: React.FC = () => {
         {currentView === 'REGISTRATION_RECEIVED' && (
           <RegistrationReceived
             registration={activeRegistration}
-            onGoToStatus={() => setCurrentView('STATUS_PAGE')}
-          />
-        )}
-
-        {currentView === 'STATUS_PAGE' && (
-          <StatusPage
-            registration={activeRegistration}
-            allRegistrations={registrations}
-            onSelectRegistration={(reg) => setActiveDriverId(reg.id)}
-            onUpdateRegistrationState={handleUpdateRegistration}
-            onGoToEPass={() => setCurrentView('E_PASS')}
           />
         )}
 
