@@ -53,6 +53,8 @@ export const StatusPage: React.FC<StatusPageProps> = ({
 
   const isApproved = registration?.status === 'APPROVED';
   const isRejected = registration?.status === 'REJECTED';
+  const isPaymentVerified = registration?.status === 'PAYMENT_VERIFIED';
+  const isPending = !isApproved && !isRejected && !isPaymentVerified;
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-12 space-y-8 font-data text-xs select-none">
@@ -156,8 +158,35 @@ export const StatusPage: React.FC<StatusPageProps> = ({
             </div>
           )}
 
-          {/* 2. PENDING / IN REVIEW STATE */}
-          {!isApproved && !isRejected && (
+          {/* 2. PAYMENT VERIFIED STATE */}
+          {isPaymentVerified && (
+            <div className="space-y-6 text-center py-4">
+              <div className="w-16 h-16 mx-auto rounded-full bg-[#00D2BE]/20 border-2 border-[#00D2BE] flex items-center justify-center shadow-[0_0_30px_#00D2BE]">
+                <ShieldCheck className="w-9 h-9 text-[#00D2BE] animate-pulse" />
+              </div>
+              <div className="space-y-1">
+                <span className="bg-[#00D2BE] text-[#08080A] font-mono font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider inline-block">
+                  ✅ UTR VERIFIED · AWAITING FINAL APPROVAL
+                </span>
+                <h2 className="font-display text-2xl sm:text-3xl font-extrabold text-white uppercase tracking-wider pt-2">
+                  PAYMENT CONFIRMED
+                </h2>
+                <p className="text-xs text-[#8A8A93] font-mono max-w-md mx-auto">
+                  Your UTR deposit has been verified by Race Control. Final driver approval is in progress.
+                </p>
+              </div>
+              <div className="bg-[#14141a] border border-[#00D2BE]/40 p-4 rounded-xl max-w-md mx-auto text-left space-y-2 font-mono text-xs">
+                <div className="flex justify-between"><span className="text-[#8A8A93]">CAPTAIN NAME:</span><span className="text-white font-bold">{registration.fullName}</span></div>
+                <div className="flex justify-between"><span className="text-[#8A8A93]">TRACK:</span><span className="text-[#00D2BE]">{registration.championship}</span></div>
+                <div className="flex justify-between"><span className="text-[#8A8A93]">CATEGORY:</span><span className="text-white">{registration.category}</span></div>
+                <div className="flex justify-between"><span className="text-[#8A8A93]">UTR REF:</span><span className="text-[#F5A623] font-bold">{registration.utrNumber}</span></div>
+                <div className="flex justify-between"><span className="text-[#8A8A93]">STATUS:</span><span className="text-[#00D2BE] font-bold">PAYMENT VERIFIED ✓</span></div>
+              </div>
+            </div>
+          )}
+
+          {/* 3. PENDING / IN REVIEW STATE */}
+          {isPending && (
             <div className="space-y-6 text-center py-4">
               <div className="w-16 h-16 mx-auto rounded-full bg-[#F5A623]/20 border-2 border-[#F5A623] flex items-center justify-center shadow-[0_0_30px_#F5A623]">
                 <Clock className="w-9 h-9 text-[#F5A623] animate-spin" />
