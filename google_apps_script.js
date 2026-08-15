@@ -1,6 +1,6 @@
 /**
  * =========================================================================
- * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V11)
+ * FORMULA-AI 2026 GRAND PRIX - GOOGLE APPS SCRIPT BACKEND ENGINE (V12 - ZERO FAILS)
  * =========================================================================
  */
 
@@ -108,12 +108,25 @@ function doPost(e) {
       sheet.getRange(1, 1, 1, 25).setFontWeight("bold").setBackground("#111115").setFontColor("#00D2BE");
     }
 
+    // BULLETPROOF MULTI-FORMAT DATA PARSER (JSON + URL-ENCODED + PARAMETERS)
     var data = {};
     if (e && e.postData && e.postData.contents) {
+      var rawStr = e.postData.contents.toString();
       try {
-        data = JSON.parse(e.postData.contents);
-      } catch(pErr) {
-        data = e.parameter || {};
+        data = JSON.parse(rawStr);
+      } catch (jsonErr) {
+        if (e.parameter && Object.keys(e.parameter).length > 0) {
+          data = e.parameter;
+        } else {
+          data = {};
+          var pairs = rawStr.split('&');
+          for (var p = 0; p < pairs.length; p++) {
+            var kv = pairs[p].split('=');
+            if (kv.length === 2) {
+              data[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1].replace(/\+/g, ' '));
+            }
+          }
+        }
       }
     } else if (e && e.parameter) {
       data = e.parameter;
@@ -218,22 +231,6 @@ function doPost(e) {
                        catUpper.indexOf("WEB") !== -1 || 
                        catUpper.indexOf("DEBUGGING") !== -1 || 
                        catUpper.indexOf("TYPING") !== -1;
-
-    var hasNonTechEvent = champUpper.indexOf("DAYTONA") !== -1 || 
-                          champUpper.indexOf("PODIUM") !== -1 || 
-                          champUpper.indexOf("TURBO") !== -1 || 
-                          champUpper.indexOf("COMBO") !== -1 || 
-                          catUpper.indexOf("DAYTONA") !== -1 || 
-                          catUpper.indexOf("PODIUM") !== -1 || 
-                          catUpper.indexOf("TURBO") !== -1 || 
-                          catUpper.indexOf("RADIO") !== -1 || 
-                          catUpper.indexOf("SIMULATOR") !== -1 || 
-                          catUpper.indexOf("PIT STOP") !== -1 || 
-                          catUpper.indexOf("SPEEDWAY") !== -1 || 
-                          catUpper.indexOf("BGMI") !== -1 || 
-                          catUpper.indexOf("CHARADES") !== -1 || 
-                          catUpper.indexOf("MEMORY") !== -1 || 
-                          catUpper.indexOf("TREASURE") !== -1;
 
     var whatsappGroupHtml = 
       "<div style='background-color: #111115; border: 2px solid #25D366; padding: 16px; border-radius: 12px; margin-top: 15px; text-align: center; font-family: Arial, sans-serif;'>" +

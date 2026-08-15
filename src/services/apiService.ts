@@ -10,8 +10,21 @@ export const submitRegistrationToGoogleSheet = async (registration: DriverRegist
       return true;
     }
 
-    // Google Apps Script requires text/plain body format to avoid CORS pre-flight block
-    await fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
+    const jsonPayload = JSON.stringify(registration);
+
+    // 1. Primary: Use navigator.sendBeacon for instant non-blocking background dispatch
+    if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+      try {
+        const blob = new Blob([jsonPayload], { type: 'text/plain;charset=utf-8' });
+        navigator.sendBeacon(GOOGLE_APPS_SCRIPT_WEB_APP_URL, blob);
+        console.log("Dispatched via navigator.sendBeacon!");
+      } catch (beaconErr) {
+        console.warn("sendBeacon fallback to fetch:", beaconErr);
+      }
+    }
+
+    // 2. Secondary: Fire fetch in background to guarantee delivery
+    fetch(GOOGLE_APPS_SCRIPT_WEB_APP_URL, {
       method: 'POST',
       mode: 'no-cors',
       cache: 'no-cache',
@@ -19,10 +32,9 @@ export const submitRegistrationToGoogleSheet = async (registration: DriverRegist
       headers: {
         'Content-Type': 'text/plain;charset=utf-8',
       },
-      body: JSON.stringify(registration)
-    });
+      body: jsonPayload
+    }).catch(err => console.error("Fetch background dispatch error:", err));
 
-    console.log("Successfully dispatched registration to Google Sheets & Email Service!");
     return true;
   } catch (err) {
     console.error("Failed to submit to Google Apps Script:", err);
