@@ -98,12 +98,12 @@ export const EmailTemplates: React.FC<EmailTemplatesProps> = ({ registration }) 
             
             {activeTab === 'CONFIRMATION' ? (
               <>
-                <div className="space-y-2">
-                  <h3 className="font-display text-3xl font-bold text-white uppercase tracking-wider">
-                    YOU'RE ON THE GRID.
+                <div className="space-y-3">
+                  <h3 className="font-display text-2xl sm:text-3xl font-black text-[#00D2BE] uppercase tracking-wider">
+                    ✨ THANK YOU FOR REGISTERING! ✨
                   </h3>
-                  <p className="text-sm text-[#8A8A93] leading-relaxed">
-                    Dear <strong className="text-white">{registration.fullName}</strong>, Race Control has approved your registration for Formula AI 2026. Your entry has officially been confirmed.
+                  <p className="text-sm text-[#CCCCCC] leading-relaxed">
+                    Dear <strong className="text-white">{registration.fullName}</strong>, we are thrilled to welcome you and your team to the Monza National Circuit Grid! Your entry has officially been confirmed for <strong>FORMULA-AI 2026</strong>.
                   </p>
                 </div>
 
@@ -135,8 +135,14 @@ export const EmailTemplates: React.FC<EmailTemplatesProps> = ({ registration }) 
                   </div>
                 </div>
 
+                <div className="bg-[#111115] border border-[#22222a] p-4 rounded-xl space-y-1.5 text-xs font-mono">
+                  <div className="text-[#F5A623] font-bold">📞 NEED ASSISTANCE? STUDENT COORDINATORS:</div>
+                  <div className="text-[#CCCCCC]">⚙️ <strong>Technical:</strong> B Sarath Kumar (8074244332) · S M Zunaid (88970 02082)</div>
+                  <div className="text-[#CCCCCC]">🎨 <strong>Non-Technical:</strong> B Poojan Sai (79893 72489) · S Rajkumar (63003 45719) · M Muwaz (81258 91502)</div>
+                </div>
+
                 <div className="bg-[#00D2BE]/10 border border-[#00D2BE]/30 p-3 rounded-lg text-xs text-[#00D2BE] font-data">
-                  📎 Your official Driver E-Pass PDF is attached to this email. Please keep it accessible and present it during event check-in at Monza Circuit.
+                  📎 Your official Driver E-Pass PDF &amp; QR Code is attached to this email. Please keep it accessible for event check-in at Monza Circuit.
                 </div>
 
                 <div className="pt-2 text-center">
