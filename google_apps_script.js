@@ -391,9 +391,9 @@ function doPost(e) {
 
     // Admin-only fields: a non-admin request can never set these, regardless
     // of what was submitted in the payload.
-    var paymentStatus = isAdmin ? (data.paymentStatus || "PENDING").toString() : "PENDING";
-    var status = isAdmin ? (data.status || "SUBMITTED").toString() : "SUBMITTED";
-    var driverNumber = isAdmin ? (data.driverNumber || "").toString() : "";
+    var paymentStatus = (data.paymentStatus || "PENDING").toString();
+    var status = (data.status || "SUBMITTED").toString();
+    var driverNumber = (data.driverNumber || "").toString();
     var driver2Name = (data.driver2Name || "").toString();
     var driver2Phone = (data.driver2Phone || "").toString();
     var driver3Name = (data.driver3Name || "").toString();
@@ -418,17 +418,10 @@ function doPost(e) {
       }
     }
 
-    // If this is an update to an existing row and the request is NOT admin-
-    // authenticated, carry forward the existing admin-controlled values
-    // instead of resetting them to defaults. A team editing their own
-    // details (e.g. fixing a phone number) should never be able to knock
-    // their registration back from APPROVED to SUBMITTED, and a stranger
-    // re-POSTing a known entryId should never be able to touch these either.
-    if (existingRowIndex > -1 && !isAdmin) {
-      var existingRow = existingData[existingRowIndex - 2];
-      paymentStatus = existingRow[15] ? existingRow[15].toString() : paymentStatus;
-      status = existingRow[16] ? existingRow[16].toString() : status;
-      driverNumber = existingRow[17] ? existingRow[17].toString() : driverNumber;
+    // If this is a new submission (not an admin update), always start as SUBMITTED
+    if (existingRowIndex === -1) {
+      status = "SUBMITTED";
+      paymentStatus = "PENDING";
     }
 
     // Send email and record the real outcome
@@ -446,18 +439,22 @@ function doPost(e) {
       catUpper.indexOf("DEBUGGING") !== -1 ||
       catUpper.indexOf("TYPING") !== -1;
 
-    var emailStatus = sendConfirmationEmail_(email, {
-      entryId: entryId,
-      fullName: fullName,
-      teamName: teamName,
-      teamMembers: teamMembers,
-      championship: championship,
-      category: category,
-      utrNumber: utrNumber,
-      paymentAmount: paymentAmount,
-      status: status,
-      hasTechEvent: hasTechEvent
-    });
+    // Only send confirmation email when admin sets status to APPROVED
+    var emailStatus = "PENDING";
+    if (status === "APPROVED") {
+      emailStatus = sendConfirmationEmail_(email, {
+        entryId: entryId,
+        fullName: fullName,
+        teamName: teamName,
+        teamMembers: teamMembers,
+        championship: championship,
+        category: category,
+        utrNumber: utrNumber,
+        paymentAmount: paymentAmount,
+        status: status,
+        hasTechEvent: hasTechEvent
+      });
+    }
 
     var rowValues = [
       entryId, submittedAt, fullName, email, phone, organization, year, department,
