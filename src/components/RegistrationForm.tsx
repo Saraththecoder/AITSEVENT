@@ -110,9 +110,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
     formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' ? 150 :
     formData.championship === 'TURBO COMBO (3 Non-Tech Events)' ? 120 : 50;
 
-  const isComboPackage = formData.championship === 'PODIUM COMBO (4 Non-Tech Events)' || formData.championship === 'TURBO COMBO (3 Non-Tech Events)';
-
-  const totalAmountPayable = isComboPackage ? baseFeePerDriver : baseFeePerDriver * teamSizeCount;
+  const totalAmountPayable = baseFeePerDriver * teamSizeCount;
 
   const upiPayUrl = `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(upiName)}&am=${totalAmountPayable}&cu=INR&tn=${encodeURIComponent(`FORMULA-AI ${formData.championship}`)}`;
 
@@ -798,12 +796,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                       <span className="bg-[#22C55E]/20 text-[#22C55E] text-[8px] px-1.5 py-0.5 rounded">25% OFF</span>
                     </span>
                     <div className="text-right">
-                      <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹200</span>
-                      <span className="bg-[#22C55E] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹150 TOTAL</span>
+                      <span className="bg-[#22C55E] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹150 / DRIVER</span>
                     </div>
                   </div>
                   <div className="text-white font-bold text-sm">4 NON-TECH EVENTS</div>
-                  <div className="text-[10px] text-[#22C55E] mt-1">SAVE ₹50 · Flat Combo Price</div>
+                  <div className="text-[10px] text-[#22C55E] mt-1">₹150 per driver · 4 Events Pass</div>
                 </button>
 
                 {/* 4. TURBO COMBO (3 NON-TECH EVENTS) */}
@@ -822,12 +819,11 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                       <span className="bg-[#00D2BE]/20 text-[#00D2BE] text-[8px] px-1.5 py-0.5 rounded">20% OFF</span>
                     </span>
                     <div className="text-right">
-                      <span className="line-through text-[9px] text-[#8A8A93] mr-1">₹150</span>
-                      <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹120 TOTAL</span>
+                      <span className="bg-[#00D2BE] text-[#08080A] text-[9px] font-bold px-2 py-0.5 rounded">₹120 / DRIVER</span>
                     </div>
                   </div>
                   <div className="text-white font-bold text-sm">3 NON-TECH EVENTS</div>
-                  <div className="text-[10px] text-[#00D2BE] mt-1">SAVE ₹30 · Flat Combo Price</div>
+                  <div className="text-[10px] text-[#00D2BE] mt-1">₹120 per driver · Pick 3 Events</div>
                 </button>
               </div>
 
@@ -998,10 +994,7 @@ export const RegistrationForm: React.FC<RegistrationFormProps> = ({
                   {formData.championship} · <span className="text-[#00D2BE]">{teamSizeCount} DRIVERS SQUAD</span>
                 </div>
                 <div className="text-[10px] text-[#8A8A93] font-mono mt-0.5">
-                  {isComboPackage 
-                    ? `FLAT COMBO PACKAGE PRICE: ₹${baseFeePerDriver}` 
-                    : `CALCULATION: ₹${baseFeePerDriver} PER DRIVER × ${teamSizeCount} ${teamSizeCount > 1 ? 'DRIVERS' : 'DRIVER'}`
-                  }
+                  CALCULATION: ₹{baseFeePerDriver} PER DRIVER × {teamSizeCount} {teamSizeCount > 1 ? 'DRIVERS' : 'DRIVER'}
                 </div>
               </div>
 
