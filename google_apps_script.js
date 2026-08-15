@@ -200,6 +200,71 @@ function doPost(e) {
       Logger.log("QR Fetch Error: " + qrErr);
     }
 
+    // Determine Technical vs Non-Technical events
+    var champUpper = (championship || "").toUpperCase();
+    var catUpper = (category || "").toUpperCase();
+
+    var hasTechEvent = champUpper.indexOf("ENGINEERING") !== -1 || 
+                       catUpper.indexOf("MONACO") !== -1 || 
+                       catUpper.indexOf("LE MANS") !== -1 || 
+                       catUpper.indexOf("SILVERSTONE") !== -1 || 
+                       catUpper.indexOf("TELEMETRY") !== -1 || 
+                       catUpper.indexOf("CODE") !== -1 || 
+                       catUpper.indexOf("WEB") !== -1 || 
+                       catUpper.indexOf("DEBUGGING") !== -1 || 
+                       catUpper.indexOf("TYPING") !== -1;
+
+    var hasNonTechEvent = champUpper.indexOf("DAYTONA") !== -1 || 
+                          champUpper.indexOf("PODIUM") !== -1 || 
+                          champUpper.indexOf("TURBO") !== -1 || 
+                          champUpper.indexOf("COMBO") !== -1 || 
+                          catUpper.indexOf("DAYTONA") !== -1 || 
+                          catUpper.indexOf("PODIUM") !== -1 || 
+                          catUpper.indexOf("TURBO") !== -1 || 
+                          catUpper.indexOf("RADIO") !== -1 || 
+                          catUpper.indexOf("SIMULATOR") !== -1 || 
+                          catUpper.indexOf("PIT STOP") !== -1 || 
+                          catUpper.indexOf("SPEEDWAY") !== -1 || 
+                          catUpper.indexOf("BGMI") !== -1 || 
+                          catUpper.indexOf("CHARADES") !== -1 || 
+                          catUpper.indexOf("MEMORY") !== -1 || 
+                          catUpper.indexOf("TREASURE") !== -1;
+
+    if (!hasTechEvent && !hasNonTechEvent) {
+      hasTechEvent = true;
+      hasNonTechEvent = true;
+    }
+
+    var whatsappGroupHtml = 
+      "<div style='background-color: #0b0b0e; border: 2px solid #22C55E; padding: 18px; border-radius: 12px; margin-top: 20px; text-align: center; font-family: sans-serif;'>" +
+        "<div style='color: #22C55E; font-size: 14px; font-weight: bold; margin-bottom: 12px;'>💬 OFFICIAL WHATSAPP GROUP LINKS</div>";
+
+    if (hasTechEvent) {
+      whatsappGroupHtml += 
+        "<div style='margin-bottom: 10px;'>" +
+          "<a href='https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #14141a; border: 1px solid #00D2BE; color: #00D2BE; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none;'>" +
+            "💻 JOIN TECHNICAL EVENTS WHATSAPP GROUP →" +
+          "</a>" +
+        "</div>";
+    }
+
+    if (hasNonTechEvent) {
+      whatsappGroupHtml += 
+        "<div style='margin-bottom: 10px;'>" +
+          "<a href='https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0' target='_blank' style='display: block; background-color: #14141a; border: 1px solid #F5A623; color: #F5A623; padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: bold; text-decoration: none;'>" +
+            "🎨 JOIN NON-TECHNICAL EVENTS WHATSAPP GROUP →" +
+          "</a>" +
+        "</div>";
+    }
+
+    whatsappGroupHtml += 
+      "<div>" +
+        "<a href='https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0' target='_blank' style='display: block; background-color: #22C55E; color: #08080A; padding: 12px 14px; border-radius: 8px; font-size: 13px; font-weight: bold; text-decoration: none; text-transform: uppercase;'>" +
+          "🌐 JOIN OVERALL FORMULA-AI COMMUNITY GROUP →" +
+        "</a>" +
+      "</div>" +
+    "</div>";
+
     // Send Automated HTML Email with Embedded Inline QR Code Image
     if (email && email.indexOf("@") !== -1) {
       var subject = status === "APPROVED" 
@@ -245,6 +310,8 @@ function doPost(e) {
             "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>12-DIGIT UTR REF:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #F5A623;'>" + utrNumber + "</td></tr>" +
             "<tr><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #8A8A93;'>TOTAL ENTRY DEPOSIT:</td><td style='padding: 8px; border-bottom: 1px solid #22222a; color: #00D2BE; font-weight: bold;'>₹" + paymentAmount + "</td></tr>" +
           "</table>" +
+
+          whatsappGroupHtml +
 
           "<div style='background-color: #111115; border: 1px solid #22222a; padding: 15px; border-radius: 10px; margin-top: 20px; font-size: 12px; text-align: left;'>" +
             "<div style='color: #F5A623; font-weight: bold; margin-bottom: 6px;'>📞 NEED ASSISTANCE? STUDENT COORDINATORS CONTACT:</div>" +

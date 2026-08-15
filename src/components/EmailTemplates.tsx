@@ -135,6 +135,40 @@ export const EmailTemplates: React.FC<EmailTemplatesProps> = ({ registration }) 
                   </div>
                 </div>
 
+                {/* WhatsApp Group Links Box */}
+                <div className="bg-[#0b0b0e] border-2 border-[#22C55E] p-4 rounded-xl space-y-2.5 text-center font-mono">
+                  <div className="text-[#22C55E] text-xs font-bold uppercase">💬 OFFICIAL WHATSAPP GROUP LINKS</div>
+                  
+                  {registration.championship === 'ENGINEERING CHAMPIONSHIP' ? (
+                    <a
+                      href="https://chat.whatsapp.com/GiCGA7Z5EJ6FLjGyQ5PPc2?s=cl&p=a&mlu=0"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block bg-[#14141a] border border-[#00D2BE] text-[#00D2BE] p-2.5 rounded-lg text-xs font-bold hover:bg-[#00D2BE]/10 transition-colors"
+                    >
+                      💻 JOIN TECHNICAL EVENTS WHATSAPP GROUP →
+                    </a>
+                  ) : (
+                    <a
+                      href="https://chat.whatsapp.com/K7KyJMt6ThZ5mHv0Jly1T7?s=cl&p=a&mlu=0"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block bg-[#14141a] border border-[#F5A623] text-[#F5A623] p-2.5 rounded-lg text-xs font-bold hover:bg-[#F5A623]/10 transition-colors"
+                    >
+                      🎨 JOIN NON-TECHNICAL EVENTS WHATSAPP GROUP →
+                    </a>
+                  )}
+
+                  <a
+                    href="https://chat.whatsapp.com/IRR2ETjbcY38Lk4Eucw2b0"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block bg-[#22C55E] text-[#08080A] p-2.5 rounded-lg text-xs font-bold uppercase hover:bg-[#16a34a] transition-colors"
+                  >
+                    🌐 JOIN OVERALL FORMULA-AI COMMUNITY GROUP →
+                  </a>
+                </div>
+
                 <div className="bg-[#111115] border border-[#22222a] p-4 rounded-xl space-y-1.5 text-xs font-mono">
                   <div className="text-[#F5A623] font-bold">📞 NEED ASSISTANCE? STUDENT COORDINATORS:</div>
                   <div className="text-[#CCCCCC]">⚙️ <strong>Technical:</strong> B Sarath Kumar (8074244332) · S M Zunaid (88970 02082)</div>
